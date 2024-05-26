@@ -1,0 +1,148 @@
+.navbar{
+    display: flex;
+    justify-content: center;
+}
+
+.navbar a{
+    text-decoration: none;
+}
+
+.navbarButton a{
+    text-decoration: none;
+}
+
+@media (min-width: 1024px){
+    .navbarContent{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.52);
+        border-radius: 25px;
+        margin-top: 20px;
+        max-width: 1800px;
+    }
+    
+    .navbarContent h2{
+        width: 45%;
+        text-align: center;
+        /* padding-left: 50px; */
+    }
+    
+    .navbarButton{
+        width: 27.5%;
+        text-align: end;
+        /* margin-right: -100px; */
+        display: flex;
+        justify-content: flex-end;
+        /* padding-right: 50px; */
+        margin-right: 50px;
+    }
+    
+    .navbarButtonButton{
+        border: 1px solid white;
+        border-radius: 25px;
+        background-color: inherit;
+        text-decoration: none;
+        padding: 3px;
+        width: 100%;
+        max-width: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .navbarButtonButton a{
+        font-size: 18px;
+        /* margin: 5px 0px 5px 0px; */
+        padding-bottom: 5px;
+    }
+
+    .navbarButtonButton img{
+        width: 17px;
+        height: 17px;
+        margin-left: 10px;
+    }
+    
+    .navbarContent ul{
+        display: flex;
+        justify-content: space-around;
+        list-style: none;
+        width: 30%;
+        /* max-width: 400px; */
+        /* margin-left: 10px; */
+    }
+    
+    .navbarContent li{
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px){
+    .navbarContent{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.52);
+        border-radius: 25px;
+        margin-top: 20px;
+    }
+    
+    .navbarContent h2{
+        width: 30%;
+        text-align: center;
+        /* padding-left: 50px; */
+    }
+    
+    .navbarButton{
+        width: 30%;
+        display: flex;
+        /* max-width: 155px; */
+        justify-content: flex-end;
+        padding-right: 20px;
+    }
+    
+    .navbarButtonButton{
+        border: 1px solid white;
+        border-radius: 25px;
+        background-color: inherit;
+        text-decoration: none;
+        width: 100%;
+        max-width: 155px;
+        padding: 3px;
+        /* max-width: 100px; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .navbarButtonButton a{
+        font-size: 10px;
+        /* margin: 5px 0px 5px 0px; */
+        padding: 0px 0px 5px 5px;
+    }
+
+    .navbarButtonButton img{
+        width: 13px;
+        height: 13px;
+        margin: 5px;
+    }
+    
+    .navbarContent ul{
+        display: flex;
+        list-style: none;
+        width: 30%;
+        padding-left: 20px;
+    }
+    
+    .navbarContent li{
+        padding: 0 7px 0 7px;
+        font-size: 13px;
+    }
+}
+
+
+
+
+

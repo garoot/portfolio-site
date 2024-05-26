@@ -1,0 +1,254 @@
+.headline p{
+    color: grey;
+}
+.highlight{
+    color: #C846EE !important;
+}
+@media (min-width: 768px) and (max-width: 1023px){
+    .skills{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        height: 100%;
+        align-items: center;
+        /* margin-top: -100px; */
+        padding: 50px 90px 50px 50px;
+    }   
+
+    .tabsContainer{
+        width: 30%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: center; */
+    }
+    
+    .verTabs{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        border-left: 1px solid rgb(125, 125, 125);
+    }
+    
+    .verTabs button{
+        position: relative;
+        height: 60px;
+        text-align: start;
+        padding-left: 40px;
+        /* margin-bottom: 10px; */
+        background-color: inherit;
+        border: none;
+        width: 80%;
+        /* monitor text size */
+        font-size: 13px;
+    }
+    
+    .verTabs button:last-child{
+        margin-bottom: 0;
+    } 
+
+    .verTabs button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 4px; /* Adjust the width of the line */
+        border-radius: 2px; /* Adjust the border radius to make the ends rounded */
+    }
+    
+    .verTabs button.clicked::before {
+        background-color: rgb(199, 55, 194); /* Adjust the color of the line */
+        width: 4px; /* Adjust the width of the line on hover */
+        border-radius: 4px; /* Adjust the border radius on hover */
+        margin-left: -2px;
+        height: 100%;
+    }
+    
+    .verTabs button.clicked{
+        background-color: rgb(80, 47, 146, 0.1) !important;
+        border-radius: 0 5px 5px 0 !important;
+    }
+    .verTabs button:hover{
+        background-color: rgba(80, 47, 146, 0.024);
+        border-radius: 0 0px 0px 0;
+    }
+    
+    .skillsContent {
+        font-family: Consolas, "Courier New", monospace;
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding-top: 0px;
+        min-height: 450px;
+    }
+
+    .skillsIntro{
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 15px;
+        line-height: 1.5;
+        font-weight:100;
+    }
+    
+    .skillsIcons{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        font-size: 10px;
+    }
+
+    .skillsIcons img{
+        width: 50px;
+    }
+
+    .skillIcon {
+        width: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 5px 15px 15px 5px;
+        text-align: center;
+    }
+
+    .skillIcon p{
+        font-size: 12px;
+    }
+
+    .hidden{
+        display: none;
+    }
+}
+
+@media (min-width: 1024px){
+    .skillsMain{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+    }
+    .skills{
+        display: flex;
+        width: 100%;
+        max-width: 1800px;
+        justify-content: space-around;
+        height: 100%;
+        align-items: center;
+        /* margin-top: -100px; */
+        padding: 50px;
+    }   
+
+    .tabsContainer{
+        width: 30%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        /* justify-content: center; */
+        margin-top: 80px;
+    }
+    
+    .verTabs{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        border-left: 1px solid rgb(125, 125, 125);
+    }
+    
+    .verTabs button{
+        position: relative;
+        height: 60px;
+        text-align: start;
+        padding-left: 40px;
+        /* margin-bottom: 10px; */
+        background-color: inherit;
+        border: none;
+        width: 80%;
+        /* monitor text size */
+        font-size: 18px;
+    }
+    
+    .verTabs button:last-child{
+        margin-bottom: 0;
+    } 
+
+    .verTabs button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 4px; /* Adjust the width of the line */
+        border-radius: 2px; /* Adjust the border radius to make the ends rounded */
+    }
+    
+    .verTabs button.clicked::before {
+        background-color: rgb(199, 55, 194); /* Adjust the color of the line */
+        width: 4px; /* Adjust the width of the line on hover */
+        border-radius: 4px; /* Adjust the border radius on hover */
+        margin-left: -2px;
+        height: 100%;
+    }
+    
+    .verTabs button.clicked{
+        background-color: rgb(80, 47, 146, 0.1) !important;
+        border-radius: 0 5px 5px 0 !important;
+    }
+    .verTabs button:hover{
+        background-color: rgba(80, 47, 146, 0.024);
+        border-radius: 0 0px 0px 0;
+    }
+    
+    .skillsContent {
+        font-family: Consolas, "Courier New", monospace;
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding-top: 0px;
+    }
+
+    .skillsIntro{
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 20px;
+        line-height: 1.5;
+        font-weight:100;
+    }
+    
+    .skillsIcons{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .skillsIcons img{
+        width: 60px;
+    }
+
+    .skillIcon {
+        width: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px 30px 30px 5px;
+        text-align: center;
+    }
+
+    .hidden{
+        display: none;
+    }
+}
+
+/* .verTabs button:hover{
+    border-left: 4px solid rgb(199, 55, 194);
+    border-radius: 0 50px 50px 0;
+    margin-left: -2px;
+} */
+
+
+
