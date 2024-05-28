@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import styles from '../styles/skills.module.css'
-import React from 'react'
+import { useEffect, useState } from 'react';
+import styles from '../styles/skills.module.css';
+import React from 'react';
 
 
 export default function SkillsPage() {
@@ -49,27 +49,27 @@ export default function SkillsPage() {
                     <div className={styles.skillsIcons}>
 
                         <div className={activeButton === 0? styles.skillIcon : styles.hidden}>
-                            <img src="/html.png" alt="" />
+                            <img src='/html.png' alt='' />
                             <p>HTML</p>
                         </div>
 
                         <div className={activeButton === 0? styles.skillIcon : styles.hidden}>
-                            <img src="/css.png" alt="" />
+                            <img src='/css.png' alt='' />
                             <p>CSS</p>
                         </div>
 
                         <div className={activeButton === 0? styles.skillIcon : styles.hidden}>
-                            <img src="/javascript.png" alt="" />
+                            <img src='/javascript.png' alt='' />
                             <p>JavaScript</p>
                         </div>
 
                         <div className={activeButton === 0? styles.skillIcon : styles.hidden}>
-                            <img src="/nextjs.png" alt="" />
+                            <img src='/nextjs.png' alt='' />
                             <p>Next.js</p>
                         </div>
 
                         <div className={activeButton === 0? styles.skillIcon : styles.hidden}>
-                            <img src="/react.png" alt=""  />
+                            <img src='/react.png' alt=''  />
                             <p>React.js</p>
                         </div>
 
@@ -79,7 +79,7 @@ export default function SkillsPage() {
                         </div>
 
                         <div className={activeButton === 1? styles.skillIcon : styles.hidden}>
-                            <img src="/mongodb.png" alt="" />
+                            <img src='/mongodb.png' alt='' />
                             <p>MongoDB</p>
                         </div>
 
@@ -89,7 +89,7 @@ export default function SkillsPage() {
                         </div>
 
                         <div className={activeButton === 3? styles.skillIcon : styles.hidden}>
-                            <img src="/git.png" alt="" />
+                            <img src='/git.png' alt='' />
                             <p>Git</p>
                         </div>
 
@@ -99,40 +99,40 @@ export default function SkillsPage() {
                         </div>
 
                         <div className={activeButton === 4? styles.skillIcon : styles.hidden}>
-                            <img src="/docker.png" alt="" />
+                            <img src='/docker.png' alt='' />
                             <p>Docker</p>
                         </div>
 
                         <div className={activeButton === 4? styles.skillIcon : styles.hidden}>
-                            <img src="/bitbucket.png" alt="" />
+                            <img src='/bitbucket.png' alt='' />
                             <p>Bitbucket</p>
                         </div>
 
                         <div className={activeButton === 4? styles.skillIcon : styles.hidden}>
-                            <img src="/terraform.png" alt="" />
+                            <img src='/terraform.png' alt='' />
                             <p>Terraform</p>
                         </div>
 
                         <div className={activeButton === 4? styles.skillIcon : styles.hidden}>
-                            <img src="/kubernetes.png" alt="" />
+                            <img src='/kubernetes.png' alt='' />
                             <p>Kubernetes</p>
                         </div>
 
                         <div className={activeButton === 4? styles.skillIcon : styles.hidden}>
-                            <img src="/azure.png" alt="" />
+                            <img src='/azure.png' alt='' />
                             <p>Azure</p>
                         </div>
 
                         <div className={activeButton === 5? styles.skillIcon : styles.hidden}>
-                            <img src="/photoshop.png" alt="" />
+                            <img src='/photoshop.png' alt='' />
                             <p>Photoshop</p>
                         </div>
                         <div className={activeButton === 5? styles.skillIcon : styles.hidden}>
-                            <img src="/aftereffects.png" alt=""/>
+                            <img src='/aftereffects.png' alt=''/>
                             <p>After Effects</p>
                         </div>
                         <div className={activeButton === 5? styles.skillIcon : styles.hidden}>
-                            <img src="/premiere.png" alt="" />
+                            <img src='/premiere.png' alt='' />
                             <p>Premiere Pro</p>
                         </div>
 
@@ -147,6 +147,6 @@ export default function SkillsPage() {
 
         </div>
         
-    )
-}
+    );
+};
 

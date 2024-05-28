@@ -1,6 +1,6 @@
-import styles from '../styles/work.module.css'
-import React from 'react'
-import Image from 'next/image'
+import styles from '../styles/work.module.css';
+import React from 'react';
+import Image from 'next/image';
 
 export default function WorkPage() {
     return (
@@ -12,9 +12,9 @@ export default function WorkPage() {
             <div className={styles.cards}>
                 <div className={styles.card}>
                     <Image 
-                        src="/malakphoto.png" 
+                        src='/malakphoto.png' 
                         className={styles.cardImage} 
-                        alt="Malak Photo Project"
+                        alt='Malak Photo Project'
                         width={500} // Add appropriate width
                         height={300} // Add appropriate height
                     />
@@ -28,15 +28,15 @@ export default function WorkPage() {
                         </div>
                         <div className={styles.cardButtons}>
                             <div className={styles.cardButton}>
-                                <a href="">Github</a>
+                                <a href=''>Github</a>
                             </div>
                             <div className={styles.cardButton}>
-                                <a href="">Visit Site</a>
+                                <a href=''>Visit Site</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

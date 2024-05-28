@@ -1,10 +1,10 @@
 
-import HomePage from './Home'
-import Navbar from './Navbar'
-import Bio from './Bio'
-import SkillsPage from './Skills'
-import WorkPage from './Work'
-import React from 'react'
+import HomePage from './Home';
+import Navbar from './Navbar';
+import Bio from './Bio';
+import SkillsPage from './Skills';
+import WorkPage from './Work';
+import React from 'react';
 
 export default function Home() {
   return (
@@ -16,5 +16,5 @@ export default function Home() {
       <SkillsPage/>
       <WorkPage/>
     </div>
-  )
-}
+  );
+};

@@ -1,6 +1,6 @@
-import styles from '../styles/bio.module.css'
+import styles from '../styles/bio.module.css';
 import Image from 'next/image';
-import React from 'react'
+import React from 'react';
 
 
 export default function BioPage() {
@@ -10,24 +10,24 @@ export default function BioPage() {
                 <div className={styles.achievements}>
                     <div className={styles.header}>
                         <h2>Certificates</h2>
-                        <Image src="/certificate.png" alt="Certificates" height={50} width={50}/>
+                        <Image src='/certificate.png' alt='Certificates' height={50} width={50}/>
                     </div>
 
                     <div className={styles.certificates}>
                         
                         <div className={styles.certificate}>
                             <p>Master of Data Science (Current)</p>
-                            <Image src="/deakin.png" alt="Deakin" height={35} width={35}/>
+                            <Image src='/deakin.png' alt='Deakin' height={35} width={35}/>
                         </div>
 
                         <div className={styles.certificate}>
                             <p>Bachelor of Computer Science</p>
-                            <Image src="/uvic.png" alt="UVic" height={35} width={35}/>
+                            <Image src='/uvic.png' alt='UVic' height={35} width={35}/>
                         </div>
 
                         <div className={styles.dojoCertificate}>
                             <p>Full-Stack Dev Bootcamp</p>
-                            <Image src="/codingdojo.png" alt="CodingDojo" height={20} width={50}/>
+                            <Image src='/codingdojo.png' alt='CodingDojo' height={20} width={50}/>
                         </div>
 
                     </div>
@@ -50,12 +50,12 @@ export default function BioPage() {
                 </div>
 
                 <div className={styles.bioImage}>
-                    <Image src="/character9.png" alt="characterImage" height={100} width={65} />
+                    <Image src='/character9.png' alt='characterImage' height={100} width={65} />
                 </div>
 
             </div>
 
         </div>
         
-    )
-}
+    );
+};
