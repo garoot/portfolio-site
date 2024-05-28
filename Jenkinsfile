@@ -8,6 +8,7 @@ pipeline {
         ACR_NAME = 'portfolioRegistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfolioWebApp'
+        CODECLIMATE_REPORTER_ID = credentials('codeclimate-reporter-id')
     }
 
     stages {
@@ -28,7 +29,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
+                    bat "docker run --rm -v %cd%:/code ${DOCKER_IMAGE}:latest npm test"
                 }
             }
         }
@@ -36,12 +37,13 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_REPO_TOKEN')]) {
-                        withEnv(["CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}"]) {
-                            bat """
-                            docker run --rm -e CODECLIMATE_REPO_TOKEN -v %cd%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
-                            """
-                        }
+                    withCredentials([string(credentialsId: 'codeclimate-reporter-id', variable: 'CODECLIMATE_REPORTER_ID')]) {
+                        bat """
+                        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-windows-amd64 > cc-test-reporter.exe
+                        chmod +x cc-test-reporter.exe
+                        ./cc-test-reporter.exe format-coverage -t lcov -o coverage/codeclimate.json coverage/lcov.info
+                        ./cc-test-reporter.exe upload-coverage
+                        """
                     }
                 }
             }
@@ -51,13 +53,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
-                        withEnv(["DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
-                            bat """
-                            echo %DOCKER_PASSWORD% | docker login -u ${DOCKER_USERNAME} --password-stdin
-                            docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                            docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                            """
-                        }
+                        bat """
+                        echo %DOCKER_PASSWORD% | docker login -u ${DOCKER_USERNAME} --password-stdin
+                        docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                        docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                        """
                     }
                 }
             }
