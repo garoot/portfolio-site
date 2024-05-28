@@ -17,10 +17,26 @@ pipeline {
             }
         }
 
+        stage('Install Docker (if needed)') {
+            steps {
+                script {
+                    if (!fileExists('C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe')) {
+                        echo 'Docker is not installed. Installing Docker...'
+                        bat '''
+                        powershell -Command "Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe"
+                        start /wait DockerDesktopInstaller.exe install
+                        '''
+                    } else {
+                        echo 'Docker is already installed.'
+                    }
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat 'docker build -t ${DOCKER_IMAGE}:latest .'
+                    bat 'docker build -t %DOCKER_IMAGE%:latest .'
                 }
             }
         }
@@ -28,7 +44,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    bat 'docker run --rm ${DOCKER_IMAGE}:latest npm test'
+                    bat 'docker run --rm %DOCKER_IMAGE%:latest npm test'
                 }
             }
         }
@@ -36,7 +52,7 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat 'docker run --rm ${DOCKER_IMAGE}:latest sonar-scanner'
+                    bat 'docker run --rm %DOCKER_IMAGE%:latest sonar-scanner'
                 }
             }
         }
@@ -45,9 +61,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
-                        bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
-                        bat 'docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
-                        bat 'docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
+                        bat '''
+                        docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%
+                        docker tag %DOCKER_IMAGE%:latest %ACR_NAME%.azurecr.io/%DOCKER_IMAGE%:latest
+                        docker push %ACR_NAME%.azurecr.io/%DOCKER_IMAGE%:latest
+                        '''
                     }
                 }
             }
@@ -57,11 +75,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id')]) {
-                        bat """
+                        bat '''
                         az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%
-                        az acr login --name ${ACR_NAME}
-                        az webapp config container set --name ${APP_SERVICE} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                        """
+                        az acr login --name %ACR_NAME%
+                        az webapp config container set --name %APP_SERVICE% --resource-group %RESOURCE_GROUP% --docker-custom-image-name %ACR_NAME%.azurecr.io/%DOCKER_IMAGE%:latest
+                        '''
                     }
                 }
             }
