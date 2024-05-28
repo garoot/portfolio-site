@@ -20,7 +20,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build(DOCKER_IMAGE)
+                        sh 'npm install'
+                        sh 'npm run build'
                 }
             }
         }
@@ -29,7 +30,6 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        sh 'npm install'
                         sh 'npm test'
                     }
                 }
