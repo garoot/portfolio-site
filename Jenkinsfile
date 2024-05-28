@@ -63,6 +63,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
                         bat '''
                         docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%
+                        docker build -t $DOCKER_IMAGE:latest .
                         docker tag %DOCKER_IMAGE%:latest %ACR_NAME%.azurecr.io/%DOCKER_IMAGE%:latest
                         docker push %ACR_NAME%.azurecr.io/%DOCKER_IMAGE%:latest
                         '''
