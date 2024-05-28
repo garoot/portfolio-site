@@ -59,19 +59,17 @@ pipeline {
 
         stage('Code Quality Analysis') {
             steps {
-                script {
-                    withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_API_TOKEN')]) {
-                        script {
-                            def workspaceUnixPath = env.WORKSPACE.replaceAll('\\\\', '/').replaceAll('C:', '/c')
-                            bat """
-                            docker run --rm ^
-                            -e CODECLIMATE_CODE=${workspaceUnixPath} ^
-                            -e CODECLIMATE_REPO_TOKEN=${env.CODECLIMATE_API_TOKEN} ^
-                            -v ${workspaceUnixPath}:/code ^
-                            -v //var/run/docker.sock:/var/run/docker.sock ^
-                            codeclimate/codeclimate analyze
-                            """
-                        }
+                withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_API_TOKEN')]) {
+                    script {
+                        def workspaceUnixPath = env.WORKSPACE.replaceAll('\\\\', '/').replaceAll('C:', '/c')
+                        def dockerCommand = """
+                        docker run --rm -e CODECLIMATE_CODE=${workspaceUnixPath} \
+                        -e CODECLIMATE_REPO_TOKEN=${env.CODECLIMATE_API_TOKEN} \
+                        -v ${workspaceUnixPath}:/code \
+                        -v //var/run/docker.sock:/var/run/docker.sock \
+                        codeclimate/codeclimate analyze
+                        """
+                        bat dockerCommand
                     }
                 }
             }
