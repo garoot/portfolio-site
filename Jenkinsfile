@@ -52,7 +52,7 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest sh -c chmod +x /usr/local/lib/node_modules/sonar-scanner/bin/sonar-scanner && sonar-scanner'"
+                    bat 'docker run --rm majeedga/majeed-develops:latest sh -c "chmod +x /usr/local/lib/node_modules/sonar-scanner/bin/sonar-scanner && /usr/local/lib/node_modules/sonar-scanner/bin/sonar-scanner"'
                 }
             }
         }
