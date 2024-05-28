@@ -55,7 +55,7 @@ pipeline {
                 script {
                     withEnv(["CODECLIMATE_API_TOKEN=${CODECLIMATE_API_TOKEN}"]) {
                         bat '''
-                        docker run --rm -e CODECLIMATE_CODE=$PWD -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_API_TOKEN} -v %cd%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                        docker run --rm -e CODECLIMATE_CODE=%CD% -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_API_TOKEN} -v %CD%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
                         '''
                     }
                 }
