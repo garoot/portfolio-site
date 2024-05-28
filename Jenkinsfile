@@ -8,7 +8,6 @@ pipeline {
         ACR_NAME = 'portfolioRegistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfolioWebApp'
-        CODECLIMATE_API_TOKEN = credentials('codeclimate-api-token')
     }
 
     stages {
@@ -38,9 +37,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_REPO_TOKEN')]) {
-                        bat """
-                        docker run --rm -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN} -v %cd%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
-                        """
+                        withEnv(["CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN}"]) {
+                            bat """
+                            docker run --rm -e CODECLIMATE_REPO_TOKEN -v %cd%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                            """
+                        }
                     }
                 }
             }
@@ -50,11 +51,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
-                        bat """
-                        echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
-                        docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                        docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                        """
+                        withEnv(["DOCKER_PASSWORD=${DOCKER_PASSWORD}"]) {
+                            bat """
+                            echo %DOCKER_PASSWORD% | docker login -u ${DOCKER_USERNAME} --password-stdin
+                            docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                            docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                            """
+                        }
                     }
                 }
             }
@@ -95,4 +98,3 @@ pipeline {
         }
     }
 }
- 
