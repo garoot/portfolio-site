@@ -64,6 +64,12 @@ pipeline {
                         bat """
                         echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
                         docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                        """
+                    }
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
+                        bat """
+                        az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
+                        az acr login --name ${ACR_NAME}
                         docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
                         """
                     }
@@ -106,3 +112,4 @@ pipeline {
         }
     }
 }
+
