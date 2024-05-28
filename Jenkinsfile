@@ -5,9 +5,9 @@ pipeline {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials-id'
         AZURE_CREDENTIALS = 'azure-credentials-id'
-        ACR_NAME = 'portfolioRegistry'
+        ACR_NAME = 'portfolioregistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
-        APP_SERVICE = 'portfolioWebApp'
+        APP_SERVICE = 'portfoliowebapp'
     }
 
     stages {
@@ -53,10 +53,15 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_API_TOKEN')]) {
                     script {
-                        def workspaceUnixPath = env.WORKSPACE.replaceAll('\\\\', '/').replaceAll('C:', '/c')
-                        bat """
-                        docker run --rm -e CODECLIMATE_CODE=/code -e CODECLIMATE_REPO_TOKEN=%CODECLIMATE_API_TOKEN% -v ${workspaceUnixPath}:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                        def workspaceUnixPath = env.WORKSPACE.replaceAll('\\\\', '/').replaceAll('C:', '/c').toLowerCase()
+                        writeFile file: 'codeclimate_analysis.bat', text: """
+                        @echo off
+                        setlocal enabledelayedexpansion
+                        set CODECLIMATE_API_TOKEN=${env.CODECLIMATE_API_TOKEN}
+                        docker run --rm -e CODECLIMATE_CODE=${workspaceUnixPath} -e CODECLIMATE_REPO_TOKEN=!CODECLIMATE_API_TOKEN! -v ${workspaceUnixPath}:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                        endlocal
                         """
+                        bat 'call codeclimate_analysis.bat'
                     }
                 }
             }
