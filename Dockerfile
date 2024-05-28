@@ -10,11 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Install sonar-scanner globally
-RUN npm install -g sonar-scanner
-
-# Ensure the sonar-scanner binary is executable
-RUN chmod +x /usr/local/lib/node_modules/sonar-scanner/bin/sonar-scanner
+# Install ESLint globally
+RUN npm install -g eslint
 
 # Copy the rest of the application code
 COPY . .
