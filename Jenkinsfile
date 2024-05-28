@@ -8,7 +8,6 @@ pipeline {
         ACR_NAME = 'portfolioRegistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfolioWebApp'
-        CODECLIMATE_REPORTER_ID = credentials('codeclimate-reporter-id')
     }
 
     stages {
@@ -80,7 +79,9 @@ pipeline {
 
     post {
         always {
-            cleanWs()
+            node {
+                cleanWs()
+            }
         }
         success {
             emailext (
