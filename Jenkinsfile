@@ -60,7 +60,7 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest sh -c \"sonarqube-scanner\""
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest sonar-scanner"
                 }
             }
         }

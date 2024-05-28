@@ -10,8 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Install sonarqube-scanner globally
-RUN npm install -g sonarqube-scanner
+# Install sonar-scanner globally
+RUN npm install -g sonar-scanner
 
 # Copy the rest of the application code
 COPY . .
