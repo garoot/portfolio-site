@@ -9,4 +9,8 @@ module.exports = {
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
     },
-};
+    testMatch: [
+        '**/__tests__/**/*.[jt]s?(x)',
+        '**/?(*.)+(spec|test).[jt]s?(x)'
+    ]
+};  

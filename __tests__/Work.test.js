@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WorkPage from './Work';
+import WorkPage from '../pages/Work';
+
 
 describe('WorkPage', () => {
     it('renders without crashing', () => {

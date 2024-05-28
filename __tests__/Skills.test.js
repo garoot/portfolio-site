@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SkillsPage from './Skills';
+import SkillsPage from '../pages/Skills';
 
 describe('SkillsPage', () => {
     it('renders without crashing', () => {

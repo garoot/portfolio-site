@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import HomePage from './Home';
+import HomePage from '../pages/Home';
 
 describe('HomePage', () => {
     it('renders without crashing', () => {

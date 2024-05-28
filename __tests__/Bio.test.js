@@ -5,7 +5,7 @@
 
 import { render, screen } from '@testing-library/react';
 import React from 'react'
-import BioPage from './Bio';
+import BioPage from '../pages/Bio';
 
 describe('BioPage', () => {
     it('renders without crashing', () => {
