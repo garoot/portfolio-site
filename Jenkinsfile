@@ -49,13 +49,18 @@ pipeline {
             }
         }
 
+        stage('Check Node Modules') {
+            steps {
+                script {
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest sh -c \"ls -l node_modules/.bin\""
+                }
+            }
+        }
+
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat """
-                    docker run --rm ${DOCKER_IMAGE}:latest sh -c 'ls -l node_modules/.bin'
-                    docker run --rm ${DOCKER_IMAGE}:latest sh -c 'node_modules/.bin/sonarqube-scanner'
-                    """
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest sh -c \"chmod +x node_modules/.bin/sonarqube-scanner && node_modules/.bin/sonarqube-scanner\""
                 }
             }
         }
