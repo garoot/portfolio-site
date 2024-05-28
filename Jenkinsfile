@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
-        AZURE_CREDENTIALS = 'azure-credentials-id'
+        AZURE_CREDENTIALS = 'azure-sp-credentials-id'
         ACR_NAME = 'majeedportfolioregistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfoliowebapp'
@@ -59,7 +59,7 @@ pipeline {
         stage('Push Docker Image to ACR') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-sp-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
                         bat """
                         az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                         az acr login --name ${ACR_NAME}
@@ -74,7 +74,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-sp-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
                         bat """
                         az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                         az webapp config container set --name ${APP_SERVICE} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
