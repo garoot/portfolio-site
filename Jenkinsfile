@@ -11,48 +11,40 @@ pipeline {
     }
 
     stages {
-        stage('Setup') {
-            parallel {
-                stage('Clone Repository') {
-                    steps {
-                        git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
-                    }
-                }
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
+            }
+        }
 
-                stage('Install Docker (if needed)') {
-                    steps {
-                        script {
-                            if (!fileExists('C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe')) {
-                                echo 'Docker is not installed. Installing Docker...'
-                                bat '''
-                                powershell -Command "Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe"
-                                start /wait DockerDesktopInstaller.exe install
-                                '''
-                            } else {
-                                echo 'Docker is already installed.'
-                            }
-                        }
+        stage('Install Docker (if needed)') {
+            steps {
+                script {
+                    if (!fileExists('C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe')) {
+                        echo 'Docker is not installed. Installing Docker...'
+                        bat '''
+                        powershell -Command "Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe"
+                        start /wait DockerDesktopInstaller.exe install
+                        '''
+                    } else {
+                        echo 'Docker is already installed.'
                     }
                 }
             }
         }
 
-        stage('Build and Test') {
-            parallel {
-                stage('Build Docker Image') {
-                    steps {
-                        script {
-                            bat "docker build -t ${DOCKER_IMAGE}:latest ."
-                        }
-                    }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    bat "docker build -t ${DOCKER_IMAGE}:latest ."
                 }
+            }
+        }
 
-                stage('Test') {
-                    steps {
-                        script {
-                            bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
-                        }
-                    }
+        stage('Test') {
+            steps {
+                script {
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
                 }
             }
         }
@@ -62,14 +54,10 @@ pipeline {
                 withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_API_TOKEN')]) {
                     script {
                         def workspaceUnixPath = env.WORKSPACE.replaceAll('\\\\', '/').replaceAll('C:', '/c')
-                        def dockerCommand = """
-                        docker run --rm -e CODECLIMATE_CODE=${workspaceUnixPath} \
-                        -e CODECLIMATE_REPO_TOKEN=${env.CODECLIMATE_API_TOKEN} \
-                        -v ${workspaceUnixPath}:/code \
-                        -v //var/run/docker.sock:/var/run/docker.sock \
-                        codeclimate/codeclimate analyze
+                        writeFile file: 'dockerCommand.bat', text: """
+                        docker run --rm -e CODECLIMATE_CODE=${workspaceUnixPath} -e CODECLIMATE_REPO_TOKEN=%CODECLIMATE_API_TOKEN% -v ${workspaceUnixPath}:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
                         """
-                        bat dockerCommand
+                        bat 'call dockerCommand.bat'
                     }
                 }
             }
