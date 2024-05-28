@@ -5,15 +5,31 @@ pipeline {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials-id'
         AZURE_CREDENTIALS = 'azure-credentials-id'
-        ACR_NAME = 'portfolioRegistry'
+        ACR_NAME = 'portfolioregistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
-        APP_SERVICE = 'portfolioWebApp'
+        APP_SERVICE = 'portfoliowebapp'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
+            }
+        }
+
+        stage('Install Docker (if needed)') {
+            steps {
+                script {
+                    if (!fileExists('C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe')) {
+                        echo 'Docker is not installed. Installing Docker...'
+                        bat '''
+                        powershell -Command "Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe"
+                        start /wait DockerDesktopInstaller.exe install
+                        '''
+                    } else {
+                        echo 'Docker is already installed.'
+                    }
+                }
             }
         }
 
@@ -28,7 +44,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    bat "docker run --rm -v %cd%:/code ${DOCKER_IMAGE}:latest npm test"
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
                 }
             }
         }
@@ -36,14 +52,7 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'codeclimate-reporter-id', variable: 'CODECLIMATE_REPORTER_ID')]) {
-                        bat """
-                        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-windows-amd64 > cc-test-reporter.exe
-                        chmod +x cc-test-reporter.exe
-                        ./cc-test-reporter.exe format-coverage -t lcov -o coverage/codeclimate.json coverage/lcov.info
-                        ./cc-test-reporter.exe upload-coverage
-                        """
-                    }
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest npx eslint . --ext .js,.jsx,.ts,.tsx"
                 }
             }
         }
@@ -51,9 +60,9 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         bat """
-                        echo %DOCKER_PASSWORD% | docker login -u ${DOCKER_USERNAME} --password-stdin
+                        echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
                         docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
                         docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
                         """
@@ -65,7 +74,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id')]) {
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
                         bat """
                         az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                         az acr login --name ${ACR_NAME}
@@ -79,9 +88,7 @@ pipeline {
 
     post {
         always {
-            node {
-                cleanWs()
-            }
+            cleanWs()
         }
         success {
             emailext (
