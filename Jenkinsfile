@@ -63,8 +63,8 @@ pipeline {
                         bat """
                         az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                         az acr login --name ${ACR_NAME}
-                        docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                        docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                        docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azureacr.io/${DOCKER_IMAGE}:latest
+                        docker push ${ACR_NAME}.azureacr.io/${DOCKER_IMAGE}:latest
                         """
                     }
                 }
@@ -77,7 +77,7 @@ pipeline {
                     withCredentials([azureServicePrincipal(credentialsId: 'azure-sp-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
                         bat """
                         az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
-                        az webapp config container set --name ${APP_SERVICE} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                        az webapp config container set --name ${APP_SERVICE} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azureacr.io/${DOCKER_IMAGE}:latest
                         """
                     }
                 }
