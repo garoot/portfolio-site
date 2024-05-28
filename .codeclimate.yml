@@ -1,0 +1,11 @@
+version: "2"
+engines:
+  structure:
+    enabled: true
+ratings:
+  paths:
+    - "**.js"
+exclude_paths:
+  - "node_modules/**/*"
+  - "test/**/*"
+  - "vendor/**/*"
