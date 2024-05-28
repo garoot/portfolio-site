@@ -13,37 +13,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                echo 'test 1'
                 git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                script {
-                        bat'npm install'
-                        bat'npm run build'
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    docker.image(DOCKER_IMAGE).inside {
-                        bat'npm test'
-                    }
-                }
-            }
-        }
-
-        stage('Code Quality Analysis') {
-            steps {
-                script {
-                    docker.image(DOCKER_IMAGE).inside {
-                        bat'sonar-scanner'
-                    }
-                }
             }
         }
 
@@ -55,27 +25,43 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Test') {
             steps {
                 script {
-                    bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
-                    bat 'docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
-                    bat 'docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
+                    bat 'docker run --rm ${DOCKER_IMAGE}:latest npm test'
                 }
             }
         }
-        
+
+        stage('Code Quality Analysis') {
+            steps {
+                script {
+                    bat 'docker run --rm ${DOCKER_IMAGE}:latest sonar-scanner'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
+                        bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
+                        bat 'docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
+                        bat 'docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
+                    }
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                        bat'''
-                        az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
-                        az acr login --name $ACR_NAME
-                        docker tag $DOCKER_IMAGE $ACR_NAME.azurecr.io/$DOCKER_IMAGE
-                        docker push $ACR_NAME.azurecr.io/$DOCKER_IMAGE
-                        az webapp config container set --name $APP_SERVICE --resource-group $RESOURCE_GROUP --docker-custom-image-name $ACR_NAME.azurecr.io/$DOCKER_IMAGE:latest
-                        '''
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id')]) {
+                        bat """
+                        az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%
+                        az acr login --name ${ACR_NAME}
+                        az webapp config container set --name ${APP_SERVICE} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
+                        """
                     }
                 }
             }
@@ -90,14 +76,14 @@ pipeline {
             emailext (
                 subject: "Jenkins Pipeline: Successful",
                 body: "The Jenkins Pipeline completed successfully.",
-                to: "your-email@example.com"
+                to: "abdulmajeedgaroot@gmail.com"
             )
         }
         failure {
             emailext (
                 subject: "Jenkins Pipeline: Failed",
                 body: "The Jenkins Pipeline failed.",
-                to: "your-email@example.com"
+                to: "abdulmajeedgaroot@gmail.com"
             )
         }
     }
