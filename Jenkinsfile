@@ -5,31 +5,16 @@ pipeline {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials-id'
         AZURE_CREDENTIALS = 'azure-credentials-id'
-        ACR_NAME = 'portfolioregistry'
+        ACR_NAME = 'portfolioRegistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
-        APP_SERVICE = 'portfoliowebapp'
+        APP_SERVICE = 'portfolioWebApp'
+        CODECLIMATE_API_TOKEN = credentials('codeclimate-api-token')
     }
 
     stages {
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
-            }
-        }
-
-        stage('Install Docker (if needed)') {
-            steps {
-                script {
-                    if (!fileExists('C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe')) {
-                        echo 'Docker is not installed. Installing Docker...'
-                        bat '''
-                        powershell -Command "Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe"
-                        start /wait DockerDesktopInstaller.exe install
-                        '''
-                    } else {
-                        echo 'Docker is already installed.'
-                    }
-                }
             }
         }
 
@@ -52,7 +37,11 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest npx eslint . --ext .js,.jsx,.ts,.tsx"
+                    withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_REPO_TOKEN')]) {
+                        bat """
+                        docker run --rm -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_REPO_TOKEN} -v %cd%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                        """
+                    }
                 }
             }
         }
@@ -60,7 +49,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
                         bat """
                         echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
                         docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
@@ -74,7 +63,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id')]) {
                         bat """
                         az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                         az acr login --name ${ACR_NAME}
