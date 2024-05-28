@@ -13,8 +13,11 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Install sonarqube-scanner globally
+RUN npm install -g sonarqube-scanner
+
 # Ensure the sonar-scanner binary is executable
-RUN chmod +x /app/node_modules/sonar-scanner/bin/sonar-scanner
+RUN chmod +x /usr/local/bin/sonarqube-scanner
 
 # Build the application
 RUN npm run build
