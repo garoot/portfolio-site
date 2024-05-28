@@ -5,10 +5,10 @@ pipeline {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials-id'
         AZURE_CREDENTIALS = 'azure-credentials-id'
+        CODECLIMATE_API_TOKEN = credentials('codeclimate-api-token') // CodeClimate API token
         ACR_NAME = 'portfolioRegistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfolioWebApp'
-        SNYK_TOKEN = credentials('snyk-api-token') // Secure way to store your Snyk API token
     }
 
     stages {
@@ -50,12 +50,14 @@ pipeline {
             }
         }
 
-        stage('Security Check') {
+        stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat """
-                    docker run --rm -e SNYK_TOKEN=${SNYK_TOKEN} ${DOCKER_IMAGE}:latest sh -c 'snyk auth ${SNYK_TOKEN} && snyk test'
-                    """
+                    withEnv(["CODECLIMATE_API_TOKEN=${CODECLIMATE_API_TOKEN}"]) {
+                        bat '''
+                        docker run --rm -e CODECLIMATE_CODE=$PWD -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_API_TOKEN} -v %cd%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                        '''
+                    }
                 }
             }
         }
@@ -63,7 +65,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'dockerhub-credentials-id', variable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         bat """
                         echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
                         docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
@@ -77,7 +79,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id')]) {
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-credentials-id', subscriptionIdVariable: 'AZURE_SUBSCRIPTION_ID', clientIdVariable: 'AZURE_CLIENT_ID', clientSecretVariable: 'AZURE_CLIENT_SECRET', tenantIdVariable: 'AZURE_TENANT_ID')]) {
                         bat """
                         az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
                         az acr login --name ${ACR_NAME}

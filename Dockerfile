@@ -10,9 +10,6 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Install Snyk
-RUN npm install -g snyk
-
 # Copy the rest of the application code
 COPY . .
 
