@@ -21,8 +21,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                        sh 'npm install'
-                        sh 'npm run build'
+                        bat'npm install'
+                        bat'npm run build'
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        sh 'npm test'
+                        bat'npm test'
                     }
                 }
             }
@@ -41,17 +41,35 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        sh 'sonar-scanner'
+                        bat'sonar-scanner'
                     }
                 }
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    bat 'docker build -t ${DOCKER_IMAGE}:latest .'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
+                    bat 'docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
+                    bat 'docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest'
+                }
+            }
+        }
+        
         stage('Deploy') {
             steps {
                 script {
                     withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                        sh '''
+                        bat'''
                         az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
                         az acr login --name $ACR_NAME
                         docker tag $DOCKER_IMAGE $ACR_NAME.azurecr.io/$DOCKER_IMAGE
