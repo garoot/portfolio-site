@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
         REGISTRY_CREDENTIALS = 'dockerhub-credentials-id'
         AZURE_CREDENTIALS = 'azure-credentials-id'
-        ACR_NAME = 'portfolioregistry'
+        ACR_NAME = 'majeedportfolioregistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfoliowebapp'
     }
