@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Ensure the sonar-scanner binary is executable
+RUN chmod +x /app/node_modules/sonar-scanner/bin/sonar-scanner
+
 # Build the application
 RUN npm run build
 
