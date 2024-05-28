@@ -8,6 +8,7 @@ pipeline {
         ACR_NAME = 'portfolioRegistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfolioWebApp'
+        CC_TEST_REPORTER_ID = 'your-codeclimate-reporter-id'
     }
 
     stages {
@@ -44,15 +45,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
-                }
-            }
-        }
-
-        stage('Code Quality Analysis') {
-            steps {
-                script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest eslint ."
+                    bat "docker run --rm -e CC_TEST_REPORTER_ID=${CC_TEST_REPORTER_ID} ${DOCKER_IMAGE}:latest sh -c 'cc-test-reporter before-build && npm test && cc-test-reporter after-build --exit-code \$?'"
                 }
             }
         }
