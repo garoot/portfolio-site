@@ -12,40 +12,48 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
-            }
-        }
+        stage('Setup') {
+            parallel {
+                stage('Clone Repository') {
+                    steps {
+                        git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
+                    }
+                }
 
-        stage('Install Docker (if needed)') {
-            steps {
-                script {
-                    if (!fileExists('C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe')) {
-                        echo 'Docker is not installed. Installing Docker...'
-                        bat '''
-                        powershell -Command "Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe"
-                        start /wait DockerDesktopInstaller.exe install
-                        '''
-                    } else {
-                        echo 'Docker is already installed.'
+                stage('Install Docker (if needed)') {
+                    steps {
+                        script {
+                            if (!fileExists('C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe')) {
+                                echo 'Docker is not installed. Installing Docker...'
+                                bat '''
+                                powershell -Command "Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe"
+                                start /wait DockerDesktopInstaller.exe install
+                                '''
+                            } else {
+                                echo 'Docker is already installed.'
+                            }
+                        }
                     }
                 }
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    bat "docker build -t ${DOCKER_IMAGE}:latest ."
+        stage('Build and Test') {
+            parallel {
+                stage('Build Docker Image') {
+                    steps {
+                        script {
+                            bat "docker build -t ${DOCKER_IMAGE}:latest ."
+                        }
+                    }
                 }
-            }
-        }
 
-        stage('Test') {
-            steps {
-                script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
+                stage('Test') {
+                    steps {
+                        script {
+                            bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
+                        }
+                    }
                 }
             }
         }
@@ -53,10 +61,13 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    withEnv(["CODECLIMATE_API_TOKEN=${CODECLIMATE_API_TOKEN}"]) {
-                        bat '''
-                        docker run --rm -e CODECLIMATE_CODE=%CD% -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_API_TOKEN} -v %CD%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
-                        '''
+                    withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_API_TOKEN')]) {
+                        script {
+                            def workspaceUnixPath = env.WORKSPACE.replaceAll('\\\\', '/').replaceAll('C:', '/c')
+                            bat """
+                            docker run --rm -e CODECLIMATE_CODE=${workspaceUnixPath} -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_API_TOKEN} -v ${workspaceUnixPath}:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                            """
+                        }
                     }
                 }
             }
