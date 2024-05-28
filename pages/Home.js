@@ -1,4 +1,4 @@
-import styles from '../styles/home.module.css';
+import styles from '../styles/HomePage.module.css';
 import Image from 'next/image';
 import React from 'react'
 
