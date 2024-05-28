@@ -53,11 +53,9 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'codeclimate-api-token', variable: 'CODECLIMATE_API_TOKEN')]) {
                     script {
-                        def workspaceUnixPath = env.WORKSPACE.replaceAll('\\\\', '/').replaceAll('C:', '/c')
-                        writeFile file: 'dockerCommand.bat', text: """
-                        docker run --rm -e CODECLIMATE_CODE=${workspaceUnixPath} -e CODECLIMATE_REPO_TOKEN=%CODECLIMATE_API_TOKEN% -v ${workspaceUnixPath}:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
+                        bat """
+                        docker run --rm -e CODECLIMATE_CODE=/code -e CODECLIMATE_REPO_TOKEN=${CODECLIMATE_API_TOKEN} -v %CD%:/code -v //var/run/docker.sock:/var/run/docker.sock codeclimate/codeclimate analyze
                         """
-                        bat 'call dockerCommand.bat'
                     }
                 }
             }
