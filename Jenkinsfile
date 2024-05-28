@@ -13,6 +13,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
+                echo 'test 1'
                 git branch: 'main', url: 'https://github.com/garoot/portfolio-site.git'
             }
         }
