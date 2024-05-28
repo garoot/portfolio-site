@@ -8,7 +8,7 @@ pipeline {
         ACR_NAME = 'portfolioRegistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE = 'portfolioWebApp'
-        CC_TEST_REPORTER_ID = 'your-codeclimate-reporter-id'
+        SNYK_TOKEN = credentials('snyk-api-token') // Secure way to store your Snyk API token
     }
 
     stages {
@@ -45,7 +45,17 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    bat "docker run --rm -e CC_TEST_REPORTER_ID=${CC_TEST_REPORTER_ID} ${DOCKER_IMAGE}:latest sh -c 'cc-test-reporter before-build && npm test && cc-test-reporter after-build --exit-code \$?'"
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest npm test"
+                }
+            }
+        }
+
+        stage('Security Check') {
+            steps {
+                script {
+                    bat """
+                    docker run --rm -e SNYK_TOKEN=${SNYK_TOKEN} ${DOCKER_IMAGE}:latest sh -c 'snyk auth ${SNYK_TOKEN} && snyk test'
+                    """
                 }
             }
         }
