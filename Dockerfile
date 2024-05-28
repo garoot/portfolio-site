@@ -7,17 +7,11 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies including sonarqube-scanner
+RUN npm install sonarqube-scanner
 
 # Copy the rest of the application code
 COPY . .
-
-# Install sonarqube-scanner globally
-RUN npm install -g sonarqube-scanner
-
-# Ensure the sonar-scanner binary is executable
-RUN chmod +x /usr/local/bin/sonarqube-scanner
 
 # Build the application
 RUN npm run build
