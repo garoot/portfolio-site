@@ -2,16 +2,16 @@
     "env": {
         "browser": true,
         "es2021": true,
-        "jest/globals": true,
-        "node": true
+        "jest/globals": true
     },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
         "plugin:jest/recommended",
-        "plugin:jsx-a11y/recommended",
         "next/core-web-vitals"
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -21,25 +21,15 @@
     },
     "plugins": [
         "react",
-        "jest",
-        "jsx-a11y"
+        "@typescript-eslint",
+        "jest"
     ],
     "rules": {
-        "quotes": ["warn", "single"], // Treating quote style as a warning
-        "semi": ["warn", "always"], // Treating semicolon usage as a warning
-        "no-unused-vars": ["warn"], // Treating unused variables as a warning
-        "react/prop-types": ["warn"], // Treating prop types as a warning
-        "@next/next/no-img-element": ["off"], // Disabling this rule
-        "jest/expect-expect": "off", // Disabling this rule
-        "react/react-in-jsx-scope": "off", // Disabling this rule
-        // Additional accessibility rules
-        "jsx-a11y/anchor-is-valid": ["warn"], // Treating invalid anchor usage as a warning
-        "jsx-a11y/click-events-have-key-events": ["warn"], // Treating missing keyboard listeners as a warning
-        "jsx-a11y/no-static-element-interactions": ["warn"] // Treating non-native interactive elements as a warning
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
+        "quotes": ["error", "single"],
+        "semi": ["off"],
+        "@typescript-eslint/no-unused-vars": ["off"],
+        "@next/next/no-img-element": ["off"],
+        "jest/expect-expect": "off"
+
     }
 }

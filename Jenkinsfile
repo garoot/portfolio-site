@@ -60,16 +60,6 @@ pipeline {
             }
         }
 
-        stage('Code Coverage and Reporting') {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'code-climate-token', variable: 'CODE_CLIMATE_TOKEN')]) {
-                        bat "docker run --rm -e CODE_CLIMATE_TOKEN=${CODE_CLIMATE_TOKEN} ${DOCKER_IMAGE}:latest npx codeclimate-test-reporter <path-to-coverage-report>"
-                    }
-                }
-            }
-        }
-
         stage('Push Docker Image to Azure Container Registry') {
             steps {
                 script {
