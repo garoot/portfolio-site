@@ -123,7 +123,7 @@ pipeline {
                         --condition "avg Percentage CPU > 80" \
                         --window-size 5m \
                         --evaluation-frequency 1m \
-                        --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Insights/actionGroups/your-action-group
+                        --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/microsoft.insights/actionGroups/your-action-group
                         """
                     }
                 }
