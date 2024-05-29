@@ -3,11 +3,17 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
+        AZURE_CREDENTIALS = 'portfolioAppServicePrincipal'
         ACR_NAME = 'majeedacr'
         RESOURCE_GROUP = 'portfolio-site-rg'
+        CONTAINER_INSTANCE_NAME = 'node-app'
+        LOCATION = 'eastus'
         APP_SERVICE_NAME = 'majeedappservice'
-        STAGING_SLOT = 'staging'
-        AZURE_CREDENTIALS = 'azure-service-principal'
+        APP_SERVICE_PLAN = 'your-app-service-plan'
+        AZURE_CLIENT_ID = credentials('azure-client-id')
+        AZURE_CLIENT_SECRET = credentials('azure-client-secret')
+        AZURE_TENANT_ID = credentials('azure-tenant-id')
+        AZURE_SUBSCRIPTION_ID = credentials('azure-subscription-id')
     }
 
     stages {
@@ -60,7 +66,9 @@ pipeline {
         stage('Push Docker Image to Azure Container Registry') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: AZURE_CREDENTIALS, usernameVariable: 'AZURE_CLIENT_ID', passwordVariable: 'AZURE_CLIENT_SECRET')]) {
+                    withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
+                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
                         bat "az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%"
                         bat "az acr login --name ${ACR_NAME}"
                         bat "docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
@@ -73,14 +81,16 @@ pipeline {
         stage('Deploy to Staging Slot') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: AZURE_CREDENTIALS, usernameVariable: 'AZURE_CLIENT_ID', passwordVariable: 'AZURE_CLIENT_SECRET')]) {
+                    withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
+                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
                         // Create the staging slot if it doesn't exist
                         bat """
-                        az webapp deployment slot create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} || echo "Staging slot already exists."
+                        az webapp deployment slot create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging || echo "Staging slot already exists."
                         """
                         // Deploy to the staging slot
                         bat """
-                        az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io
+                        az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io
                         """
                     }
                 }
@@ -90,11 +100,13 @@ pipeline {
         stage('Release to Production') {
             steps {
                 script {
-                    // Manual approval for deployment to production
+                    // Assuming that the deployment to production is a manual approval process
                     input message: 'Deploy to Production?', ok: 'Deploy'
-                    withCredentials([usernamePassword(credentialsId: AZURE_CREDENTIALS, usernameVariable: 'AZURE_CLIENT_ID', passwordVariable: 'AZURE_CLIENT_SECRET')]) {
+                    withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
+                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
                         // Swap the staging slot with production
-                        bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --target-slot production"
+                        bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging --target-slot production"
                     }
                 }
             }
@@ -103,7 +115,10 @@ pipeline {
         stage('Monitoring and Alerting') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: AZURE_CREDENTIALS, usernameVariable: 'AZURE_CLIENT_ID', passwordVariable: 'AZURE_CLIENT_SECRET')]) {
+                    withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
+                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID'),
+                                     string(credentialsId: 'azure-subscription-id', variable: 'AZURE_SUBSCRIPTION_ID')]) {
                         // Example of setting up monitoring and alerting using Azure Monitor
                         bat "az monitor metrics alert create --name 'HighCPUUsage' --resource-group ${RESOURCE_GROUP} --scopes /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${APP_SERVICE_NAME} --condition 'avg Percentage CPU > 80' --window-size 5m --evaluation-frequency 1m --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Insights/actionGroups/your-action-group"
                     }
