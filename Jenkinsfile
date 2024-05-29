@@ -8,6 +8,8 @@ pipeline {
         RESOURCE_GROUP = 'portfolio-site-rg'
         CONTAINER_INSTANCE_NAME = 'node-app'
         LOCATION = 'eastus'
+        APP_SERVICE_NAME = 'your-app-service'
+        APP_SERVICE_PLAN = 'your-app-service-plan'
     }
 
     stages {
@@ -57,46 +59,49 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image to ACR') {
+        stage('Push Docker Image to Azure Container Registry') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS)]) {
-                        def subscriptionId = env.AZURE_SUBSCRIPTION_ID
-                        def clientId = env.AZURE_CLIENT_ID
-                        def clientSecret = env.AZURE_CLIENT_SECRET
-                        def tenantId = env.AZURE_TENANT_ID
-                        bat """
-                        set AZURE_SUBSCRIPTION_ID=${subscriptionId}
-                        set AZURE_CLIENT_ID=${clientId}
-                        set AZURE_CLIENT_SECRET=${clientSecret}
-                        set AZURE_TENANT_ID=${tenantId}
-                        az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%
-                        az acr login --name ${ACR_NAME}
-                        docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                        docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest
-                        """
+                    withCredentials([azureServicePrincipal(credentialsId: "${AZURE_CREDENTIALS}")]) {
+                        bat "az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID"
+                        bat "az acr login --name ${ACR_NAME}"
+                        bat "docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
+                        bat "docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
                     }
                 }
             }
         }
 
-        stage('Deploy to ACI') {
+        stage('Deploy to Azure App Service') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS)]) {
-                        def subscriptionId = env.AZURE_SUBSCRIPTION_ID
-                        def clientId = env.AZURE_CLIENT_ID
-                        def clientSecret = env.AZURE_CLIENT_SECRET
-                        def tenantId = env.AZURE_TENANT_ID
-                        bat """
-                        set AZURE_SUBSCRIPTION_ID=${subscriptionId}
-                        set AZURE_CLIENT_ID=${clientId}
-                        set AZURE_CLIENT_SECRET=${clientSecret}
-                        set AZURE_TENANT_ID=${tenantId}
-                        az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%
-                        az container delete --name ${CONTAINER_INSTANCE_NAME} --resource-group ${RESOURCE_GROUP} --yes
-                        az container create --name ${CONTAINER_INSTANCE_NAME} --resource-group ${RESOURCE_GROUP} --image ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --cpu 1 --memory 1.5 --ports 8080 --dns-name-label mynodeappeastus --location ${LOCATION} --ip-address Public --environment-variables PORT=8080
-                        """
+                    withCredentials([azureServicePrincipal(credentialsId: "${AZURE_CREDENTIALS}")]) {
+                        bat "az webapp create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --plan ${APP_SERVICE_PLAN} --deployment-container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
+                        bat "az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --docker-registry-server-url https://${ACR_NAME}.azurecr.io"
+                    }
+                }
+            }
+        }
+
+        stage('Release to Production') {
+            steps {
+                script {
+                    // Assuming that the deployment to production is a manual approval process
+                    input message: 'Deploy to Production?', ok: 'Deploy'
+                    withCredentials([azureServicePrincipal(credentialsId: "${AZURE_CREDENTIALS}")]) {
+                        // Example of promoting to production, you can adapt this to your specific needs
+                        bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging --target-slot production"
+                    }
+                }
+            }
+        }
+
+        stage('Monitoring and Alerting') {
+            steps {
+                script {
+                    withCredentials([azureServicePrincipal(credentialsId: "${AZURE_CREDENTIALS}")]) {
+                        // Example of setting up monitoring and alerting using Azure Monitor
+                        bat "az monitor metrics alert create --name 'HighCPUUsage' --resource-group ${RESOURCE_GROUP} --scopes /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${APP_SERVICE_NAME} --condition 'avg Percentage CPU > 80' --window-size 5m --evaluation-frequency 1m --action /subscriptions/$AZURE_SUBSCRIPTION_ID/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Insights/actionGroups/your-action-group"
                     }
                 }
             }
@@ -127,3 +132,4 @@ pipeline {
         }
     }
 }
+
