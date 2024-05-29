@@ -11,6 +11,7 @@ pipeline {
         AZURE_CLIENT_SECRET = credentials('azure-client-secret')
         AZURE_TENANT_ID = credentials('azure-tenant-id')
         AZURE_SUBSCRIPTION_ID = credentials('azure-subscription-id')
+        CODE_CLIMATE_API_TOKEN = credentials('code-climate-api-token')
     }
 
     stages {
@@ -55,7 +56,7 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat "docker run --rm ${DOCKER_IMAGE}:latest npx eslint . --ext .js,.jsx,.ts,.tsx"
+                    bat "docker run --rm -e CODE_CLIMATE_API_TOKEN=${CODE_CLIMATE_API_TOKEN} codeclimate/codeclimate analyze -e ."
                 }
             }
         }
@@ -64,12 +65,12 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
-                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
-                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        bat "az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%"
-                        bat "az acr login --name ${ACR_NAME}"
-                        bat "docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
-                        bat "docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
+                        string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                        string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
+                            bat "az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%"
+                            bat "az acr login --name ${ACR_NAME}"
+                            bat "docker tag ${DOCKER_IMAGE}:latest ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
+                            bat "docker push ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest"
                     }
                 }
             }
@@ -79,16 +80,16 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
-                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
-                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        // Create the staging slot if it doesn't exist
-                        bat """
-                        az webapp deployment slot create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} || echo "Staging slot already exists."
-                        """
-                        // Deploy to the staging slot
-                        bat """
-                        az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io
-                        """
+                        string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                        string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
+                            // Create the staging slot if it doesn't exist
+                            bat """
+                            az webapp deployment slot create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} || echo "Staging slot already exists."
+                            """
+                            // Deploy to the staging slot
+                            bat """
+                            az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io
+                            """
                     }
                 }
             }
@@ -100,10 +101,10 @@ pipeline {
                     // Manual approval for deployment to production
                     input message: 'Deploy to Production?', ok: 'Deploy'
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
-                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
-                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        // Swap the staging slot with production
-                        bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --target-slot production"
+                        string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                        string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
+                            // Swap the staging slot with production
+                            bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --target-slot production"
                     }
                 }
             }
@@ -113,18 +114,18 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
-                                     string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
-                                     string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID'),
-                                     string(credentialsId: 'azure-subscription-id', variable: 'AZURE_SUBSCRIPTION_ID')]) {
-                        // Setting up monitoring and alerting using Azure Monitor for MemoryWorkingSet
-                        bat """
-                        az monitor metrics alert create --name 'HighMemoryUsage' --resource-group ${RESOURCE_GROUP} \
-                        --scopes /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${APP_SERVICE_NAME} \
-                        --condition "avg MemoryWorkingSet > 80" \
-                        --window-size 5m \
-                        --evaluation-frequency 1m \
-                        --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/microsoft.insights/actionGroups/your-action-group
-                        """
+                        string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
+                        string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID'),
+                        string(credentialsId: 'azure-subscription-id', variable: 'AZURE_SUBSCRIPTION_ID')]) {
+                            // Setting up monitoring and alerting using Azure Monitor for MemoryWorkingSet
+                            bat """
+                            az monitor metrics alert create --name 'HighMemoryUsage' --resource-group ${RESOURCE_GROUP} \
+                            --scopes /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${APP_SERVICE_NAME} \
+                            --condition "avg MemoryWorkingSet > 80" \
+                            --window-size 5m \
+                            --evaluation-frequency 1m \
+                            --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/microsoft.insights/actionGroups/your-action-group
+                            """
                     }
                 }
             }
