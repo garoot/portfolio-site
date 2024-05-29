@@ -7,8 +7,8 @@ pipeline {
         ACR_NAME = 'majeedacr'
         RESOURCE_GROUP = 'portfolio-site-rg'
         CONTAINER_INSTANCE_NAME = 'node-app'
-        LOCATION = 'eastus'
-        APP_SERVICE_NAME = 'majeedappservice'
+        LOCATION = 'australiaeast'
+        APP_SERVICE_NAME = 'your-app-service'
         APP_SERVICE_PLAN = 'your-app-service-plan'
         AZURE_CLIENT_ID = credentials('azure-client-id')
         AZURE_CLIENT_SECRET = credentials('azure-client-secret')
@@ -84,7 +84,8 @@ pipeline {
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
                                      string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
                                      string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        bat "az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io"
+                        bat "az webapp create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --plan ${APP_SERVICE_PLAN}"
+                        bat "az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --docker-registry-server-url https://${ACR_NAME}.azurecr.io"
                     }
                 }
             }
