@@ -3,11 +3,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
-        AZURE_CREDENTIALS = 'portfolioAppServicePrincipal'
         ACR_NAME = 'majeedacr'
         RESOURCE_GROUP = 'portfolio-site-rg'
         APP_SERVICE_NAME = 'majeedappservice'
-        APP_SERVICE_PLAN = 'your-app-service-plan'
         STAGING_SLOT = 'staging'
         AZURE_CLIENT_ID = credentials('azure-client-id')
         AZURE_CLIENT_SECRET = credentials('azure-client-secret')
@@ -119,7 +117,14 @@ pipeline {
                                      string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID'),
                                      string(credentialsId: 'azure-subscription-id', variable: 'AZURE_SUBSCRIPTION_ID')]) {
                         // Example of setting up monitoring and alerting using Azure Monitor
-                        bat "az monitor metrics alert create --name 'HighCPUUsage' --resource-group ${RESOURCE_GROUP} --scopes /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${APP_SERVICE_NAME} --condition 'avg Percentage CPU > 80' --window-size 5m --evaluation-frequency 1m --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Insights/actionGroups/your-action-group"
+                        bat """
+                        az monitor metrics alert create --name 'HighCPUUsage' --resource-group ${RESOURCE_GROUP} \
+                        --scopes /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${APP_SERVICE_NAME} \
+                        --condition "avg Percentage CPU > 80" \
+                        --window-size 5m \
+                        --evaluation-frequency 1m \
+                        --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Insights/actionGroups/your-action-group
+                        """
                     }
                 }
             }
