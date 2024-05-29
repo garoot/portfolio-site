@@ -6,10 +6,9 @@ pipeline {
         AZURE_CREDENTIALS = 'portfolioAppServicePrincipal'
         ACR_NAME = 'majeedacr'
         RESOURCE_GROUP = 'portfolio-site-rg'
-        CONTAINER_INSTANCE_NAME = 'node-app'
-        LOCATION = 'australiaeast'
         APP_SERVICE_NAME = 'majeedappservice'
         APP_SERVICE_PLAN = 'your-app-service-plan'
+        STAGING_SLOT = 'staging'
         AZURE_CLIENT_ID = credentials('azure-client-id')
         AZURE_CLIENT_SECRET = credentials('azure-client-secret')
         AZURE_TENANT_ID = credentials('azure-tenant-id')
@@ -78,14 +77,20 @@ pipeline {
             }
         }
 
-        stage('Deploy to Azure App Service') {
+        stage('Deploy to Staging Slot') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
                                      string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
                                      string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        bat "az webapp create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --plan ${APP_SERVICE_PLAN}"
-                        bat "az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --docker-registry-server-url https://${ACR_NAME}.azurecr.io"
+                        // Create the staging slot if it doesn't exist
+                        bat """
+                        az webapp deployment slot create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} || echo "Staging slot already exists."
+                        """
+                        // Deploy to the staging slot
+                        bat """
+                        az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io
+                        """
                     }
                 }
             }
@@ -94,13 +99,13 @@ pipeline {
         stage('Release to Production') {
             steps {
                 script {
-                    // Assuming that the deployment to production is a manual approval process
+                    // Manual approval for deployment to production
                     input message: 'Deploy to Production?', ok: 'Deploy'
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
                                      string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
                                      string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        // Example of promoting to production, you can adapt this to your specific needs
-                        bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging --target-slot production"
+                        // Swap the staging slot with production
+                        bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot ${STAGING_SLOT} --target-slot production"
                     }
                 }
             }
