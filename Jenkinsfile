@@ -116,11 +116,11 @@ pipeline {
                                      string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
                                      string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID'),
                                      string(credentialsId: 'azure-subscription-id', variable: 'AZURE_SUBSCRIPTION_ID')]) {
-                        // Example of setting up monitoring and alerting using Azure Monitor
+                        // Setting up monitoring and alerting using Azure Monitor for MemoryWorkingSet
                         bat """
-                        az monitor metrics alert create --name 'HighCPUUsage' --resource-group ${RESOURCE_GROUP} \
+                        az monitor metrics alert create --name 'HighMemoryUsage' --resource-group ${RESOURCE_GROUP} \
                         --scopes /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/Microsoft.Web/sites/${APP_SERVICE_NAME} \
-                        --condition "avg CpuPercentage > 80" \
+                        --condition "avg MemoryWorkingSet > 80" \
                         --window-size 5m \
                         --evaluation-frequency 1m \
                         --action /subscriptions/%AZURE_SUBSCRIPTION_ID%/resourceGroups/${RESOURCE_GROUP}/providers/microsoft.insights/actionGroups/your-action-group
