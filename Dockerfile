@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:18-alpine AS build
+FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app
@@ -16,32 +16,57 @@ COPY . .
 # Run ESLint
 RUN echo "Running ESLint..." && npx eslint . --ext .js,.jsx,.ts,.tsx && echo "ESLint completed."
 
-# Run tests and generate coverage report
-RUN npm test -- --coverage
-
 # Build the application
 RUN npm run build
 
-# Use a smaller base image for the production stage
-FROM node:18-alpine AS production
+# Command to keep the container running for interactive use
+CMD ["sh"]
 
-# Set the working directory in the container
-WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package.json package-lock.json ./
+# # Use an official Node runtime as a parent image
+# FROM node:18-alpine AS build
 
-# Install only production dependencies
-RUN npm install --only=production
+# # Set the working directory
+# WORKDIR /app
 
-# Copy built files from the previous stage
-COPY --from=build /app ./
+# # Copy package.json and package-lock.json
+# COPY package.json package-lock.json ./
 
-# Expose the port the app runs on
-EXPOSE 3000
+# # Install dependencies (including both dependencies and devDependencies)
+# RUN npm install
 
-# Command to run the application
-CMD ["npm", "start"]
+# # Copy the rest of the application code
+# COPY . .
+
+# # Run ESLint
+# RUN echo "Running ESLint..." && npx eslint . --ext .js,.jsx,.ts,.tsx && echo "ESLint completed."
+
+# # Run tests and generate coverage report
+# RUN npm test -- --coverage
+
+# # Build the application
+# RUN npm run build
+
+# # Use a smaller base image for the production stage
+# FROM node:18-alpine AS production
+
+# # Set the working directory in the container
+# WORKDIR /app
+
+# # Copy package.json and package-lock.json to the working directory
+# COPY package.json package-lock.json ./
+
+# # Install only production dependencies
+# RUN npm install --only=production
+
+# # Copy built files from the previous stage
+# COPY --from=build /app ./
+
+# # Expose the port the app runs on
+# EXPOSE 3000
+
+# # Command to run the application
+# CMD ["npm", "start"]
 
 
 # # Use an official Node runtime as a parent image
