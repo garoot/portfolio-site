@@ -11,7 +11,6 @@ pipeline {
         AZURE_CLIENT_SECRET = credentials('azure-client-secret')
         AZURE_TENANT_ID = credentials('azure-tenant-id')
         AZURE_SUBSCRIPTION_ID = credentials('azure-subscription-id')
-        CODE_CLIMATE_API_TOKEN = credentials('code-climate-api-token')
     }
 
     stages {
@@ -56,7 +55,17 @@ pipeline {
         stage('Code Quality Analysis') {
             steps {
                 script {
-                    bat "docker run --rm -e CODE_CLIMATE_API_TOKEN=${CODE_CLIMATE_API_TOKEN} codeclimate/codeclimate analyze -e ."
+                    bat "docker run --rm ${DOCKER_IMAGE}:latest npx eslint . --ext .js,.jsx,.ts,.tsx"
+                }
+            }
+        }
+
+        stage('Code Coverage and Reporting') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'code-climate-token', variable: 'CODE_CLIMATE_TOKEN')]) {
+                        bat "docker run --rm -e CODE_CLIMATE_TOKEN=${CODE_CLIMATE_TOKEN} ${DOCKER_IMAGE}:latest npx codeclimate-test-reporter <path-to-coverage-report>"
+                    }
                 }
             }
         }
