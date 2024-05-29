@@ -8,7 +8,7 @@ pipeline {
         RESOURCE_GROUP = 'portfolio-site-rg'
         CONTAINER_INSTANCE_NAME = 'node-app'
         LOCATION = 'australiaeast'
-        APP_SERVICE_NAME = 'your-app-service'
+        APP_SERVICE_NAME = 'majeedappservice'
         APP_SERVICE_PLAN = 'your-app-service-plan'
         AZURE_CLIENT_ID = credentials('azure-client-id')
         AZURE_CLIENT_SECRET = credentials('azure-client-secret')
