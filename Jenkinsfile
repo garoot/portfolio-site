@@ -78,20 +78,13 @@ pipeline {
             }
         }
 
-        stage('Deploy to Staging Slot') {
+        stage('Deploy to Azure App Service') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
                                      string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
                                      string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        // Create the staging slot if it doesn't exist
-                        bat """
-                        az webapp deployment slot create --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging || echo "Staging slot already exists."
-                        """
-                        // Deploy to the staging slot
-                        bat """
-                        az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io
-                        """
+                        bat "az webapp config container set --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --container-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --container-registry-url https://${ACR_NAME}.azurecr.io"
                     }
                 }
             }
@@ -105,7 +98,7 @@ pipeline {
                     withCredentials([string(credentialsId: 'azure-client-id', variable: 'AZURE_CLIENT_ID'),
                                      string(credentialsId: 'azure-client-secret', variable: 'AZURE_CLIENT_SECRET'),
                                      string(credentialsId: 'azure-tenant-id', variable: 'AZURE_TENANT_ID')]) {
-                        // Swap the staging slot with production
+                        // Example of promoting to production, you can adapt this to your specific needs
                         bat "az webapp deployment slot swap --name ${APP_SERVICE_NAME} --resource-group ${RESOURCE_GROUP} --slot staging --target-slot production"
                     }
                 }
