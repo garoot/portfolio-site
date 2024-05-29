@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'majeedga/majeed-develops'
         AZURE_CREDENTIALS = 'azure-sp-credentials-id'
-        ACR_NAME = 'majeedportfolioregistry'
+        ACR_NAME = 'majeedacr'
         RESOURCE_GROUP = 'portfolio-site-rg'
         CONTAINER_INSTANCE_NAME = 'node-app'
         LOCATION = 'eastus'
