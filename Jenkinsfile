@@ -6,7 +6,8 @@ pipeline {
         AZURE_CREDENTIALS = 'azure-sp-credentials-id'
         ACR_NAME = 'majeedportfolioregistry'
         RESOURCE_GROUP = 'portfolio-site-rg'
-        APP_SERVICE = 'portfoliowebapp'
+        CONTAINER_INSTANCE_NAME = 'node-app'
+        LOCATION = 'eastus'
     }
 
     stages {
@@ -79,7 +80,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy to ACI') {
             steps {
                 script {
                     withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS)]) {
@@ -93,8 +94,8 @@ pipeline {
                         set AZURE_CLIENT_SECRET=${clientSecret}
                         set AZURE_TENANT_ID=${tenantId}
                         az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% --tenant %AZURE_TENANT_ID%
-                        az webapp config container set --name ${APP_SERVICE} --resource-group ${RESOURCE_GROUP} --docker-custom-image-name ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --docker-registry-server-url https://${ACR_NAME}.azurecr.io
-                        az webapp log config --name ${APP_SERVICE} --resource-group ${RESOURCE_GROUP} --docker-container-logging filesystem
+                        az container delete --name ${CONTAINER_INSTANCE_NAME} --resource-group ${RESOURCE_GROUP} --yes
+                        az container create --name ${CONTAINER_INSTANCE_NAME} --resource-group ${RESOURCE_GROUP} --image ${ACR_NAME}.azurecr.io/${DOCKER_IMAGE}:latest --cpu 1 --memory 1.5 --ports 8080 --dns-name-label mynodeappeastus --location ${LOCATION} --ip-address Public --environment-variables PORT=8080
                         """
                     }
                 }
