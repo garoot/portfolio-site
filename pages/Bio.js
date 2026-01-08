@@ -16,7 +16,7 @@ export default function BioPage() {
                     <div className={styles.certificates}>
                         
                         <div className={styles.certificate}>
-                            <p>Master of Data Science (Current)</p>
+                            <p>Master of Data Science</p>
                             <Image src='/deakin.png' alt='Deakin' height={35} width={35}/>
                         </div>
 
