@@ -6,7 +6,7 @@ const SECTIONS = [
   { id: 'bio', label: 'Bio' },
   { id: 'skills', label: 'Skills' },
   { id: 'work', label: 'Work' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'contact', label: 'Contact'},
 ];
 
 function clearHash() {
