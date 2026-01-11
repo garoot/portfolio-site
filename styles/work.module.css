@@ -1,166 +1,424 @@
-.work{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    padding: 100px;
-    font-family: Consolas, "Courier New", monospace;
+/* ─────────────────────────────────────────────
+   WORK SECTION LAYOUT
+───────────────────────────────────────────── */
 
+.workSection {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
 }
 
-.headline{
-    margin-bottom: 20px;
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
 }
 
-.headline p{
-    color: grey;
+.index span {
+  font-size: 4rem;
+  font-weight: 700;
+  color: rgba(93, 220, 255, 0.18);
+}
+
+.content {
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.subtitle {
+  color: #9aa0a6;
+}
+
+/* ─────────────────────────────────────────────
+   PROJECT ROW BASE
+───────────────────────────────────────────── */
+
+.projectRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  height: 220px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+/* Diagnostic grid overlay */
+.projectRow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(93,220,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(93,220,255,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Noise */
+.projectRow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
+   BORDER SIGNAL
+───────────────────────────────────────────── */
+
+.border {
+  position: absolute;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(93,220,255,0.9),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none; /* important */
+}
+
+.top { top: 0; left: 0; height: 1px; width: 0%; }
+.right { top: 0; right: 0; width: 1px; height: 0%; }
+.bottom { bottom: 0; right: 0; height: 1px; width: 0%; }
+.left { bottom: 0; left: 0; width: 1px; height: 0%; }
+
+.projectRow[data-active="true"] .top {
+  animation: drawTop 0.4s ease forwards;
+  opacity: 1;
+}
+
+.projectRow[data-active="true"] .right {
+  animation: drawRight 0.4s ease forwards;
+  animation-delay: 0.4s;
+  opacity: 1;
+}
+
+.projectRow[data-active="true"] .bottom {
+  animation: drawBottom 0.4s ease forwards;
+  animation-delay: 0.8s;
+  opacity: 1;
+}
+
+.projectRow[data-active="true"] .left {
+  animation: drawLeft 0.4s ease forwards;
+  animation-delay: 1.2s;
+  opacity: 1;
+}
+
+@keyframes drawTop { to { width: 100%; } }
+@keyframes drawRight { to { height: 100%; } }
+@keyframes drawBottom { to { width: 100%; } }
+@keyframes drawLeft { to { height: 100%; } }
+
+/* ─────────────────────────────────────────────
+   DIAGNOSTICS POWER DOWN
+───────────────────────────────────────────── */
+
+.projectRow[data-active="true"]::before,
+.projectRow[data-active="true"]::after {
+  animation: diagnosticsOff 0.6s ease forwards;
+  animation-delay: 1.6s;
+}
+
+@keyframes diagnosticsOff {
+  to { opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────
+   HARD VISIBILITY + INTERACTION LOCK
+───────────────────────────────────────────── */
+
+.surface,
+.panelHeader,
+.lenses,
+.explanation {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
+   THUMBNAIL — SCAN MASK
+───────────────────────────────────────────── */
+
+.surface {
+  position: relative;
+  overflow: hidden;
+}
+
+.surface img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(93,220,255,0.25),
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.projectRow[data-ready="true"] .surface {
+  animation: surfaceFade 0.6s ease forwards;
+}
+
+.projectRow[data-ready="true"] .surface::after {
+  animation: surfaceScan 0.7s ease forwards;
+}
+
+@keyframes surfaceFade { to { opacity: 1; } }
+@keyframes surfaceScan { to { transform: translateX(100%); } }
+
+/* ─────────────────────────────────────────────
+   PANEL BASE
+───────────────────────────────────────────── */
+
+.panel {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ─────────────────────────────────────────────
+   HEADER TEXT — TECH WIPE
+───────────────────────────────────────────── */
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.textBlock h3,
+.textBlock .tagline {
+  position: relative;
+  overflow: hidden;
+}
+
+.textBlock h3::after,
+.textBlock .tagline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(93,220,255,0.6),
+    transparent
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.projectRow[data-ready="true"] .panelHeader {
+  animation: headerReveal 0.4s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.projectRow[data-ready="true"] .textBlock h3::after {
+  animation: textSweep 0.5s ease forwards;
+}
+
+.projectRow[data-ready="true"] .textBlock .tagline::after {
+  animation: textSweep 0.5s ease forwards;
+  animation-delay: 0.15s;
+}
+
+@keyframes headerReveal { to { opacity: 1; } }
+@keyframes textSweep { to { transform: translateX(100%); } }
+
+.tagline {
+  font-size: 0.85rem;
+  color: #cfd3d8;
+}
+
+/* ─────────────────────────────────────────────
+   ICONS
+───────────────────────────────────────────── */
+
+.icons {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.icons a {
+  color: #9aa0a6;
+}
+
+.icons a:hover {
+  color: #e6e8eb;
+}
+
+/* ─────────────────────────────────────────────
+   LENSE PILLS
+───────────────────────────────────────────── */
+
+.lenses {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.lenses button {
+  position: relative;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.7rem;
+  color: #9aa0a6;
+  overflow: hidden;
+}
+
+.pillPulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(93,220,255,0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lenses .active {
+  border-color: rgba(93,220,255,0.8);
+  background: rgba(93,220,255,0.15);
+  color: #e6e8eb;
+}
+
+.projectRow[data-ready="true"] .lenses {
+  animation: lensesReveal 0.3s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.projectRow[data-ready="true"] .lenses button .pillPulse {
+  animation: pillPulse 0.6s ease forwards;
+  animation-delay: calc(var(--i) * 0.12s + 0.5s);
+}
+
+@keyframes lensesReveal { to { opacity: 1; } }
+
+@keyframes pillPulse {
+  0% { opacity: 0; box-shadow: none; }
+  40% { opacity: 1; box-shadow: 0 0 8px rgba(93,220,255,0.7); }
+  100% { opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────
+   EXPLANATION
+───────────────────────────────────────────── */
+
+.explanation {
+  position: relative;
+  font-size: 0.85rem;
+  color: #e6e8eb;
+}
+
+.explanation p {
+  position: relative;
+  overflow: hidden;
+}
+
+.explanation p::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(93,220,255,0.35),
+    transparent
+  );
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.projectRow[data-ready="true"] .explanation {
+  animation: explanationReveal 0.4s ease forwards;
+  animation-delay: 0.85s;
+}
+
+.projectRow[data-ready="true"] .explanation p::before {
+  animation: lineSweep 0.6s ease forwards;
+  animation-delay: 0.85s;
+}
+
+@keyframes explanationReveal { to { opacity: 1; } }
+@keyframes lineSweep { to { transform: translateY(100%); } }
+
+/* ─────────────────────────────────────────────
+   🔓 ENABLE INTERACTION AFTER REVEAL (CRITICAL)
+───────────────────────────────────────────── */
+
+.projectRow[data-ready="true"] .surface,
+.projectRow[data-ready="true"] .panelHeader,
+.projectRow[data-ready="true"] .lenses,
+.projectRow[data-ready="true"] .explanation {
+  pointer-events: auto;
+}
+
+/* ─────────────────────────────────────────────
+   📱 MOBILE RESPONSIVENESS FIX (NON-DESTRUCTIVE)
+   Only overrides layout assumptions for small screens
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Stack content normally */
+  .container {
+    grid-template-columns: 1fr;
+    position: relative;
+  }
+
+  /* Keep index, but make it decorative */
+  .index {
+    position: absolute;
+    top: -1.2rem;
+    left: 0;
+    pointer-events: none;
+  }
+
+  .index span {
+    font-size: 3rem;
+    opacity: 0.25;
+  }
+
+  /* Stack thumbnail above panel */
+  .projectRow {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .surface {
+    height: 180px;
+  }
+
+    /* Push content down so index doesn't overlap header */
+  .content {
+    padding-top: 2.2rem;
+  }
 }
 
 
-.highlight{
-    color: #C846EE !important;
+@media (max-width: 380px) {
+  /* Slight tightening for very small phones */
+  .surface {
+    height: 160px;
+  }
 }
-
-.contentHeader{
-    text-align: right;
-}
-
-
-.cardContent a{
-    text-decoration: none;
-}
-
-.cards{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-/* smartphones */
-@media (max-width: 767px){
-
-}
-
-/* tablets */
-@media (min-width: 768px) and (max-width: 1023px){
-    .highlight{
-        color: #C846EE !important;
-    } 
-    
-    .highlight h1{
-        font-size: 20px !important;
-    }
-    .contentHeader{
-        text-align: right;
-        font-size: 12px;
-    }
-    .contentBody{
-        text-align: right;
-        overflow:hidden;
-        font-size: 10px;
-    }
-    .card{
-        display: flex;
-        justify-content: space-between;
-        width:80%;
-        max-width: 650px;
-        max-height: 200px;
-        background-color: rgb(80, 47, 146, 0.1);
-        border-top-right-radius: 10px; /* Top right corner */
-        border-bottom-right-radius: 10px; /* Bottom right corner */
-    } 
-    .cardImage{
-        max-height: 300px;
-        /* width: 50%; */
-        max-width: 55%;
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-        border-bottom-left-radius: 10px;
-        border-top-left-radius: 10px;
-        margin-right: -10px;
-        /* min-width: 400px; */
-    }  
-    .cardContent{
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-        /* min-width: 400px; */
-        padding: 10px 10px 10px 30px;
-        justify-content: space-around;
-        max-height: 300px;
-        margin-left: -15px;
-    }
-    .cardButtons{
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-    }  
-    .cardButton a{
-        font-size: 10px;
-    } 
-    .cardButton{
-        border: 1px solid white;
-        border-radius: 5px;
-        width: 50% ;
-        text-align: center;
-        margin: 10px 5px 10px 5px;
-        padding: 2px;
-    } 
-}
-
-/* desktops */
-@media (min-width: 1024px){
-    .card{
-        display: flex;
-        justify-content: space-between;
-        width:80%;
-        max-width: 1200px;
-        max-height: 300px;
-        background-color: rgb(80, 47, 146, 0.1);
-        border-top-right-radius: 10px; /* Top right corner */
-        border-bottom-right-radius: 10px; /* Bottom right corner */
-    }
-    .contentBody{
-        text-align: right;
-        overflow:hidden;
-    }
-    .cardImage{
-        max-height: 300px;
-        /* width: 50%; */
-        max-width: 55%;
-        border-top-right-radius: 15px;
-        border-bottom-right-radius: 15px;
-        border-bottom-left-radius: 10px;
-        border-top-left-radius: 10px;
-        margin-right: -10px;
-        /* min-width: 400px; */
-    }
-    .cardContent{
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-        /* min-width: 400px; */
-        padding: 10px 15px 15px 25px;
-        justify-content: space-around;
-        max-height: 300px;
-        margin-left: -15px;
-    }
-    .cardButtons{
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-    }
-    .cardButton{
-        border: 1px solid white;
-        border-radius: 5px;
-        width: 40%;
-        text-align: center;
-        margin-top: 10px;
-        padding: 5px;
-    }
-}
-
-
-

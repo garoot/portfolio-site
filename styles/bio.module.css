@@ -1,282 +1,348 @@
-.bioContentBody h1{
-    font-family: Consolas, "Courier New", monospace;
+/* ─────────────────────────────────────────────
+   BIO SECTION BASE
+───────────────────────────────────────────── */
+
+.bioSection {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+
+  /* Scroll safety + visual separation */
+  padding: 4rem 1.5rem 0;
+  scroll-margin-top: 120px;
+
+  position: relative;
 }
 
-.highlight{
-    color: #C846EE !important;
-}
-.headline p{
-    color: grey;
-}
+/* ─────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────── */
 
-@media (min-width: 768px) and (max-width: 1023px){
-    .bio{
-        display: flex;
-        width: 100%;
-        justify-content: space-around;
-        height: 100%;
-        /* align-items: center; */
-        /* margin-top: -100px; */
-        padding: 50px;
-    } 
-
-    
-    .achievements{
-        width: 30%;
-        border: 1px solid white;
-        border-radius: 25px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* margin-top: 80px; */
-        padding: 0px 0px;
-        max-width: 360px !important;
-        max-height: 300px;
-        margin-top: 50px;
-    }
-    
-    .header{
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-        /* padding: 10px 20px 10px 20px; */
-        padding: 0 10px 0 10px ;
-    }
-    
-    .header h2{
-        font-size: 20px;
-        font-weight: 400;
-    }
-    
-    .header img{
-        width: 40px;
-        height: 40px;
-        margin-top: 20px;
-    }
-
-    .certificates{
-        width: 100%;
-        padding: 0 10px 0 10px;
-    }
-
-    .certificate{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 5px 0 10px;
-        margin: 15px 0 15px 0;
-        border: 1px solid white;
-        border-radius: 10px;
-    }
-
-    .certificates p{
-        font-size: 10px;
-    }
-    .certificate img{
-        height: 30px;
-        margin-left: px;
-        margin-right: px;
-    }
-    
-    .dojoCertificate{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 5px 0 15px;
-        margin: 15px 0 15px 0;
-        border: 1px solid white;
-        border-radius: 10px;
-    }
-    
-    .dojoCertificate img{
-        width: 50px;
-        height: 20px;
-    }
-    
-    .bioContent{
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        height: 100%;
-        /* margin-top: -0px; */
-        padding-top: 0px;
-        margin-left: 10px;
-    }
-    
-    .bioImage{
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        height: 100%;
-        padding-top: 20px;
-        width: 10%;
-    
-    }
-    
-    .bioImage img{
-        height: 60px;
-        width: 40.5px;
-        
-    }
-    
-    .headline{
-        margin-bottom: 0px;
-        font-family: Consolas, "Courier New", monospace;
-    }
-    
-    .introduction{
-        font-size: 15px !important;
-        line-height: 1.5 !important;
-        font-weight: bold !important;
-    }
-    
-    .bioContentBody p{
-        font-family: Consolas, "Courier New", monospace;
-        font-size: 10px;
-        line-height: 2;
-    }
-    
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  position: relative;
 }
 
-@media (min-width: 1024px){
-    .bioMain{
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-    }
-    .bio{
-        display: flex;
-        width: 100%;
-        max-width: 1800px;
-        /* justify-content: space-around; */
-        justify-content: space-around;
-        height: 100%;
-        /* align-items: center; */
-        /* margin-top: -100px; */
-        padding: 50px;
-    }
-    
-    .achievements{
-        width: 35%;
-        max-height: 330px;
-        border: 1px solid white;
-        border-radius: 25px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 50px;
-        padding-top: 30px;
-        margin-top: 40px;
-        max-width: 300px;
-        margin-right: 20px;
-    }
-    
-    .header{
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-        max-width: 276px;
-        /* padding: 20px 30px 20px 40px; */
-    }
-    
-    .header h2{
-        font-size: 25px;
-        font-weight: 400;
-    }
-    
-    .header img{
-        width: 50px;
-        height: 50px;
-        margin-top: 30px;
-        margin-right: 20px;
-    }
-    
-    .certificates{
-        width: 100%;
-        max-width: 276px;
-        padding: 0 3px 0 3px;
-    }
-    
-    .certificates p{
-        font-size: 13px;
-    }
-    
-    .certificate{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 5px 0 5px;
-        margin: 15px 0 15px 0;
-        border: 1px solid white;
-        border-radius: 10px;
-    }
-    
-    .certificate img{
-        height: 35px;
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-    
-    .dojoCertificate{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 5px 0 15px;
-        margin: 15px 0 15px 0;
-        border: 1px solid white;
-        border-radius: 10px;
-    }
-    
-    .dojoCertificate img{
-        width: 50px;
-        height: 20px;
-    }
+/* ─────────────────────────────────────────────
+   INDEX (CONSISTENT WITH WORK & SKILLS)
+───────────────────────────────────────────── */
 
-    .bioContent{
-        width: 60%;
-        display: flex;
-        flex-direction: column;
-        /* align-items: center; */
-        /* justify-content: flex-start; */
-        height: 100%;
-        margin-left: 20px;
-    }
-    
-    .headline{
-        /* margin-bottom: 70px; */
-        font-family: Consolas, "Courier New", monospace;
-    }
+.index span {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(93, 220, 255, 0.22);
 
-    .bioContentBody p{
-        font-family: Consolas, "Courier New", monospace;
-        font-size: 1.2em;
-        line-height: 1.5;
-        /* font-weight:70; */
-    }
-    
-    .introduction{
-        font-size: 1.3em !important;
-        /* line-height: 1.5 !important; */
-        font-weight: bold !important;
-    }
-    
-    .bioImage{
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        height: 100%;
-        padding-top: 25px;
-        width: 15%;
-    
-    }
-
-    
-    .bioImage img{
-        height: 100px;
-        
-    }
+  transform: translateY(6px);
+  transition: transform 0.6s ease;
 }
 
+.bioSection[data-revealed="true"] .index span {
+  transform: translateY(0);
+}
 
+/* ─────────────────────────────────────────────
+   SCAN LINE (STRUCTURAL SIGNAL)
+───────────────────────────────────────────── */
+
+.scanLine {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(93, 220, 255, 0.65),
+    transparent
+  );
+  opacity: 0;
+}
+
+.scanActive {
+  animation: scanDown 1.2s ease-out forwards;
+}
+
+@keyframes scanDown {
+  0% {
+    top: -20%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    top: 120%;
+    opacity: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   CONTENT BASE
+───────────────────────────────────────────── */
+
+.content {
+  font-family: Consolas, "Courier New", monospace;
+  max-width: 620px;
+}
+
+/* ─────────────────────────────────────────────
+   HEADER — SIGNAL SWEEP
+───────────────────────────────────────────── */
+
+.header h1,
+.header .subtitle {
+  position: relative;
+  overflow: hidden;
+}
+
+.header h1::after,
+.header .subtitle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(93,220,255,0.6),
+    transparent
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.bioSection[data-revealed="true"] .header h1::after {
+  animation: headerSweep 0.6s ease forwards;
+}
+
+.bioSection[data-revealed="true"] .header .subtitle::after {
+  animation: headerSweep 0.6s ease forwards;
+  animation-delay: 0.12s;
+}
+
+@keyframes headerSweep {
+  to { transform: translateX(100%); }
+}
+
+/* ─────────────────────────────────────────────
+   TEXT — DECODE IN
+───────────────────────────────────────────── */
+
+.introduction,
+.body {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.bioSection[data-revealed="true"] .introduction {
+  animation: textIn 0.5s ease forwards;
+  animation-delay: 0.25s;
+}
+
+.bioSection[data-revealed="true"] .body {
+  animation: textIn 0.5s ease forwards;
+  animation-delay: 0.38s;
+}
+
+@keyframes textIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   TEXT STYLES
+───────────────────────────────────────────── */
+
+.header h1 {
+  margin: 0;
+}
+
+.subtitle {
+  margin-top: 0.25rem;
+  color: #9aa0a6;
+  font-size: 0.95rem;
+}
+
+.introduction {
+  margin-top: 1.5rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #e6e8eb;
+}
+
+.body {
+  margin-top: 0.75rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  color: #cfd3d8;
+}
+
+/* ─────────────────────────────────────────────
+   CREDENTIALS — RAIL + HANDSHAKE
+───────────────────────────────────────────── */
+
+.credentials {
+  margin-top: 2rem;
+  padding-left: 1.25rem;
+  border-left: 1px solid rgba(93, 220, 255, 0.35);
+  position: relative;
+
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.bioSection[data-revealed="true"] .credentials {
+  animation: credsIn 0.6s ease forwards;
+  animation-delay: 0.55s;
+}
+
+@keyframes credsIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Rail draw */
+.credentials::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 1px;
+  height: 0%;
+  background: rgba(93, 220, 255, 0.75);
+}
+
+.bioSection[data-revealed="true"] .credentials::before {
+  animation: railDraw 0.8s ease-out forwards;
+  animation-delay: 0.55s;
+}
+
+@keyframes railDraw {
+  to { height: 100%; }
+}
+
+/* ─────────────────────────────────────────────
+   CREDENTIAL ITEMS
+───────────────────────────────────────────── */
+
+.credential {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+
+  opacity: 0;
+  transform: translateX(-6px);
+}
+
+.bioSection[data-revealed="true"] .credential {
+  animation: credIn 0.35s ease forwards;
+}
+
+.bioSection[data-revealed="true"] .credential:nth-of-type(1) { animation-delay: 0.75s; }
+.bioSection[data-revealed="true"] .credential:nth-of-type(2) { animation-delay: 0.85s; }
+.bioSection[data-revealed="true"] .credential:nth-of-type(3) { animation-delay: 0.95s; }
+
+@keyframes credIn {
+  to {
+    opacity: 0.85;
+    transform: translateX(0);
+  }
+}
+
+.credential:hover {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Groups */
+
+.group {
+  margin-bottom: 1.25rem;
+}
+
+.groupSecondary {
+  margin-top: 1.5rem;
+  opacity: 0.75;
+}
+
+.groupLabel {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(93, 220, 255, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+/* ─────────────────────────────────────────────
+   AVATAR — DELAYED PRESENCE
+───────────────────────────────────────────── */
+
+.avatar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+  }
+
+  .avatar {
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 5%;
+
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .bioSection[data-revealed="true"] .avatar {
+    animation: avatarIn 0.8s ease forwards;
+    animation-delay: 0.9s;
+  }
+}
+
+@keyframes avatarIn {
+  to {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE ALIGNMENT
+───────────────────────────────────────────── */
+
+@media (max-width: 1023px) {
+  .container {
+    position: relative;
+  }
+
+  .index {
+    position: absolute;
+    top: -2.8rem;
+    left: 0;
+    pointer-events: none;
+  }
+
+  .index span {
+    font-size: 3rem;
+  }
+
+  .content {
+    padding-top: 1.6rem;
+  }
+}

@@ -1,0 +1,237 @@
+.hero {
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1.25rem;
+
+  background-image: linear-gradient(
+    to bottom,
+    #1286d990,
+    #0e1116b8
+  );
+}
+
+.content {
+  max-width: 640px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────
+   AVATAR — MATERIALIZE
+───────────────────────────────────────────── */
+
+.content img {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  animation: avatarIn 0.6s ease forwards;
+  animation-delay: 0.15s;
+}
+
+@keyframes avatarIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.content p {
+  margin-top: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-family: Consolas, "Courier New", monospace;
+  color: #9aa0a6;
+}
+
+/* ─────────────────────────────────────────────
+   BUTTONS — SOFT WAKE
+───────────────────────────────────────────── */
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  opacity: 0;
+  transform: translateY(2px);
+  animation: buttonsIn 0.4s ease forwards;
+  animation-delay: 0.95s;
+}
+
+@keyframes buttonsIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.primaryBtn,
+.secondaryBtn {
+  padding: 0.5rem 1.75rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.primaryBtn {
+  background-color: rgba(93, 220, 255, 0.14);
+  color: #e6e8eb;
+  border: 1px solid rgba(93, 220, 255, 0.45);
+}
+
+.primaryBtn:hover {
+  background-color: rgba(93, 220, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.secondaryBtn {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #e6e8eb;
+}
+
+.secondaryBtn:hover {
+  border-color: rgba(93, 220, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+/* ─────────────────────────────────────────────
+   DESKTOP ONLY
+───────────────────────────────────────────── */
+
+@media (min-width: 1024px) {
+  .content {
+    max-width: 720px;
+  }
+
+  .content p {
+    font-size: 1.15rem;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    font-size: 1rem;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   TERMINAL — BOOT IN
+───────────────────────────────────────────── */
+
+.focusPanel {
+  margin-top: 2rem;
+  padding: 4.25rem 1.75rem 1.5rem;
+
+  max-width: 520px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  gap: 1.25rem;
+
+  background: rgba(10, 14, 20, 0.75);
+  backdrop-filter: blur(10px);
+
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  position: relative;
+
+  opacity: 0;
+  transform: translateY(6px) scale(0.985);
+  animation: panelIn 0.6s ease forwards;
+  animation-delay: 0.35s;
+}
+
+@keyframes panelIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.focusPanel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.focusPanel::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 14px;
+
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    12px 0 0 rgba(255, 255, 255, 0.25),
+    24px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+.focusPanel p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #cfd3d8;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.focusPanel p::before {
+  content: '> ';
+  color: rgba(93, 220, 255, 0.6);
+}
+
+/* Cursor */
+.cursor {
+  display: inline-block;
+  width: 0.6ch;
+  margin-left: 2px;
+  color: rgba(93, 220, 255, 0.85);
+  vertical-align: baseline;
+}
+
+.cursorBlink {
+  animation: cursorBlink 1.1s steps(1, end) infinite;
+}
+
+@keyframes cursorBlink {
+  0% { opacity: 1; }
+  49% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 0; }
+}
+

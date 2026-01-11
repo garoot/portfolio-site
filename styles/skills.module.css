@@ -1,254 +1,302 @@
-.headline p{
-    color: grey;
-}
-.highlight{
-    color: #C846EE !important;
-}
-@media (min-width: 768px) and (max-width: 1023px){
-    .skills{
-        display: flex;
-        width: 100%;
-        justify-content: space-around;
-        height: 100%;
-        align-items: center;
-        /* margin-top: -100px; */
-        padding: 50px 90px 50px 50px;
-    }   
+/* ─────────────────────────────────────────────
+   SECTION BASE
+───────────────────────────────────────────── */
 
-    .tabsContainer{
-        width: 30%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        /* justify-content: center; */
-    }
-    
-    .verTabs{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        border-left: 1px solid rgb(125, 125, 125);
-    }
-    
-    .verTabs button{
-        position: relative;
-        height: 60px;
-        text-align: start;
-        padding-left: 40px;
-        /* margin-bottom: 10px; */
-        background-color: inherit;
-        border: none;
-        width: 80%;
-        /* monitor text size */
-        font-size: 13px;
-    }
-    
-    .verTabs button:last-child{
-        margin-bottom: 0;
-    } 
+.skillsSection {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
 
-    .verTabs button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 4px; /* Adjust the width of the line */
-        border-radius: 2px; /* Adjust the border radius to make the ends rounded */
-    }
-    
-    .verTabs button.clicked::before {
-        background-color: rgb(199, 55, 194); /* Adjust the color of the line */
-        width: 4px; /* Adjust the width of the line on hover */
-        border-radius: 4px; /* Adjust the border radius on hover */
-        margin-left: -2px;
-        height: 100%;
-    }
-    
-    .verTabs button.clicked{
-        background-color: rgb(80, 47, 146, 0.1) !important;
-        border-radius: 0 5px 5px 0 !important;
-    }
-    .verTabs button:hover{
-        background-color: rgba(80, 47, 146, 0.024);
-        border-radius: 0 0px 0px 0;
-    }
-    
-    .skillsContent {
-        font-family: Consolas, "Courier New", monospace;
-        width: 60%;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding-top: 0px;
-        min-height: 450px;
-    }
+  /* Visual separation + scroll safety */
+  padding: 4rem 1.5rem 0;
+  scroll-margin-top: 120px;
 
-    .skillsIntro{
-        font-family: Consolas, "Courier New", monospace;
-        font-size: 15px;
-        line-height: 1.5;
-        font-weight:100;
-    }
-    
-    .skillsIcons{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-        flex-wrap: wrap;
-        font-size: 10px;
-    }
-
-    .skillsIcons img{
-        width: 50px;
-    }
-
-    .skillIcon {
-        width: 70px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 5px 15px 15px 5px;
-        text-align: center;
-    }
-
-    .skillIcon p{
-        font-size: 12px;
-    }
-
-    .hidden{
-        display: none;
-    }
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 
-@media (min-width: 1024px){
-    .skillsMain{
-        display: flex;
-        width: 100%;
-        height: 100%;
-        justify-content: center;
-    }
-    .skills{
-        display: flex;
-        width: 100%;
-        max-width: 1800px;
-        justify-content: space-around;
-        height: 100%;
-        align-items: center;
-        /* margin-top: -100px; */
-        padding: 50px;
-    }   
-
-    .tabsContainer{
-        width: 30%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        /* justify-content: center; */
-        margin-top: 80px;
-    }
-    
-    .verTabs{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-        border-left: 1px solid rgb(125, 125, 125);
-    }
-    
-    .verTabs button{
-        position: relative;
-        height: 60px;
-        text-align: start;
-        padding-left: 40px;
-        /* margin-bottom: 10px; */
-        background-color: inherit;
-        border: none;
-        width: 80%;
-        /* monitor text size */
-        font-size: 18px;
-    }
-    
-    .verTabs button:last-child{
-        margin-bottom: 0;
-    } 
-
-    .verTabs button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 4px; /* Adjust the width of the line */
-        border-radius: 2px; /* Adjust the border radius to make the ends rounded */
-    }
-    
-    .verTabs button.clicked::before {
-        background-color: rgb(199, 55, 194); /* Adjust the color of the line */
-        width: 4px; /* Adjust the width of the line on hover */
-        border-radius: 4px; /* Adjust the border radius on hover */
-        margin-left: -2px;
-        height: 100%;
-    }
-    
-    .verTabs button.clicked{
-        background-color: rgb(80, 47, 146, 0.1) !important;
-        border-radius: 0 5px 5px 0 !important;
-    }
-    .verTabs button:hover{
-        background-color: rgba(80, 47, 146, 0.024);
-        border-radius: 0 0px 0px 0;
-    }
-    
-    .skillsContent {
-        font-family: Consolas, "Courier New", monospace;
-        width: 70%;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding-top: 0px;
-    }
-
-    .skillsIntro{
-        font-family: Consolas, "Courier New", monospace;
-        font-size: 20px;
-        line-height: 1.5;
-        font-weight:100;
-    }
-    
-    .skillsIcons{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-        flex-wrap: wrap;
-    }
-
-    .skillsIcons img{
-        width: 60px;
-    }
-
-    .skillIcon {
-        width: 70px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 10px 30px 30px 5px;
-        text-align: center;
-    }
-
-    .hidden{
-        display: none;
-    }
+.skillsSection.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* .verTabs button:hover{
-    border-left: 4px solid rgb(199, 55, 194);
-    border-radius: 0 50px 50px 0;
-    margin-left: -2px;
-} */
+/* ─────────────────────────────────────────────
+   LAYOUT
+───────────────────────────────────────────── */
 
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 
+  display: grid;
+  grid-template-columns: auto 220px 1fr;
+  gap: 2.5rem;
+  position: relative;
+}
 
+/* ─────────────────────────────────────────────
+   INDEX (TECH MARKER)
+───────────────────────────────────────────── */
+
+.index span {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(93, 220, 255, 0.18);
+
+  transform: translateY(6px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.skillsSection.revealed .index span {
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────
+   NAV (DESKTOP)
+───────────────────────────────────────────── */
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.nav button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.75rem 1rem;
+
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.9rem;
+  color: #9aa0a6;
+
+  cursor: pointer;
+
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+.skillsSection.revealed .nav button {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.skillsSection.revealed .nav button:nth-child(1) { transition-delay: 0.1s; }
+.skillsSection.revealed .nav button:nth-child(2) { transition-delay: 0.18s; }
+.skillsSection.revealed .nav button:nth-child(3) { transition-delay: 0.26s; }
+.skillsSection.revealed .nav button:nth-child(4) { transition-delay: 0.34s; }
+.skillsSection.revealed .nav button:nth-child(5) { transition-delay: 0.42s; }
+
+.nav button:hover {
+  color: #e6e8eb;
+}
+
+.nav .active {
+  color: #e6e8eb;
+  background: rgba(93, 220, 255, 0.08);
+  border-left: 3px solid #5ddcff;
+}
+
+/* ─────────────────────────────────────────────
+   CONTENT
+───────────────────────────────────────────── */
+
+.content {
+  font-family: Consolas, "Courier New", monospace;
+}
+
+/* Header wipe */
+.header h1,
+.header .subtitle {
+  position: relative;
+  overflow: hidden;
+}
+
+.header h1::after,
+.header .subtitle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(93,220,255,0.6),
+    transparent
+  );
+  transform: translateX(-100%);
+}
+
+.skillsSection.revealed .header h1::after {
+  animation: headerSweep 0.6s ease forwards;
+}
+
+.skillsSection.revealed .header .subtitle::after {
+  animation: headerSweep 0.6s ease forwards;
+  animation-delay: 0.12s;
+}
+
+@keyframes headerSweep {
+  to { transform: translateX(100%); }
+}
+
+.subtitle {
+  margin-top: 0.25rem;
+  color: #9aa0a6;
+  font-size: 0.95rem;
+}
+
+/* ─────────────────────────────────────────────
+   SKILL PILLS (MULTI-LINE SAFE, NON-STRETCH)
+───────────────────────────────────────────── */
+
+.skillList {
+  margin-top: 1.75rem;
+  list-style: none;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+
+  align-items: start;
+}
+
+.skillList li {
+  position: relative;
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #e6e8eb;
+
+  white-space: normal;
+  text-align: center;
+  max-width: 220px;
+
+  align-self: start;
+
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.skillList li::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(93,220,255,0.7);
+  opacity: 0;
+}
+
+.skillsSection.revealed .skillList li {
+  animation: pillIn 0.45s ease forwards;
+  animation-delay: var(--delay);
+}
+
+.skillsSection.revealed .skillList li::before {
+  animation: pillTrace 0.45s ease forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes pillIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pillTrace {
+  0% { opacity: 0; box-shadow: none; }
+  40% { opacity: 1; box-shadow: 0 0 8px rgba(93,220,255,0.6); }
+  100% { opacity: 0; }
+}
+
+.skillList li:hover {
+  background: rgba(93, 220, 255, 0.06);
+  border-color: rgba(93, 220, 255, 0.35);
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE STACKED MODE
+───────────────────────────────────────────── */
+
+.mobileGroups {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: auto 1fr;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .content {
+    display: none;
+  }
+
+  .mobileGroups {
+    display: block;
+    padding-top: 1.6rem;
+    font-family: Consolas, "Courier New", monospace;
+  }
+
+  .mobileGroup {
+    margin-top: 2rem;
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .skillsSection.revealed .mobileGroup {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.45s ease,
+      transform 0.45s ease;
+    transition-delay: var(--group-delay);
+  }
+
+  .groupTitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: #e6e8eb;
+    margin-bottom: 0.75rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .skillList {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+/* Mobile index alignment */
+@media (max-width: 900px) {
+  .index {
+    position: absolute;
+    top: -1.2rem;
+    left: 0;
+    pointer-events: none;
+  }
+
+  .index span {
+    font-size: 3rem;
+    opacity: 0.25;
+  }
+}
