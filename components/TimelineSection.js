@@ -14,7 +14,8 @@ function formatRange(start, end) {
 
 export default function TimelineSection() {
   const [sectionRef, revealed] = useRevealOnView({
-    rootMargin: '-25% 0px -55% 0px',
+    // 🔑 FIX: reachable intersection window
+    rootMargin: '-10% 0px -20% 0px',
   });
 
   const [activeItem, setActiveItem] = useState(null);
@@ -35,12 +36,12 @@ export default function TimelineSection() {
     >
       <div className={styles.container}>
 
-        {/* INDEX — decorative overlay, NOT layout */}
+        {/* INDEX */}
         <div className={styles.index}>
           <span>02</span>
         </div>
 
-        {/* CONTENT — TRUE CENTER */}
+        {/* CONTENT */}
         <div className={styles.content}>
 
           <div className={styles.header}>
