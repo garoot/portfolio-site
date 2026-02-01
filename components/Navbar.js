@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 const SECTIONS = [
-  { id: 'hero', label: 'Home', icon: Home },
+  // { id: 'hero', label: 'Home', icon: Home },
   { id: 'bio', label: 'Bio', icon: User },
   { id: 'timeline', label: 'Timeline', icon: Clock },
   { id: 'skills', label: 'Skills', icon: Layers },

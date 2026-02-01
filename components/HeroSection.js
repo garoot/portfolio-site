@@ -32,14 +32,14 @@ export default function HeroSection() {
 
           <p>
             <TypewriterText
-              text="I  build and operate end-to-end systems where technical depth and execution matter. Curious? Ask me anything about my work!"
+              text="I  build and operate end-to-end systems where technical depth and execution matter."
               speed={10}
               cursorClass={styles.cursor}
               cursorBlinkClass={styles.cursorBlink}
             />
           </p>
 
-          <div className={styles.buttons}>
+          {/* <div className={styles.buttons}>
             <a href="#" className={styles.secondaryBtn}>
               <MessageCircle
                 size={14}
@@ -47,7 +47,7 @@ export default function HeroSection() {
               />
               <span>Chatbot coming soon</span>
             </a>
-          </div>
+          </div> */}
 
         </div>
 
