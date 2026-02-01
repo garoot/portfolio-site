@@ -25,7 +25,6 @@
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 2.5rem;
-  position: relative;
 }
 
 /* ─────────────────────────────────────────────
@@ -180,6 +179,10 @@
 
 .header h1 {
   margin: 0;
+}
+
+.headerIcon {
+  margin-left: 10px;
 }
 
 .subtitle {
@@ -362,4 +365,38 @@
   .content {
     padding-top: 1.6rem;
   }
+}
+
+/* =========================
+   Credential Alignment Fix
+========================= */
+
+.credential {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* TEXT BLOCK — force left alignment */
+.credential span {
+  flex: 1;
+  text-align: left;
+  line-height: 1.4;
+}
+
+/* SUB NOTE stays left */
+.subNote {
+  display: block;
+  text-align: left;
+}
+
+/* LEFT ICON — fixed size */
+.credentialIcon {
+  flex-shrink: 0;
+}
+
+/* RIGHT LOGO — fixed, visually secondary */
+.credential img {
+  flex-shrink: 0;
+  opacity: 0.85;
 }

@@ -44,8 +44,12 @@
 
 .identityRole {
   font-size: 12px;
-  opacity: 0.7;
   color: rgba(93, 220, 255, 0.9);
+}
+
+.identityAccent {
+  opacity: 0.8;
+  font-weight: 500;
 }
 
 /* =========================
@@ -63,7 +67,6 @@
   justify-content: center;
 }
 
-/* Floating pill */
 .navbarContent {
   display: flex;
   gap: 32px;
@@ -82,15 +85,45 @@
 }
 
 .navbarContent li a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
   position: relative;
   text-decoration: none;
   font-size: 16px;
   font-weight: 500;
   color: white;
   opacity: 0.85;
+
   transition: opacity 0.2s ease;
 }
 
+/* Icon styling */
+.navIcon {
+  opacity: 0.6;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.navbarContent li a:hover {
+  opacity: 1;
+}
+
+.navbarContent li a:hover .navIcon {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* Active icon */
+.navbarContent li a.active .navIcon {
+  opacity: 1;
+  color: rgba(93, 220, 255, 1);
+}
+
+/* Underline glow */
 .navbarContent li a::after {
   content: '';
   position: absolute;
@@ -112,10 +145,6 @@
   transition: transform 0.25s ease;
 }
 
-.navbarContent li a:hover {
-  opacity: 1;
-}
-
 .navbarContent li a:hover::after,
 .navbarContent li a.active::after {
   transform: scaleX(1);
@@ -126,7 +155,6 @@
 ───────────────────────────── */
 
 @media (max-width: 768px) {
-  /* Move navbar to bottom */
   .navbar {
     top: auto;
     bottom: 16px;
@@ -134,13 +162,11 @@
     transform: translateX(-50%);
   }
 
-  /* Make navbar span comfortably across screen */
   .navbarContent {
     gap: 24px;
     padding: 14px 24px;
   }
 
-  /* Slightly reduce text size for balance */
   .navbarContent li a {
     font-size: 14px;
   }

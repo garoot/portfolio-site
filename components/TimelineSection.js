@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import useRevealOnView from './animation/useRevealOnView';
 import { TIMELINE_ITEMS } from './data/timeline';
 import TimelineModal from './TimelineModal';
+import { Clock, GraduationCap, Briefcase } from 'lucide-react';
 
 function formatRange(start, end) {
   const startStr = `${String(start.month).padStart(2, '0')}/${start.year}`;
@@ -14,7 +15,6 @@ function formatRange(start, end) {
 
 export default function TimelineSection() {
   const [sectionRef, revealed] = useRevealOnView({
-    // 🔑 FIX: reachable intersection window
     rootMargin: '-10% 0px -20% 0px',
   });
 
@@ -45,15 +45,30 @@ export default function TimelineSection() {
         <div className={styles.content}>
 
           <div className={styles.header}>
-            <h1>Timeline</h1>
+            <h1>
+              <span>Timeline</span>
+              <Clock size={18} className={styles.headerIcon} />
+            </h1>
             <p className={styles.subtitle}>
               Education and experience over time
             </p>
           </div>
 
           <div className={styles.legend}>
-            <span className={styles.legendLeft}>Education</span>
-            <span className={styles.legendRight}>Experience</span>
+            <span className={styles.legendLeft}>
+              <span className={styles.legendInline}>
+                <GraduationCap size={12} className={styles.legendIcon} />
+                Education
+              </span>
+            </span>
+
+            <span className={styles.legendRight}>
+              <span className={styles.legendInline}>
+                <Briefcase size={12} className={styles.legendIcon} />
+                Experience
+              </span>
+            </span>
+
           </div>
 
           <div className={styles.timelineContent}>
@@ -65,11 +80,13 @@ export default function TimelineSection() {
                   key={item.id}
                   className={`${styles.row} ${styles[item.type]}`}
                   style={{ '--i': i }}
-                  onClick={() => setActiveItem(item)}
                 >
                   <div className={styles.side}>
                     {item.type === 'education' && (
-                      <div className={styles.card}>
+                      <div
+                        className={styles.card}
+                        onClick={() => setActiveItem(item)}
+                      >
                         <p className={styles.range}>
                           {formatRange(item.start, item.end)}
                         </p>
@@ -77,6 +94,7 @@ export default function TimelineSection() {
                         <span className={styles.org}>{item.org}</span>
                       </div>
                     )}
+
                   </div>
 
                   <div className={styles.dotColumn}>
@@ -85,7 +103,10 @@ export default function TimelineSection() {
 
                   <div className={styles.side}>
                     {item.type === 'experience' && (
-                      <div className={styles.card}>
+                      <div
+                        className={styles.card}
+                        onClick={() => setActiveItem(item)}
+                      >
                         <p className={styles.range}>
                           {formatRange(item.start, item.end)}
                         </p>
@@ -93,6 +114,7 @@ export default function TimelineSection() {
                         <span className={styles.org}>{item.org}</span>
                       </div>
                     )}
+
                   </div>
                 </div>
               ))}

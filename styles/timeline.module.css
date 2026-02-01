@@ -325,3 +325,47 @@
     padding-right: 0 !important;
   }
 }
+
+/* =========================
+   Header Icon (no layout change)
+========================= */
+
+.header h1 {
+  display: flex;
+  align-items: center;
+}
+
+.header h1 span {
+  margin-right: 10px;
+}
+
+.headerIcon {
+  opacity: 0.75;
+  color: rgba(93, 220, 255, 0.9);
+  transform: translateY(1px);
+}
+
+/* =========================
+   Legend Icons (INLINE, SAFE)
+========================= */
+
+.legendIcon {
+  margin-right: 6px;
+  opacity: 0.75;
+  vertical-align: middle;
+}
+
+/* =========================
+   Legend inline stability
+========================= */
+
+.legendInline {
+  white-space: nowrap;   /* CRITICAL */
+}
+
+.legendIcon {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 6px;
+  opacity: 0.75;
+}

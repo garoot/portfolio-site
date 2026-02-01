@@ -2,6 +2,7 @@ import styles from '../styles/hero.module.css';
 import Image from 'next/image';
 import React from 'react';
 import TypewriterText from './animation/TypewriterText';
+import { TerminalSquare, MessageCircle } from 'lucide-react';
 
 export default function HeroSection() {
   return (
@@ -21,9 +22,14 @@ export default function HeroSection() {
 
         {/* Focus / terminal panel */}
         <div className={styles.focusPanel}>
-            <div className={styles.terminalTitle}>
-    Ask Majeed
-  </div>
+          <div className={styles.terminalTitle}>
+            <TerminalSquare
+              size={12}
+              className={styles.terminalIcon}
+            />
+            <span>Ask Majeed</span>
+          </div>
+
           <p>
             <TypewriterText
               text="I  build and operate end-to-end systems where technical depth and execution matter. Curious? Ask me anything about my work!"
@@ -34,13 +40,15 @@ export default function HeroSection() {
           </p>
 
           <div className={styles.buttons}>
-            {/* <a href="#bio" className={styles.primaryBtn}>
-              About Me
-            </a> */}
             <a href="#" className={styles.secondaryBtn}>
-              Coming soon!
+              <MessageCircle
+                size={14}
+                className={styles.chatIcon}
+              />
+              <span>Chatbot coming soon</span>
             </a>
           </div>
+
         </div>
 
       </div>

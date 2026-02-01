@@ -1,12 +1,19 @@
 import styles from '../styles/navbar.module.css';
 import React, { useEffect, useState } from 'react';
+import {
+  Home,
+  User,
+  Clock,
+  Layers,
+  Briefcase,
+} from 'lucide-react';
 
 const SECTIONS = [
-  { id: 'hero', label: 'Home' },
-  { id: 'bio', label: 'Bio' },
-  { id: 'timeline', label: 'Timeline' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'work', label: 'Work' },
+  { id: 'hero', label: 'Home', icon: Home },
+  { id: 'bio', label: 'Bio', icon: User },
+  { id: 'timeline', label: 'Timeline', icon: Clock },
+  { id: 'skills', label: 'Skills', icon: Layers },
+  { id: 'work', label: 'Work', icon: Briefcase },
 ];
 
 function clearHash() {
@@ -16,6 +23,7 @@ function clearHash() {
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState('hero');
+
   useEffect(() => {
     if (window.location.hash) clearHash();
 
@@ -32,10 +40,6 @@ export default function Navbar() {
           }
         },
         {
-          /* 
-            Trigger when the section top crosses
-            ~30% from the top of the viewport
-          */
           rootMargin: '-30% 0px -70% 0px',
           threshold: 0,
         }
@@ -47,7 +51,6 @@ export default function Navbar() {
 
     return () => observers.forEach(o => o.disconnect());
   }, []);
-
 
   const handleNavClick = (e, id) => {
     e.preventDefault();
@@ -67,20 +70,23 @@ export default function Navbar() {
         onClick={(e) => handleNavClick(e, 'hero')}
       >
         <span className={styles.identityName}>Abdulmajeed Garoot</span>
-        <span className={styles.identityRole}>AI Software Engineer</span>
+        <span className={styles.identityRole}>
+          Software Engineer <span className={styles.identityAccent}>(AI-Enabled Systems)</span>
+        </span>
       </div>
 
       {/* Center navbar */}
       <nav className={styles.navbar}>
         <ul className={styles.navbarContent}>
-          {SECTIONS.map(({ id, label }) => (
+          {SECTIONS.map(({ id, label, icon: Icon }) => (
             <li key={id}>
               <a
                 href={`#${id}`}
                 onClick={(e) => handleNavClick(e, id)}
                 className={activeSection === id ? styles.active : ''}
               >
-                {label}
+                <Icon size={14} className={styles.navIcon} />
+                <span>{label}</span>
               </a>
             </li>
           ))}

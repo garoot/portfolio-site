@@ -3,6 +3,7 @@ import React from 'react';
 import styles from '../styles/skills.module.css';
 import useRevealOnView from './animation/useRevealOnView';
 import { SKILL_GROUPS } from './data/skills';
+import { Layers } from 'lucide-react';
 
 export default function SkillsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -37,13 +38,19 @@ export default function SkillsSection() {
         {/* DESKTOP CONTENT */}
         <div className={styles.content}>
           <div className={styles.header}>
-            <h1>Skills</h1>
+            <h1>
+              <span>Skills</span>
+              <Layers size={18} className={styles.headerIcon} />
+            </h1>
             <p className={styles.subtitle}>
               Depth in systems, clarity in tradeoffs, focus on production
             </p>
           </div>
 
-          <ul key={SKILL_GROUPS[activeIndex].id} className={styles.skillList}>
+          <ul
+            key={SKILL_GROUPS[activeIndex].id}
+            className={styles.skillList}
+          >
             {SKILL_GROUPS[activeIndex].items.map((skill, i) => (
               <li key={skill} style={{ '--delay': `${i * 90}ms` }}>
                 {skill}
@@ -55,7 +62,10 @@ export default function SkillsSection() {
         {/* MOBILE STACK */}
         <div className={styles.mobileGroups}>
           <div className={styles.header}>
-            <h1>Skills</h1>
+            <h1>
+              <span>Skills</span>
+              <Layers size={18} className={styles.headerIcon} />
+            </h1>
             <p className={styles.subtitle}>
               Depth in systems, clarity in tradeoffs, focus on production
             </p>

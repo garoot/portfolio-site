@@ -3,6 +3,13 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import useRevealOnView from './animation/useRevealOnView';
 import PdfModal from './PdfModal';
+import {
+  User,
+  GraduationCap,
+  Award,
+  Cpu,
+  FileText,
+} from 'lucide-react';
 
 export default function BioSection() {
   const [contentRef, revealed] = useRevealOnView();
@@ -32,7 +39,10 @@ export default function BioSection() {
           className={styles.content}
         >
           <div className={styles.header}>
-            <h1>About Me</h1>
+            <h1>
+              <span>About Me</span>
+              <User size={18} className={styles.headerIcon} />
+            </h1>
             <p className={styles.subtitle}>
               Building production AI systems, not demos
             </p>
@@ -55,7 +65,7 @@ export default function BioSection() {
             handling shape outcomes in production.
             <br /><br />
             Today, I focus on building systems, tools, and platforms where technical
-            depth, judgment, and execution matter, especially at the intersection of
+            depth, judgment, and execution matter — especially at the intersection of
             technology, product, and people.
           </p>
 
@@ -63,7 +73,9 @@ export default function BioSection() {
           <div className={styles.credentials}>
 
             <div className={styles.group}>
-              <p className={styles.groupLabel}>Formal Education</p>
+              <p className={styles.groupLabel}>
+                Formal Education
+              </p>
 
               <div
                 className={styles.credential}
@@ -74,6 +86,7 @@ export default function BioSection() {
                   })
                 }
               >
+                <FileText size={14} className={styles.credentialIcon} />
                 <span>
                   Master of Data Science
                   <small className={styles.subNote}>
@@ -92,6 +105,7 @@ export default function BioSection() {
                   })
                 }
               >
+                <FileText size={14} className={styles.credentialIcon} />
                 <span>
                   Bachelor of Computer Science
                   <small className={styles.subNote}>
@@ -103,7 +117,9 @@ export default function BioSection() {
             </div>
 
             <div className={styles.groupSecondary}>
-              <p className={styles.groupLabel}>Professional Training & Certifications</p>
+              <p className={styles.groupLabel}>
+                Professional Training & Certifications
+              </p>
 
               <div
                 className={styles.credential}
@@ -114,6 +130,7 @@ export default function BioSection() {
                   })
                 }
               >
+                <Cpu size={14} className={styles.credentialIcon} />
                 <span>
                   Microsoft Azure AI-900 — Azure AI Fundamentals
                   <small className={styles.subNote}>
@@ -132,6 +149,7 @@ export default function BioSection() {
                   })
                 }
               >
+                <Award size={14} className={styles.credentialIcon} />
                 <span>
                   MISK Launchpad 8.0 — Startup & Product Builder Program
                   <small className={styles.subNote}>
@@ -155,6 +173,7 @@ export default function BioSection() {
                   })
                 }
               >
+                <Award size={14} className={styles.credentialIcon} />
                 <span>
                   Full-Stack Software Development
                   <small className={styles.subNote}>
