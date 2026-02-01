@@ -235,3 +235,23 @@
   100% { opacity: 0; }
 }
 
+/* ─────────────────────────────────────────────
+   TERMINAL TITLE
+───────────────────────────────────────────── */
+
+.terminalTitle {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+
+  text-align: center;
+  pointer-events: none;
+
+  font-size: 0.7rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+
+  font-family: Consolas, "Courier New", monospace;
+  color: rgba(255, 255, 255, 0.55);
+}

@@ -5,8 +5,8 @@
 .workSection {
   min-height: 100svh;
   display: flex;
-  align-items: center;
-  padding: 0 1.5rem;
+  align-items: flex-start;
+  padding: 4rem 1.5rem 3rem;
 }
 
 .container {
@@ -20,7 +20,7 @@
 .index span {
   font-size: 4rem;
   font-weight: 700;
-  color: rgba(93, 220, 255, 0.18);
+  color: rgba(93, 220, 255, 0.22);
 }
 
 .content {
@@ -78,22 +78,71 @@
    BORDER SIGNAL
 ───────────────────────────────────────────── */
 
-.border {
+/* .border {
   position: absolute;
   background: linear-gradient(
     to right,
     transparent,
-    rgba(93,220,255,0.9),
+    rgba(93, 220, 255, 0.749),
     transparent
   );
   opacity: 0;
-  pointer-events: none; /* important */
+  pointer-events: none; 
+} */
+ .border {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.top { top: 0; left: 0; height: 1px; width: 0%; }
+.top,
+.bottom {
+  height: 1px;
+  width: 0%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(93, 220, 255, 0.75),
+    transparent
+  );
+}
+
+.top {
+  top: 0;
+  left: 0;
+}
+
+.bottom {
+  bottom: 0;
+  right: 0;
+}
+
+.left,
+.right {
+  width: 1px;
+  height: 0%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(93, 220, 255, 0.75),
+    transparent
+  );
+}
+.left {
+  bottom: 0;
+  left: 0;
+}
+
+.right {
+  top: 0;
+  right: 0;
+}
+
+
+/* .top { top: 0; left: 0; height: 1px; width: 0%; }
 .right { top: 0; right: 0; width: 1px; height: 0%; }
 .bottom { bottom: 0; right: 0; height: 1px; width: 0%; }
-.left { bottom: 0; left: 0; width: 1px; height: 0%; }
+.left { bottom: 0; left: 0; width: 1px; height: 0%; } */
 
 .projectRow[data-active="true"] .top {
   animation: drawTop 0.4s ease forwards;
@@ -420,5 +469,172 @@
   /* Slight tightening for very small phones */
   .surface {
     height: 160px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   TABS
+───────────────────────────────────────────── */
+
+.tabs {
+  position: relative;
+  display: inline-flex;
+  background: rgba(255,255,255,0.05);
+  border-radius: 999px;
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+}
+
+.tabs button {
+  position: relative;
+  z-index: 2;
+  background: none;
+  border: none;
+  padding: 0.45rem 1.3rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  color: #9aa0a6;
+  cursor: pointer;
+}
+
+.tabs button:hover {
+  color: #e6e8eb;
+}
+
+.activeTab {
+  color: #e6e8eb;
+}
+
+.tabIndicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: rgba(93,220,255,0.18);
+  border-radius: 999px;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+.tabIndicator[data-tab="tech"] {
+  transform: translateX(0%);
+}
+
+.tabIndicator[data-tab="creative"] {
+  transform: translateX(100%);
+}
+
+/* ─────────────────────────────────────────────
+   TAB CONTENT WRAPPER
+───────────────────────────────────────────── */
+
+.tabContent {
+  min-height: 260px;
+}
+
+/* ─────────────────────────────────────────────
+   CREATIVE GRID
+───────────────────────────────────────────── */
+
+.creativeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+}
+
+.creativeCard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+
+.creativeCard h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.creativeCard p {
+  font-size: 0.75rem;
+  color: #9aa0a6;
+}
+
+.creativeAction {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+  color: rgba(93,220,255,0.9);
+}
+
+/* ─────────────────────────────────────────────
+   LOCAL SCOPE VARIABLES (CSS MODULE SAFE)
+───────────────────────────────────────────── */
+
+.workScope {
+  --work-stage-width: 860px;
+  --creative-gap: 24px;
+}
+
+/* ─────────────────────────────────────────────
+   TAB CONTENT
+───────────────────────────────────────────── */
+
+.tabContent {
+  width: 100%;
+  max-width: var(--work-stage-width);
+}
+
+/* ─────────────────────────────────────────────
+   CREATIVE STAGE — 2 ITEMS PER ROW, EXACT WIDTH
+───────────────────────────────────────────── */
+
+.creativeStage {
+  display: grid;
+  grid-template-columns:
+    calc((var(--work-stage-width) - var(--creative-gap)) / 2)
+    calc((var(--work-stage-width) - var(--creative-gap)) / 2);
+  gap: var(--creative-gap);
+}
+
+/* ─────────────────────────────────────────────
+   CREATIVE ITEM
+───────────────────────────────────────────── */
+
+.creativeItem {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  min-height: 160px;
+}
+
+.creativeItem h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.creativeItem p {
+  font-size: 0.75rem;
+  color: #9aa0a6;
+  margin-bottom: 0.6rem;
+}
+
+.creativeItem a {
+  font-size: 0.75rem;
+  color: rgba(93,220,255,0.9);
+  text-decoration: none;
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE
+───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .tabContent {
+    max-width: 100%;
+  }
+
+  .creativeStage {
+    grid-template-columns: 1fr;
   }
 }

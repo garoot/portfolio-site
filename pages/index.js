@@ -5,6 +5,7 @@ import BioSection from '../components/BioSection';
 import SkillsSection from '../components/SkillsSection';
 import WorkSection from '../components/WorkSection';
 import React from 'react';
+import TimelineSection from '../components/TimelineSection';
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <Navbar/>
       <HeroSection/>
       <BioSection/>
+      <TimelineSection/>
       <SkillsSection/>
       <WorkSection/>
     </div>

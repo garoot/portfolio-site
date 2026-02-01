@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 const SECTIONS = [
   { id: 'hero', label: 'Home' },
   { id: 'bio', label: 'Bio' },
+  { id: 'timeline', label: 'Timeline' },
   { id: 'skills', label: 'Skills' },
   { id: 'work', label: 'Work' },
-  { id: 'contact', label: 'Contact'},
 ];
 
 function clearHash() {

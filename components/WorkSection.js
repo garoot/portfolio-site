@@ -4,13 +4,39 @@ import { Github, ExternalLink } from 'lucide-react';
 
 import styles from '../styles/work.module.css';
 import useRevealOnView from './animation/useRevealOnView';
+import { WORK_PROJECTS } from './data/work';
 
-const LENSES = [
-  'Problem',
-  'Solution',
-  'Trade-offs',
-  'Failure Modes',
-  'Evolution',
+const LENSES = ['Problem', 'Solution', 'Trade-offs', 'Failure Modes', 'Evolution'];
+
+const CREATIVE_WORKS = [
+  {
+    id: 'deck-1',
+    type: 'pdf',
+    title: 'Startup Pitch Deck',
+    subtitle: 'Investor-facing narrative & visuals',
+    src: '/creative/pitch-deck.pdf',
+  },
+  {
+    id: 'video-1',
+    type: 'video',
+    title: 'Product Launch Animation',
+    subtitle: 'Motion, pacing, storytelling',
+    youtubeId: 'XXXXXXXXXXX',
+  },
+  {
+    id: 'deck-2',
+    type: 'pdf',
+    title: 'Brand Strategy Deck',
+    subtitle: 'Narrative structure & visual language',
+    src: '/creative/brand-deck.pdf',
+  },
+  {
+    id: 'video-2',
+    type: 'video',
+    title: 'Explainer Motion',
+    subtitle: 'Timing, hierarchy, clarity',
+    youtubeId: 'YYYYYYYYYYY',
+  },
 ];
 
 export default function WorkSection() {
@@ -20,8 +46,11 @@ export default function WorkSection() {
   const [active, setActive] = useState(false);
   const [contentReady, setContentReady] = useState(false);
   const [activeLens, setActiveLens] = useState('Problem');
+  const [activeTab, setActiveTab] = useState('tech');
 
-  /* Activate project row once it enters view */
+  // For now you have one technical project — keep it simple and stable.
+  const project = WORK_PROJECTS[0];
+
   useEffect(() => {
     if (!rowRef.current) return;
 
@@ -29,12 +58,7 @@ export default function WorkSection() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setActive(true);
-
-          // Unlock content AFTER border pulse finishes
-          setTimeout(() => {
-            setContentReady(true);
-          }, 1800);
-
+          setTimeout(() => setContentReady(true), 1800);
           observer.disconnect();
         }
       },
@@ -49,17 +73,16 @@ export default function WorkSection() {
     <section
       id="work"
       ref={sectionRef}
-      className={styles.workSection}
+      className={`${styles.workSection} ${styles.workScope}`}
     >
       <div className={styles.container}>
 
-        {/* Index */}
         <div className={styles.index}>
-          <span>03</span>
+          <span>04</span>
         </div>
 
-        {/* Content */}
         <div className={styles.content}>
+
           <div className={styles.header}>
             <h1>Work</h1>
             <p className={styles.subtitle}>
@@ -67,128 +90,123 @@ export default function WorkSection() {
             </p>
           </div>
 
-          {/* Project */}
-          <div
-            ref={rowRef}
-            className={styles.projectRow}
-            data-active={active}
-            data-ready={contentReady}
-          >
-            {/* Border pulses */}
-            <span className={`${styles.border} ${styles.top}`} />
-            <span className={`${styles.border} ${styles.right}`} />
-            <span className={`${styles.border} ${styles.bottom}`} />
-            <span className={`${styles.border} ${styles.left}`} />
+          <div className={styles.tabs}>
+            <button
+              className={activeTab === 'tech' ? styles.activeTab : ''}
+              onClick={() => setActiveTab('tech')}
+            >
+              Technical
+            </button>
+            <button
+              className={activeTab === 'creative' ? styles.activeTab : ''}
+              onClick={() => setActiveTab('creative')}
+            >
+              Creative
+            </button>
+            <span className={styles.tabIndicator} data-tab={activeTab} />
+          </div>
 
-            {/* Thumbnail */}
-            <div className={styles.surface}>
-              <Image
-                src="/malakphoto.png"
-                alt="Malak Photo"
-                width={520}
-                height={360}
-                priority
-              />
-            </div>
+          <div className={styles.tabContent}>
 
-            {/* Panel */}
-            <div className={styles.panel}>
+            {activeTab === 'tech' && (
+              <div
+                ref={rowRef}
+                className={styles.projectRow}
+                data-active={active}
+                data-ready={contentReady}
+              >
+                <span className={`${styles.border} ${styles.top}`} />
+                <span className={`${styles.border} ${styles.right}`} />
+                <span className={`${styles.border} ${styles.bottom}`} />
+                <span className={`${styles.border} ${styles.left}`} />
 
-              {/* Header */}
-              <div className={styles.panelHeader}>
-                <div className={styles.textBlock}>
-                  <h3>MalakPhoto</h3>
-                  <p className={styles.tagline}>
-                    Client-facing photo delivery system for professional photographers
-                  </p>
+                <div className={styles.surface}>
+                  <Image
+                    src={project.image}
+                    alt={`${project.title} preview`}
+                    width={520}
+                    height={360}
+                    priority
+                  />
                 </div>
 
-                {/* ICONS — lucide-react (RESTORED) */}
-                <div className={styles.icons}>
-                  <a
-                    href="https://github.com/your-repo"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                  >
-                    <Github size={16} strokeWidth={1.6} />
-                  </a>
+                <div className={styles.panel}>
+                  <div className={styles.panelHeader}>
+                    <div className={styles.textBlock}>
+                      <h3>{project.title}</h3>
+                      <p className={styles.tagline}>
+                        {project.tagline}
+                      </p>
+                    </div>
 
-                  <a
-                    href="https://malakphoto.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Live site"
-                  >
-                    <ExternalLink size={16} strokeWidth={1.6} />
-                  </a>
+                    <div className={styles.icons}>
+                      <a
+                        href={project.links?.github || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github size={16} />
+                      </a>
+                      <a
+                        href={project.links?.external || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink size={16} />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className={styles.lenses}>
+                    {LENSES.map((lens, i) => (
+                      <button
+                        key={lens}
+                        style={{ '--i': i }}
+                        className={activeLens === lens ? styles.active : ''}
+                        onClick={() => setActiveLens(lens)}
+                      >
+                        <span className={styles.pillPulse} />
+                        <span className={styles.pillLabel}>{lens}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className={styles.explanation}>
+                    <p>{project.lenses?.[activeLens] || ''}</p>
+                  </div>
                 </div>
               </div>
+            )}
 
-              {/* Lenses */}
-              <div className={styles.lenses}>
-                {LENSES.map((lens, i) => (
-                  <button
-                    key={lens}
-                    style={{ '--i': i }}
-                    className={activeLens === lens ? styles.active : ''}
-                    onClick={() => setActiveLens(lens)}
-                  >
-                    {/* pulse layer */}
-                    <span className={styles.pillPulse} />
+            {activeTab === 'creative' && (
+              <div className={styles.creativeStage}>
+                {CREATIVE_WORKS.map(work => (
+                  <div key={work.id} className={styles.creativeItem}>
+                    <h3>{work.title}</h3>
+                    <p>{work.subtitle}</p>
 
-                    {/* text layer */}
-                    <span className={styles.pillLabel}>
-                      {lens}
-                    </span>
-                  </button>
+                    {work.type === 'pdf' && (
+                      <a href={work.src} target="_blank" rel="noopener noreferrer">
+                        View PDF
+                      </a>
+                    )}
+
+                    {work.type === 'video' && (
+                      <a
+                        href={`https://youtube.com/watch?v=${work.youtubeId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Watch Video
+                      </a>
+                    )}
+                  </div>
                 ))}
               </div>
+            )}
 
-              {/* Explanation */}
-              <div className={styles.explanation}>
-                {activeLens === 'Problem' && (
-                  <p>
-                    Photographers manually curate hundreds of images per session,
-                    often guessing which shots clients will like — costing time
-                    and risking dissatisfaction.
-                  </p>
-                )}
-
-                {activeLens === 'Solution' && (
-                  <p>
-                    A client-guided photo review flow where users evaluate blurred,
-                    face-focused previews, reducing photographer selection effort
-                    and increasing client satisfaction.
-                  </p>
-                )}
-
-                {activeLens === 'Trade-offs' && (
-                  <p>
-                    Client control increases UX complexity and requires careful
-                    performance handling, but significantly reduces manual curation.
-                  </p>
-                )}
-
-                {activeLens === 'Failure Modes' && (
-                  <p>
-                    Handles slow connections, incomplete feedback, and partial
-                    uploads without blocking delivery or corrupting state.
-                  </p>
-                )}
-
-                {activeLens === 'Evolution' && (
-                  <p>
-                    Designed to support AI-assisted ranking, per-client preferences,
-                    and automated delivery pipelines without architectural rewrites.
-                  </p>
-                )}
-              </div>
-
-            </div>
           </div>
         </div>
-
       </div>
     </section>
   );

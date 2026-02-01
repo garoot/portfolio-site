@@ -21,9 +21,12 @@ export default function HeroSection() {
 
         {/* Focus / terminal panel */}
         <div className={styles.focusPanel}>
+            <div className={styles.terminalTitle}>
+    Ask Majeed
+  </div>
           <p>
             <TypewriterText
-              text="I  build and ship end-to-end software systems, with depth in backend architecture and production AI integration."
+              text="I  build and operate end-to-end systems where technical depth and execution matter. Curious? Ask me anything about my work!"
               speed={10}
               cursorClass={styles.cursor}
               cursorBlinkClass={styles.cursorBlink}
@@ -31,11 +34,11 @@ export default function HeroSection() {
           </p>
 
           <div className={styles.buttons}>
-            <a href="#bio" className={styles.primaryBtn}>
+            {/* <a href="#bio" className={styles.primaryBtn}>
               About Me
-            </a>
-            <a href="#work" className={styles.secondaryBtn}>
-              Hit Me Up
+            </a> */}
+            <a href="#" className={styles.secondaryBtn}>
+              Coming soon!
             </a>
           </div>
         </div>
