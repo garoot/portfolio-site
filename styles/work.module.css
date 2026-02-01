@@ -572,6 +572,9 @@
     height: auto;
   }
 
+  .index {
+    margin-bottom: -3rem;
+  }
   .surface {
     height: 180px;
   }

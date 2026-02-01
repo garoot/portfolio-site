@@ -285,7 +285,6 @@
 
   .index span {
     font-size: 3rem;
-    opacity: 0.25;
     transform: none;           /* prevent weird offsets */
   }
 
