@@ -71,7 +71,7 @@ export default function Navbar() {
       >
         <span className={styles.identityName}>Abdulmajeed Garoot</span>
         <span className={styles.identityRole}>
-          Software Engineer <span className={styles.identityAccent}>(AI-Enabled Systems)</span>
+          AI Systems Engineer <span className={styles.identityAccent}>(Risk-Aware Systems)</span>
         </span>
       </div>
 

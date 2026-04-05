@@ -69,12 +69,23 @@ export const TIMELINE_ITEMS = [
   {
     id: 'ai-engineer',
     type: 'experience',
-    title: 'AI / Software Engineer',
+    title: 'AI / Systems Engineer',
     org: 'Human Managed',
     start: { month: 10, year: 2024 },
     end: { month: 2, year: 2025 },
     description:
       'Worked on backend services and APIs for AI-enabled workflows, contributing to production systems and cross-functional delivery.',
+  },
+
+  {
+    id: 'crmo',
+    type: 'education',
+    title: 'CRMO – Certified Risk Management Officer',
+    org: 'CRMO',
+    start: { month: 4, year: 2026 },
+    end: null, // in progress
+    description:
+      'Currently pursuing CRMO certification.',
   },
 
   {
@@ -89,9 +100,20 @@ export const TIMELINE_ITEMS = [
   },
 
   {
+    id: 'rokn',
+    type: 'experience',
+    title: 'AI / Systems Engineer',
+    org: 'Rokn (AI-System Automation Platform)',
+    start: { month: 11, year: 2025 },
+    end: null, // ongoing
+    description:
+      'Building an AI-driven system automation platform, working across AI integration, systems engineering, and production infrastructure.',
+  },
+
+  {
     id: 'learnshift',
     type: 'experience',
-    title: 'Founder',
+    title: 'AI / Software Engineer',
     org: 'LearnShift (AI-Native Learning Platform)',
     start: { month: 7, year: 2025 },
     end: null, // ongoing

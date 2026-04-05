@@ -32,7 +32,7 @@ export default function HeroSection() {
 
           <p>
             <TypewriterText
-              text="I  build and operate end-to-end systems where technical depth and execution matter."
+              text="I  build and operate production AI systems where control, reliability, and execution matter."
               speed={10}
               cursorClass={styles.cursor}
               cursorBlinkClass={styles.cursorBlink}

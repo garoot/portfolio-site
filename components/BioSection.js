@@ -49,24 +49,21 @@ export default function BioSection() {
           </div>
 
           <p className={styles.introduction}>
-            I’m Majeed — a builder with strong technical depth, focused on backend systems,
-            AI-enabled products, and end-to-end execution.
+            I’m Majeed — an AI systems engineer focused on building reliable, controlled systems for real-world execution.
           </p>
 
           <p className={styles.body}>
-            I build and operate software systems that integrate AI into real products.
-            My work spans backend architecture, data pipelines, and production AI
-            workflows, including retrieval-augmented generation, async processing,
-            and cost-aware inference.
+            I design and operate production-grade software systems that integrate AI into real products. 
+            My work focuses on backend architecture, multi-stage AI pipelines, and controlled execution workflows, 
+            including retrieval-augmented generation, async processing, and cost-aware inference.
             <br /><br />
-            Much of my experience comes from building things end-to-end in ambiguous
-            environments, across startups, education, and early-stage products. I’ve
-            learned firsthand how technical decisions, design tradeoffs, and failure
-            handling shape outcomes in production.
+            I specialize in building systems that behave reliably under uncertainty - 
+            implementing validation layers, retry logic, and execution controls to ensure stability, 
+            traceability, and consistent outcomes in production environments.
             <br /><br />
-            Today, I focus on building systems, tools, and platforms where technical
-            depth, judgment, and execution matter — especially at the intersection of
-            technology, product, and people.
+            My experience comes from building end-to-end in ambiguous environments, 
+            where system design, failure handling, 
+            and architectural decisions directly impact real-world performance.
           </p>
 
           {/* Credentials */}
