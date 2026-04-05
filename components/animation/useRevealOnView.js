@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 export default function useRevealOnView(options = {}) {
   const ref = useRef(null);
   const [revealed, setRevealed] = useState(false);
+  const savedOptions = useRef(options);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -12,13 +13,13 @@ export default function useRevealOnView(options = {}) {
           observer.disconnect();
         }
       },
-      { threshold: 0.2, ...options }
+      { threshold: 0.2, ...savedOptions.current }
     );
 
     if (ref.current) observer.observe(ref.current);
 
     return () => observer.disconnect();
-  }, [options]);
+  }, []);
 
   return [ref, revealed];
 }
