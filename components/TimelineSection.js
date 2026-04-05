@@ -14,9 +14,7 @@ function formatRange(start, end) {
 }
 
 export default function TimelineSection() {
-  const [sectionRef, revealed] = useRevealOnView({
-    rootMargin: '-10% 0px -20% 0px',
-  });
+  const [sectionRef, revealed] = useRevealOnView();
 
   const [activeItem, setActiveItem] = useState(null);
 
