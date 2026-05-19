@@ -43,7 +43,7 @@ export default function SkillsSection() {
               <Layers size={18} className={styles.headerIcon} />
             </h1>
             <p className={styles.subtitle}>
-              Depth in systems, clarity in tradeoffs, focus on production
+              AI engineering, backend systems, and production reliability
             </p>
           </div>
 
@@ -67,7 +67,7 @@ export default function SkillsSection() {
               <Layers size={18} className={styles.headerIcon} />
             </h1>
             <p className={styles.subtitle}>
-              Depth in systems, clarity in tradeoffs, focus on production
+              AI engineering, backend systems, and production reliability
             </p>
           </div>
 

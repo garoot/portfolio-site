@@ -1,78 +1,65 @@
 // ./data/work.js
 
-export const LENSES = ['Problem', 'Solution', 'Trade-offs', 'Failure Modes', 'Evolution'];
+export const LENSES = ['Overview', 'AI Workflow', 'Backend', 'Reliability', 'Deployment'];
+
 
 export const WORK_PROJECTS = [
   {
     id: 'learnshift',
     title: 'LearnShift',
-    tagline: 'Human-in-the-Loop judgement training for AI-era technical work',
-    image: '/learnshift_homepage.png',
+    tagline: 'AI-enabled learning platform with contextual tutor responses',
+    image: '/learnshift_homepage2.png',
     links: {
-      github: null,
+      github: 'https://github.com/garoot/LearnShift-for-everyone',
       external: 'https://learnshift.io',
     },
     lenses: {
-      Problem:
-        'AI tools accelerate output but erode junior judgement, accountability, and employability.',
-      Solution:
-        'Designed a decision-first learning system where AI proposes solutions and humans must accept, modify, or reject them with justification.',
-      'Trade-offs':
-        'Chose depth of judgement exercises over breadth of passive content to maximize real-world transfer.',
-      'Failure Modes':
-        'Early versions risked over-trusting AI suggestions without forcing explicit human reasoning.',
-      Evolution:
-        'Evolved into an AI-native system with constrained prompts, reflection loops, and job-like scenarios.',
+      Overview:
+        'Built an AI-enabled learning platform that supports course content, user progress, course playback, and AI tutor interactions.',
+      'AI Workflow':
+        'Designed a RAG workflow tied to lesson and content state so AI responses stay closer to selected course material.',
+      Backend:
+        'Developed backend API structure for courses, users, course playback, and AI tutor interactions.',
+      Reliability:
+        'Used prompt structure, response checks, retries, and fallback handling to improve consistency across AI interactions.',
+      Deployment:
+        'Set up automated deployments from GitHub branches using Vercel and Render.',
     },
   },
 
   {
-    id: 'malakphoto',
-    title: 'MalakPhoto',
-    tagline: 'Client-facing photo delivery system for professional photographers',
-    image: '/malakphoto.png',
+    id: 'rokn',
+    title: 'Rokn',
+    tagline: 'Multi-step LLM workflow system with validation and control checkpoints',
+    image: '/rokn_homepage.png',
     links: {
-      github: 'https://github.com/garoot/photography-system',
-      external: null,
+      github: null,
+      external: 'https://rokn.ai',
     },
     lenses: {
-      Problem:
-        'Photographers manually curate and deliver hundreds of images with poor client feedback loops.',
-      Solution:
-        'Built a guided blurred-preview selection flow that lets clients short-list before final export.',
-      'Trade-offs':
-        'Introduced more frontend state and UX complexity to eliminate manual back-and-forth.',
-      'Failure Modes':
-        'Designed uploads and selections to be resilient to partial failures and retries.',
-      Evolution:
-        'Architecture is ready for AI-assisted image ranking and preference learning.',
+      Overview:
+        'Built an AI system automation project focused on multi-step LLM workflows, state tracking, and controlled task execution.',
+        'AI Workflow':
+          'Designed a 5-role AI workflow model covering Product, Tech Lead, Engineering, UI/UX, and Operations.',
+      Backend:
+        'Worked on backend workflow structure for AI task routing, state management, and tool-based execution.',
+      Reliability:
+        'Added validation, retries, basic safeguards, and mitigation steps for unstable outputs, repeated actions, and workflow errors.',
+      Deployment:
+        'Connected project environments to GitHub-based deployment flows for easier staging and production updates.',
     },
   },
+
+ 
 ];
 
 export const CREATIVE_WORKS = [
-  {
-    id: 'learnshift-pitch-deck-v3',
-    type: 'pdf',
-    title: 'LearnShift Pitch Deck (v3)',
-    subtitle: 'Investor deck covering problem, solution, moat, market, and pricing',
-    src: '/creative/LearnShift - Pitch Deck - v3.pdf',
-    highlights: [
-      'Problem: why AI-built products fail',
-      'Solution / How it works: iterative build loop + transparency layer',
-      'Moat / Defensibility: proprietary learning graph',
-      'Target market: non-technical builders + founder-creators',
-      'Revenue model: Free / Starter / Pro / Elite tiers',
-      'Traction: early user signals + product demos',
-    ],
-  },
-  
   {
     id: 'saudi-national-day-2022',
     type: 'video',
     title: 'Saudi National Day 2022',
     subtitle:
-      'Promotional collaboration with Masiratna for Saudi students in Australia',
+      'Promotional video collaboration for Saudi students in Australia',
     year: 2022,
     youtubeId: 'https://vimeo.com/1160782851?share=copy&fl=sv&fe=ci',
   },
@@ -81,16 +68,16 @@ export const CREATIVE_WORKS = [
     type: 'video',
     title: 'How Django Works',
     subtitle:
-      'Educational motion design for a Django mini-course',
+      'Educational motion design explaining core Django concepts',
     year: 2021,
     youtubeId: 'https://vimeo.com/1160782347?share=copy&fl=sv&fe=ci',
   },
   {
     id: 'music-video-edit',
     type: 'video',
-    title: 'Creative Video Edit – “Soul Searching”',
+    title: 'Creative Video Edit',
     subtitle:
-      'Cinematic edit with narrative pacing and rhythm-driven cuts',
+      'Video editing project focused on narrative pacing and rhythm-driven cuts',
     year: 2020,
     youtubeId: 'https://vimeo.com/1160782663?share=copy&fl=sv&fe=ci',
   },

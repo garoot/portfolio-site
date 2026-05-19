@@ -44,26 +44,24 @@ export default function BioSection() {
               <User size={18} className={styles.headerIcon} />
             </h1>
             <p className={styles.subtitle}>
-              Building production AI systems, not demos
+              AI engineering, backend systems, and reliable LLM workflows
             </p>
           </div>
 
           <p className={styles.introduction}>
-            I’m Majeed — an AI systems engineer focused on building reliable, controlled systems for real-world execution.
+            I’m Majeed — an AI Engineer focused on backend services, LLM workflows, RAG pipelines, and reliable AI features.
           </p>
 
           <p className={styles.body}>
-            I design and operate production-grade software systems that integrate AI into real products. 
-            My work focuses on backend architecture, multi-stage AI pipelines, and controlled execution workflows, 
-            including retrieval-augmented generation, async processing, and cost-aware inference.
+            I build backend services and AI-powered workflows that connect LLMs with real product features.
+            My work includes retrieval-augmented generation, embeddings, structured prompts, API integration,
+            and response validation for AI systems.
             <br /><br />
-            I specialize in building systems that behave reliably under uncertainty - 
-            implementing validation layers, retry logic, and execution controls to ensure stability, 
-            traceability, and consistent outcomes in production environments.
+            I focus on making AI features more reliable through clear context handling, retries, fallback logic,
+            cost awareness, and human review where needed.
             <br /><br />
-            My experience comes from building end-to-end in ambiguous environments, 
-            where system design, failure handling, 
-            and architectural decisions directly impact real-world performance.
+            My background combines Computer Science, Data Science, backend engineering, and hands-on AI project work
+            across chatbot systems, learning platforms, and multi-step LLM workflows.
           </p>
 
           {/* Credentials */}
@@ -142,13 +140,13 @@ export default function BioSection() {
                 onClick={() =>
                   setActivePdf({
                     src: '/certificates/misk-launchpad-8.pdf',
-                    title: 'MISK Launchpad 8.0 — Startup & Product Builder Program',
+                    title: 'MISK Launchpad 8.0 — Product & Technology Program',
                   })
                 }
               >
                 <Award size={14} className={styles.credentialIcon} />
                 <span>
-                  MISK Launchpad 8.0 — Startup & Product Builder Program
+                  MISK Launchpad 8.0 — Product & Technology Program
                   <small className={styles.subNote}>
                     MISK Foundation × 2080 Ventures · Aug 2025
                   </small>
