@@ -201,15 +201,7 @@ export default function BioSection() {
           </div>
         </div>
 
-        {/* Avatar */}
-        <div className={styles.avatar}>
-          <Image
-            src="/character9.png"
-            alt="Avatar"
-            width={90}
-            height={140}
-          />
-        </div>
+      
 
       </div>
 
