@@ -139,6 +139,25 @@ export default function BioSection() {
                 className={styles.credential}
                 onClick={() =>
                   setActivePdf({
+                    src: '/certificates/crmo_certificate.pdf',
+                    title: 'Certified Risk Management Officer — CRMO',
+                  })
+                }
+              >
+                <Award size={14} className={styles.credentialIcon} />
+                <span>
+                  Certified Risk Management Officer — CRMO
+                  <small className={styles.subNote}>
+                    Apr 2026
+                  </small>
+                </span>
+                <Image src="/agrc.png" alt="CRMO" width={28} height={28} />
+              </div>
+
+              <div
+                className={styles.credential}
+                onClick={() =>
+                  setActivePdf({
                     src: '/certificates/misk-launchpad-8.pdf',
                     title: 'MISK Launchpad 8.0 — Product & Technology Program',
                   })
