@@ -1,7 +1,5 @@
 // data/timeline.js
 
-// data/timeline.js
-
 export const TIMELINE_ITEMS = [
   {
     id: 'bsc',
@@ -10,7 +8,19 @@ export const TIMELINE_ITEMS = [
     org: 'University of Victoria',
     start: { month: 9, year: 2015 },
     end: { month: 5, year: 2019 },
-    description: 'Computer science foundation covering algorithms, databases, software design, and systems analysis.',
+    description:
+      'Computer science foundation covering algorithms, databases, software design, and systems analysis.',
+  },
+
+  {
+    id: 'amer-hotel',
+    type: 'experience',
+    title: 'Purchasing Representative / Digital Sales Support',
+    org: 'Amer Alshahrani Hotel',
+    start: { month: 12, year: 2018 },
+    end: { month: 2, year: 2020 },
+    description:
+      'Built the company’s first digital presence across website, social media, and online sales channels while managing B2C/B2B inquiries, bookings, pricing, quotations, and digital operations.',
   },
 
   {
