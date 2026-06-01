@@ -6,7 +6,7 @@ export const TIMELINE_ITEMS = [
     type: 'education',
     title: 'Bachelor of Computer Science',
     org: 'University of Victoria',
-    start: { month: 9, year: 2015 },
+    start: { month: 1, year: 2013 },
     end: { month: 5, year: 2019 },
     description:
       'Computer science foundation covering algorithms, databases, software design, and systems analysis.',
@@ -28,7 +28,7 @@ export const TIMELINE_ITEMS = [
     type: 'education',
     title: 'Full-stack Web Development Bootcamp',
     org: 'CodingDojo',
-    start: { month: 7, year: 2021 },
+    start: { month: 5, year: 2021 },
     end: { month: 7, year: 2021 },
     description:
       'Practical full-stack training covering frontend, backend, databases, APIs, and deployment basics.',
