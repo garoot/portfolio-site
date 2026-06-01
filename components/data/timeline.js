@@ -83,8 +83,8 @@ export const TIMELINE_ITEMS = [
     type: 'education',
     title: 'MISK Launchpad 8.0',
     org: 'MISK & 2080 Ventures',
-    start: { month: 8, year: 2025 },
-    end: { month: 8, year: 2025 },
+    start: { month: 7, year: 2025 },
+    end: { month: 9, year: 2025 },
     description:
       'Professional development program covering product execution, technical planning, and structured project delivery.',
   },
