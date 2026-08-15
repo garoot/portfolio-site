@@ -1,95 +1,72 @@
-export const SKILL_GROUPS = [
+// data/skills.js
+// Four capability domains, exactly as they appear on the CV.
 
+export const SKILL_GROUPS = [
+  {
+    id: 'solution',
+    icon: 'share',
+    label: 'Solution Engineering & Cloud Architecture',
+    blurb:
+      'Solution architecture, requirements analysis, and end-to-end ownership of distributed systems.',
+    items: [
+      'Solution Architecture',
+      'Requirements Analysis',
+      'Cloud Architecture',
+      'API Integration',
+      'Distributed Systems',
+      'Resiliency',
+      'End-to-End System Ownership',
+      'Tradeoff & Failure Analysis',
+    ],
+  },
   {
     id: 'ai',
-    label: 'AI Systems & Data Pipelines',
+    icon: 'sparkle',
+    label: 'AI Engineering',
+    blurb: 'Agentic AI, LLM applications, RAG, and model orchestration.',
     items: [
-      'Multi-Stage LLM Pipelines',
-      'Retrieval-Augmented Generation (RAG)',
-      'Prompt Evaluation & Validation',
-      'Embedding Storage & Retrieval',
-      'Latency & Cost Optimization',
+      'Agentic AI',
+      'LLM Applications',
+      'Multi-Agent Systems',
+      'RAG',
+      'Embeddings',
+      'Model Orchestration',
+      'Structured Outputs',
     ],
   },
   {
     id: 'backend',
-    label: 'Backend & Distributed Systems',
+    icon: 'braces',
+    label: 'Backend & Production',
+    blurb:
+      'Python and Node.js REST APIs, event-driven systems, and cost optimization.',
     items: [
+      'Python',
       'Node.js',
-      'API Design (Low-Latency & Scalable)',
-      'Authentication & Authorization',
-      'Async Processing & Queues',
-      'Concurrency & Idempotency Control',
+      'REST APIs',
+      'Authentication',
+      'Event-Driven Systems',
+      'Concurrency',
+      'Idempotency',
+      'Cost Optimization',
     ],
   },
   {
-    id: 'risk',
-    label: 'Reliability, Risk & Control Systems',
+    id: 'reliability',
+    icon: 'shield',
+    accent: true,
+    label: 'AI Reliability, Risk & Governance',
+    blurb:
+      'Validation, observability, failure recovery, and operational risk management.',
     items: [
+      'Output Validation & Safeguards',
+      'Observability & Traceability',
+      'Structured Logging',
+      'Retries & Failure Recovery',
+      'Security Controls',
       'Operational Risk Management',
-      'AI Output Validation & Safeguards',
-      'Failure Handling & Retry Logic',
-      'System Reliability & Stability',
-      'Auditability & Traceability',
-    ],
-  },
-  {
-    id: 'systems',
-    label: 'Systems & Execution',
-    items: [
-      'End-to-End System Ownership',
-      'Technical Decision-Making',
-      'Tradeoff & Failure Analysis',
-      'Operating Under Ambiguity',
-      'Execution Under Constraints',
+      'Auditability',
+      'Responsible AI Governance — Developing',
     ],
   },
 ];
-
-// // ./data/skills.js
-// export const SKILL_GROUPS = [
-//   {
-//     id: 'product',
-//     label: 'Product & Execution',
-//     items: [
-//       'End-to-End Ownership',
-//       'Technical Decision-Making',
-//       'Tradeoff Analysis',
-//       'Operating Under Ambiguity',
-//       'Cross-Functional Collaboration',
-//     ],
-//   },
-//   {
-//     id: 'backend',
-//     label: 'Software Engineering (Backend & Systems)',
-//     items: [
-//       'Node.js',
-//       'RESTful API Design',
-//       'Authentication & Authorization',
-//       'Async Processing & Queues',
-//       'System Design Tradeoffs',
-//     ],
-//   },
-//   {
-//     id: 'ai',
-//     label: 'AI & Data Systems',
-//     items: [
-//       'LLM APIs',
-//       'RAG',
-//       'Prompt Evaluation',
-//       'Latency & Cost Optimization',
-//       'Embedding Storage',
-//     ],
-//   },
-//   {
-//     id: 'creative',
-//     label: 'Creative Production & Media',
-//     items: [
-//       'Premiere Pro',
-//       'After Effects',
-//       'Photoshop',
-//       'Adobe XD',
-//       'Audition',
-//     ],
-//   },
-// ];

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
     setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
@@ -7,7 +9,10 @@ module.exports = {
         '^next/image$': '<rootDir>/__mocks__/next/image.js',
     },
     transform: {
-        '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+        '^.+\\.(js|jsx|ts|tsx)$': [
+            'babel-jest',
+            { configFile: path.resolve(__dirname, 'babel.jest.config.js') },
+        ],
     },
     testMatch: [
         '**/__tests__/**/*.[jt]s?(x)',
