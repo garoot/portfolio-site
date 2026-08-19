@@ -43,7 +43,7 @@
   font-family: var(--font-mono), Consolas, monospace;
   font-size: 11.5px;
   line-height: 1.9;
-  color: var(--faint);
+  color: var(--muted);
   position: relative;
   z-index: 2;
 }
@@ -52,17 +52,6 @@
   color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-
-/* Decorative farewell cameo */
-.mascot {
-  position: absolute;
-  bottom: -118px;
-  right: 110px;
-  width: auto;
-  height: 250px;
-  filter: drop-shadow(0 10px 12px rgba(23, 24, 27, 0.22));
-  pointer-events: none;
 }
 
 /* ── Footer ───────────────────────────────── */
@@ -79,7 +68,7 @@
 
 .footer span {
   font-size: 13.5px;
-  color: var(--muted-2);
+  color: var(--muted);
 }
 
 .footerMeta {
@@ -90,14 +79,6 @@
 /* ─────────────────────────────────────────────
    RESPONSIVE
 ───────────────────────────────────────────── */
-
-@media (max-width: 900px) {
-  .mascot {
-    height: 180px;
-    right: 24px;
-    bottom: -84px;
-  }
-}
 
 @media (max-width: 640px) {
   .section {
@@ -113,14 +94,6 @@
 
   .actions > * {
     width: 100%;
-  }
-
-  /* Keep the cameo from colliding with the metadata line. */
-  .mascot {
-    position: static;
-    display: block;
-    height: 140px;
-    margin: 28px auto -24px;
   }
 
   .footer {

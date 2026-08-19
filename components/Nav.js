@@ -4,9 +4,10 @@ import s from '../styles/nav.module.css';
 
 const SECTIONS = [
   { id: 'about', label: 'About' },
-  { id: 'timeline', label: 'Timeline' },
-  { id: 'skills', label: 'Skills' },
   { id: 'work', label: 'Work' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'skills', label: 'Capabilities' },
+  { id: 'credentials', label: 'Credentials' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -33,15 +34,21 @@ export default function Nav() {
   const lastY = useRef(0);
   const panelRef = useRef(null);
   const toggleRef = useRef(null);
+  const bodyOverflowRef = useRef('');
 
   /* Active section tracking */
   useEffect(() => {
-    const observers = SECTIONS.map(({ id }) => {
+    const trackedSections = [
+      { id: 'top', activeId: '' },
+      ...SECTIONS.map(({ id }) => ({ id, activeId: id })),
+    ];
+
+    const observers = trackedSections.map(({ id, activeId }) => {
       const el = document.getElementById(id);
       if (!el) return null;
       const o = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) setActive(id);
+          if (entry.isIntersecting) setActive(activeId);
         },
         { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
       );
@@ -84,23 +91,37 @@ export default function Nav() {
   }, [open]);
 
   /* Smooth scroll, honouring reduced motion */
-  const go = useCallback((e, id) => {
-    e.preventDefault();
-    setOpen(false);
-    setHidden(false);
+  const go = useCallback(
+    (e, id) => {
+      e.preventDefault();
+      setOpen(false);
+      setHidden(false);
 
-    const el = document.getElementById(id);
-    if (!el) return;
+      const navigate = () => {
+        const el = document.getElementById(id);
+        if (!el) return;
 
-    el.scrollIntoView({
-      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-      block: 'start',
-    });
+        // Move focus so keyboard users land in the section they chose.
+        el.setAttribute('tabindex', '-1');
+        el.focus({ preventScroll: true });
 
-    // Move focus so keyboard users land in the section they chose.
-    el.setAttribute('tabindex', '-1');
-    el.focus({ preventScroll: true });
-  }, []);
+        el.scrollIntoView({
+          behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      };
+
+      // Release the mobile body lock before initiating the section scroll.
+      // Desktop navigation remains immediate.
+      if (open) {
+        document.body.style.overflow = bodyOverflowRef.current;
+        window.setTimeout(navigate, 0);
+      } else {
+        navigate();
+      }
+    },
+    [open]
+  );
 
   /* Mobile menu: escape to close, focus trap, restore focus */
   useEffect(() => {
@@ -131,6 +152,20 @@ export default function Nav() {
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
 
+  /* Keep the page stable behind the open menu. The panel owns overflow on
+     short viewports, and the previous body value is restored exactly. */
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    bodyOverflowRef.current = previousOverflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   const wrapCls = [
     s.wrap,
     compact ? s.compact : '',
@@ -156,7 +191,7 @@ export default function Nav() {
                 href={`#${id}`}
                 onClick={(e) => go(e, id)}
                 className={active === id ? s.active : undefined}
-                aria-current={active === id ? 'true' : undefined}
+                aria-current={active === id ? 'location' : undefined}
               >
                 {label}
               </a>
@@ -188,21 +223,34 @@ export default function Nav() {
         hidden={!open}
       >
         <ul>
-          {SECTIONS.map(({ id, label }) => (
+          {SECTIONS.map(({ id, label }, index) => (
             <li key={id}>
               <a
                 href={`#${id}`}
                 onClick={(e) => go(e, id)}
-                className={active === id ? s.active : undefined}
-                aria-current={active === id ? 'true' : undefined}
+                className={`${s.panelNavLink} ${active === id ? s.active : ''}`}
+                aria-current={active === id ? 'location' : undefined}
               >
-                {label}
+                <span className={s.panelIndex} aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className={s.panelLabel}>{label}</span>
+                <span className={s.panelArrow} aria-hidden="true">
+                  →
+                </span>
               </a>
             </li>
           ))}
         </ul>
-        <a className={s.panelCta} href="mailto:majeed@garoot.ai">
-          Let&rsquo;s Talk
+        <a
+          className={s.panelCta}
+          href="mailto:majeed@garoot.ai"
+          onClick={() => setOpen(false)}
+        >
+          <span>Let&rsquo;s Talk</span>
+          <span className={s.panelCtaArrow} aria-hidden="true">
+            ↗
+          </span>
         </a>
       </div>
     </header>

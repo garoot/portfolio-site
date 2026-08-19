@@ -233,53 +233,174 @@
   margin-top: 10px;
   padding: 12px;
 
+  max-height: calc(100vh - 110px);
+  max-height: calc(100dvh - 110px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(23, 24, 27, 0.22) transparent;
+  -webkit-overflow-scrolling: touch;
+
   background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(10px);
-  border-radius: 26px;
+  border-radius: var(--r-card);
   box-shadow: var(--sh-2);
 }
 
 .panel ul {
   list-style: none;
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   padding: 0;
-  display: grid;
-  gap: 2px;
 }
 
-.panel a {
-  display: flex;
+.panel li {
+  position: relative;
+}
+
+.panel li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  bottom: 0;
+  left: 14px;
+  height: 1px;
+  background: rgba(23, 24, 27, 0.065);
+  pointer-events: none;
+}
+
+.panelNavLink {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) 18px;
   align-items: center;
-  min-height: 48px;
-  padding: 0 16px;
-  border-radius: 14px;
+  gap: 12px;
+  min-height: 58px;
+  padding: 0 14px;
+  border-radius: var(--r-sm);
+
+  color: var(--body);
+
+  transition:
+    background-color var(--t-ctl) var(--ease),
+    color var(--t-ctl) var(--ease);
+}
+
+.panelNavLink:hover,
+.panelNavLink:focus-visible {
+  background: var(--stone-50);
+  color: var(--ink);
+}
+
+.panelNavLink:focus-visible {
+  outline: 2px solid var(--muted);
+  outline-offset: -2px;
+}
+
+.panelNavLink.active {
+  background: var(--stone-100);
+  color: var(--ink);
+}
+
+.panelNavLink.active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  width: 3px;
+  height: 18px;
+  border-radius: var(--r-pill);
+  background: var(--orange);
+  transform: translateY(-50%);
+}
+
+.panelIndex {
+  font-family: var(--font-mono), Consolas, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.panelLabel {
+  min-width: 0;
 
   font-size: 16px;
   font-weight: 600;
-  color: var(--body);
+  white-space: nowrap;
 }
 
-.panel a:hover {
-  background: var(--stone-100);
-  color: var(--ink);
+.panelNavLink.active .panelLabel {
+  font-weight: 700;
 }
 
-.panel a.active {
-  background: var(--stone-100);
-  color: var(--ink);
+.panelArrow {
+  justify-self: end;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--muted);
+  opacity: 0.72;
+
+  transition:
+    transform var(--t-ctl) var(--ease),
+    color var(--t-ctl) var(--ease),
+    opacity var(--t-ctl) var(--ease);
 }
 
-.panelCta {
+.panelNavLink:hover .panelArrow,
+.panelNavLink:focus-visible .panelArrow {
+  color: var(--ink-2);
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+.panelNavLink.active .panelArrow {
+  color: var(--ink-2);
+  opacity: 1;
+}
+
+.panel a.panelCta,
+.panel a.panelCta:visited {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 48px;
+  justify-content: space-between;
+  min-height: 50px;
+  padding: 0 20px;
 
   background: var(--ink);
   color: var(--white);
   border-radius: var(--r-pill);
   font-weight: 600;
   font-size: 15px;
+
+  transition:
+    background-color var(--t-ctl) var(--ease),
+    transform var(--t-ctl) var(--ease);
+}
+
+.panel a.panelCta:hover,
+.panel a.panelCta:focus-visible {
+  background: var(--ink-soft);
+  color: var(--white);
+}
+
+.panel a.panelCta:active {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.panelCtaArrow {
+  font-size: 15px;
+  line-height: 1;
+  opacity: 0.72;
+  transition:
+    transform var(--t-ctl) var(--ease),
+    opacity var(--t-ctl) var(--ease);
+}
+
+.panelCta:hover .panelCtaArrow,
+.panelCta:focus-visible .panelCtaArrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
 }
 
 /* ─────────────────────────────────────────────
@@ -315,6 +436,25 @@
   .brandName {
     font-size: 14px;
   }
+
+  .panel {
+    padding: 10px;
+  }
+
+  .panelNavLink {
+    grid-template-columns: 28px minmax(0, 1fr) 16px;
+    gap: 10px;
+    min-height: 56px;
+    padding: 0 12px;
+  }
+
+  .panelIndex {
+    font-size: 10.5px;
+  }
+
+  .panel a.panelCta {
+    padding: 0 18px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -322,12 +462,23 @@
   .pill,
   .cta,
   .links a,
-  .burger {
+  .burger,
+  .panelNavLink,
+  .panelArrow,
+  .panelCta,
+  .panelCtaArrow {
     transition: none;
   }
 
   .cta:hover,
   .cta:active {
+    transform: none;
+  }
+
+  .panelNavLink:hover .panelArrow,
+  .panelNavLink:focus-visible .panelArrow,
+  .panelCta:hover .panelCtaArrow,
+  .panelCta:focus-visible .panelCtaArrow {
     transform: none;
   }
 

@@ -4,12 +4,13 @@ import Head from 'next/head';
 import Nav from '../components/Nav';
 import Hero from '../components/Hero';
 import About from '../components/About';
-import Timeline from '../components/Timeline';
+import Experience from '../components/Experience';
 import TerminalBridge from '../components/TerminalBridge';
 import Skills from '../components/Skills';
 import Work from '../components/Work';
 import Creative from '../components/Creative';
 import Reliability from '../components/Reliability';
+import Credentials from '../components/Credentials';
 import Contact from '../components/Contact';
 
 import s from '../styles/page.module.css';
@@ -90,12 +91,13 @@ export default function Home() {
       <main id="main" className={s.shell}>
         <Hero />
         <About />
-        <Timeline />
+        <Work />
+        <Experience />
         <TerminalBridge />
         <Skills />
-        <Work />
-        <Creative />
         <Reliability />
+        <Credentials />
+        <Creative />
         <Contact />
       </main>
     </>

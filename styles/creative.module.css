@@ -43,15 +43,20 @@
   min-width: 0;
   padding: 14px;
   background: var(--white);
-  border-radius: 28px;
+  border-radius: var(--r-card);
   box-shadow: var(--sh-3);
 }
 
 .small {
   padding: 12px;
   background: var(--white);
-  border-radius: 22px;
+  border-radius: var(--r-md);
   box-shadow: var(--sh-2);
+}
+
+.cardLink {
+  display: block;
+  border-radius: inherit;
 }
 
 .mediaFeatured,
@@ -166,7 +171,7 @@
 .tag {
   font-family: var(--font-mono), Consolas, monospace;
   font-size: 11px;
-  color: var(--muted-2);
+  color: var(--muted);
 }
 
 .desc {
@@ -196,11 +201,11 @@
   transition: transform var(--t-ctl) var(--ease);
 }
 
-.watch:hover {
+.cardLink:hover .watch {
   transform: translateY(-1px);
 }
 
-.watch:active {
+.cardLink:active .watch {
   transform: translateY(1px);
 }
 
@@ -255,8 +260,8 @@
     transition: none;
   }
 
-  .watch:hover,
-  .watch:active {
+  .cardLink:hover .watch,
+  .cardLink:active .watch {
     transform: none;
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import Work from '../components/Work';
-import { WORK_PROJECTS, MOUJA_EVIDENCE } from '../components/data/work';
+import { WORK_PROJECTS } from '../components/data/work';
 
 describe('Selected systems', () => {
   beforeEach(() => render(<Work />));
@@ -62,18 +62,40 @@ describe('Selected systems', () => {
   });
 
   it('labels the legacy capture truthfully rather than as a Mouja screenshot', () => {
-    expect(
-      screen.getByText('LEGACY ROKN.AI CAPTURE — Mouja.ai screenshot pending')
-    ).toBeInTheDocument();
+    expect(screen.getByText('LEGACY ROKN.AI INTERFACE')).toBeInTheDocument();
     expect(
       screen.getByAltText('Legacy Rokn.ai homepage capture')
     ).toHaveAttribute('src', '/rokn_homepage.png');
   });
 
-  it('renders the Mouja evidence strip verbatim', () => {
-    MOUJA_EVIDENCE.forEach((e) => {
-      expect(screen.getByText(e.t)).toBeInTheDocument();
+  it('gives each project one prominent evidence point', () => {
+    expect(screen.getByText('3,500+')).toBeInTheDocument();
+    expect(screen.getByText('799')).toBeInTheDocument();
+  });
+
+  it('collapses secondary project details on mobile and expands them accessibly', async () => {
+    window.matchMedia = jest.fn().mockReturnValue({
+      matches: true,
+      media: '(max-width: 640px)',
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
     });
+
+    const view = render(<Work />);
+    const project = within(view.container);
+    const toggles = project.getAllByRole('button', {
+      name: /view technical details/i,
+    });
+    const firstPanel = view.container.querySelector(
+      '#project-details-learnshift'
+    );
+
+    await waitFor(() => expect(firstPanel).toHaveAttribute('hidden'));
+    expect(toggles[0]).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(toggles[0]);
+    expect(toggles[0]).toHaveAttribute('aria-expanded', 'true');
+    expect(firstPanel).not.toHaveAttribute('hidden');
   });
 
   it('lazy-loads the below-the-fold project imagery', () => {

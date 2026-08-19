@@ -2,7 +2,17 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Home from '../pages/index';
 
-const SECTION_IDS = ['top', 'about', 'timeline', 'skills', 'work', 'creative', 'contact'];
+const SECTION_IDS = [
+  'top',
+  'about',
+  'work',
+  'experience',
+  'skills',
+  'reliability',
+  'credentials',
+  'creative',
+  'contact',
+];
 
 function setReducedMotion(matches) {
   window.matchMedia = (query) => ({
@@ -53,7 +63,7 @@ describe('Home page structure', () => {
     const h2s = screen
       .getAllByRole('heading', { level: 2 })
       .map((h) => h.textContent);
-    ['The full career story', 'Four capability domains', 'Selected systems', 'Stories in motion', 'How the systems behave'].forEach(
+    ['Selected systems', 'Professional experience', 'Four capability domains', 'How the systems behave', 'Education & credentials', 'Stories in motion'].forEach(
       (title) => expect(h2s).toContain(title)
     );
   });
@@ -67,7 +77,9 @@ describe('Home page structure', () => {
 
   it('renders exactly one terminal transition', () => {
     // The window title bar appears once per terminal.
-    expect(screen.getAllByText('majeed@garoot.ai — describe')).toHaveLength(1);
+    expect(
+      screen.getAllByText('majeed@garoot.ai — operating principles')
+    ).toHaveLength(1);
   });
 
   it('keeps the contact details reachable', () => {
@@ -91,11 +103,11 @@ describe('reduced motion', () => {
     setReducedMotion(true);
     render(<Home />);
     expect(
-      screen.getAllByText(/describe --focus/).length
+      screen.getAllByText(/operate --end-to-end/).length
     ).toBeGreaterThan(0);
     expect(
       screen.getAllByText(
-        /AI systems · cloud architecture · production reliability/
+        /define the problem · align requirements · architect the system/
       ).length
     ).toBeGreaterThan(0);
   });

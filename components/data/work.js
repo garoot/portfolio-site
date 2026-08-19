@@ -1,7 +1,7 @@
 // data/work.js
 //
-// Selected systems + Beyond Systems. All facts, metrics and links are
-// carried over verbatim; nothing here is estimated.
+// Selected systems + Beyond Systems. Facts, metrics, and links are preserved;
+// project lenses are ordered to support recruiter-first scanning.
 
 export const WORK_PROJECTS = [
   {
@@ -14,16 +14,19 @@ export const WORK_PROJECTS = [
     imageAlt: 'LearnShift homepage — AI-enabled learning platform',
     lenses: [
       {
-        k: 'OVERVIEW',
+        k: 'PRODUCT',
+        primary: true,
         t: 'Built LearnShift.io after operating Hackergee, whose online course attracted 3,500+ registrations. The platform supports course content, user progress, course playback, and AI tutor interactions.',
       },
       {
-        k: 'ARCHITECTURE',
-        t: 'Designed context-aware retrieval architecture using learner progress and content state, so AI responses stay closer to the selected course material.',
+        k: 'OWNERSHIP',
+        primary: true,
+        t: 'Owned the backend AI services and REST APIs spanning courses, users, playback, embeddings, retrieval, and LLM workflows.',
       },
       {
-        k: 'BACKEND',
-        t: 'Developed backend AI services and REST APIs for embeddings, retrieval, and LLM workflows, covering courses, users, course playback, and AI tutor interactions.',
+        k: 'ARCHITECTURE',
+        primary: true,
+        t: 'Designed context-aware retrieval architecture using learner progress and content state, so AI responses stay closer to the selected course material.',
       },
       {
         k: 'RELIABILITY',
@@ -58,43 +61,42 @@ export const WORK_PROJECTS = [
     // Truthfully labelled: this is the pre-rebrand capture.
     image: '/rokn_homepage.png',
     imageAlt: 'Legacy Rokn.ai homepage capture',
-    imageNotice: 'LEGACY ROKN.AI CAPTURE — Mouja.ai screenshot pending',
+    imageNotice: 'LEGACY ROKN.AI INTERFACE',
     lenses: [
       {
-        k: 'OVERVIEW',
+        k: 'PRODUCT',
+        primary: true,
         t: 'An AI-native growth intelligence platform for Saudi e-commerce.',
       },
       {
-        k: 'AI WORKFLOW',
+        k: 'OWNERSHIP',
+        primary: true,
         t: 'Engineered a two-agent workflow for Salla merchant profiling and Saudi UGC opportunity analysis.',
+      },
+      {
+        k: 'VALIDATION',
+        primary: true,
+        t: 'Validated one live Arabic profile in staging at 48.2 seconds and $0.09, blocking invalid output before persistence.',
       },
       {
         k: 'SECURITY',
         t: 'Tested bounded Salla extraction on five public storefronts, backed by 31 passing SSRF and URL-security tests.',
       },
       {
-        k: 'VALIDATION',
-        t: 'Validated one live Arabic profile in staging at 48.2 seconds and $0.09, blocking invalid output before persistence.',
-      },
-      {
         k: 'API',
         t: 'Implemented all nine v1 ingestion API operations, including four authenticated idempotent mutations, validated by 799 passing unit tests.',
       },
     ],
+    highlight: {
+      prefix: 'Validated by',
+      figure: '799',
+      suffix: 'passing unit tests',
+    },
     actions: [
       { label: 'mouja.ai', href: 'https://mouja.ai/', variant: 'dark' },
       { label: 'Repository — Private', variant: 'disabled' },
     ],
   },
-];
-
-// Compact evidence strip beneath the Mouja.ai case study.
-export const MOUJA_EVIDENCE = [
-  { t: '31 SSRF & URL-security tests' },
-  { t: '799 unit tests', emphasis: true },
-  { t: 'Invalid output blocked before persistence' },
-  { t: '4 authenticated idempotent mutations' },
-  { t: '48.2s / $0.09 staging validation' },
 ];
 
 export const CREATIVE_WORKS = [

@@ -22,7 +22,8 @@ export default function Skills() {
         Four capability domains
       </h2>
       <p className={s.lead}>
-        Exactly as they appear on the CV — one open at a time.
+        Architecture, AI engineering, production systems, and governance
+        foundations—organized around how reliable solutions are delivered.
       </p>
 
       <div className={s.rows}>

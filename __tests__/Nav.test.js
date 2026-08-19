@@ -1,17 +1,24 @@
 import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { act, render, screen, fireEvent, within } from '@testing-library/react';
 import Nav from '../components/Nav';
 
-const SECTIONS = ['about', 'timeline', 'skills', 'work', 'contact'];
+const SECTIONS = [
+  { id: 'about', label: 'About' },
+  { id: 'work', label: 'Work' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'skills', label: 'Capabilities' },
+  { id: 'credentials', label: 'Credentials' },
+  { id: 'contact', label: 'Contact' },
+];
 
 describe('Nav', () => {
   it('points every primary link at a real section anchor', () => {
     render(<Nav />);
     const nav = screen.getByRole('navigation', { name: /primary/i });
 
-    SECTIONS.forEach((id) => {
+    SECTIONS.forEach(({ id, label }) => {
       const link = within(nav).getByRole('link', {
-        name: new RegExp(`^${id}$`, 'i'),
+        name: new RegExp(`^${label}$`, 'i'),
       });
       expect(link).toHaveAttribute('href', `#${id}`);
       // No placeholder anchors.
@@ -35,7 +42,9 @@ describe('Nav', () => {
 
     render(<Nav />);
     const nav = screen.getByRole('navigation', { name: /primary/i });
-    fireEvent.click(within(nav).getByRole('link', { name: /^skills$/i }));
+    fireEvent.click(
+      within(nav).getByRole('link', { name: /^capabilities$/i })
+    );
 
     expect(target.scrollIntoView).toHaveBeenCalled();
     document.body.removeChild(target);
@@ -60,16 +69,100 @@ describe('Nav', () => {
 
       const panel = document.getElementById('mobile-menu');
       expect(panel).not.toHaveAttribute('hidden');
-      SECTIONS.forEach((id) => {
-        expect(
-          within(panel).getByRole('link', { name: new RegExp(`^${id}$`, 'i') })
-        ).toHaveAttribute('href', `#${id}`);
+      expect(document.body.style.overflow).toBe('hidden');
+
+      SECTIONS.forEach(({ id, label }, index) => {
+        const link = within(panel).getByRole('link', {
+          name: new RegExp(`^${label}$`, 'i'),
+        });
+        expect(link).toHaveAttribute('href', `#${id}`);
+        expect(link).toHaveTextContent(String(index + 1).padStart(2, '0'));
+        expect(link).toHaveTextContent('→');
       });
 
       fireEvent.keyDown(document, { key: 'Escape' });
+      const restoredToggle = screen.getByRole('button', { name: /open menu/i });
+      expect(restoredToggle).toHaveAttribute('aria-expanded', 'false');
+      expect(restoredToggle).toHaveFocus();
+      expect(document.body.style.overflow).toBe('');
+    });
+
+    it('keeps keyboard focus within the open menu', () => {
+      render(<Nav />);
+      fireEvent.click(screen.getByRole('button', { name: /open menu/i }));
+
+      const panel = document.getElementById('mobile-menu');
+      const first = within(panel).getByRole('link', { name: /^about$/i });
+      const last = within(panel).getByRole('link', { name: /let’s talk/i });
+
+      expect(first).toHaveFocus();
+      fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+      expect(last).toHaveFocus();
+      fireEvent.keyDown(document, { key: 'Tab' });
+      expect(first).toHaveFocus();
+    });
+
+    it('keeps decorative navigation metadata out of accessible names', () => {
+      render(<Nav />);
+      fireEvent.click(screen.getByRole('button', { name: /open menu/i }));
+
+      const panel = document.getElementById('mobile-menu');
       expect(
-        screen.getByRole('button', { name: /open menu/i })
-      ).toHaveAttribute('aria-expanded', 'false');
+        within(panel).getByRole('link', { name: /^experience$/i })
+      ).toBeInTheDocument();
+      expect(
+        within(panel).getByRole('link', { name: /^let’s talk$/i })
+      ).toHaveAttribute('href', 'mailto:majeed@garoot.ai');
+    });
+
+    it('exposes only one current location and clears it in the hero', () => {
+      const callbacks = new Map();
+      const OriginalObserver = window.IntersectionObserver;
+
+      class ControlledObserver {
+        constructor(callback) {
+          this.callback = callback;
+        }
+
+        observe(element) {
+          callbacks.set(element.id, this.callback);
+        }
+
+        disconnect() {}
+      }
+
+      window.IntersectionObserver = ControlledObserver;
+      global.IntersectionObserver = ControlledObserver;
+
+      const sectionIds = ['top', ...SECTIONS.map(({ id }) => id)];
+      const sections = sectionIds.map((id) => {
+        const section = document.createElement('section');
+        section.id = id;
+        document.body.appendChild(section);
+        return section;
+      });
+
+      render(<Nav />);
+      act(() => callbacks.get('work')([{ isIntersecting: true }]));
+      fireEvent.click(screen.getByRole('button', { name: /open menu/i }));
+
+      const panel = document.getElementById('mobile-menu');
+      expect(
+        within(panel).getByRole('link', { name: /^work$/i })
+      ).toHaveAttribute('aria-current', 'location');
+      expect(panel.querySelectorAll('[aria-current="location"]')).toHaveLength(
+        1
+      );
+
+      act(() => callbacks.get('top')([{ isIntersecting: true }]));
+      expect(panel.querySelectorAll('[aria-current="location"]')).toHaveLength(
+        0
+      );
+
+      fireEvent.keyDown(document, { key: 'Escape' });
+      sections.forEach((section) => section.remove());
+      window.IntersectionObserver = OriginalObserver;
+      global.IntersectionObserver = OriginalObserver;
     });
 
     it('wires the toggle to the panel it controls', () => {

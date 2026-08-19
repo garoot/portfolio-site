@@ -15,7 +15,7 @@ describe('Hero', () => {
       screen.getByText('AI SYSTEMS · CLOUD · RELIABILITY')
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/where control, reliability, and execution matter/i)
+      screen.getByText(/I translate complex requirements into reliable AI and digital/i)
     ).toBeInTheDocument();
   });
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import { Mail, Download, ArrowUpRight } from 'lucide-react';
 import { SectionLabel, Button } from './ui/Primitives';
 import s from '../styles/contact.module.css';
@@ -49,23 +48,11 @@ export default function Contact() {
           </a>
         </p>
 
-        <Image
-          className={s.mascot}
-          src="/character9.png"
-          alt=""
-          aria-hidden="true"
-          width={250}
-          height={356}
-          sizes="250px"
-          loading="lazy"
-        />
       </section>
 
       <footer className={s.footer}>
         <span>© 2026 Abdulmajeed Garoot</span>
-        <span className={s.footerMeta}>
-          garoot.ai · linkedin.com/in/abdulmajeed-garoot · github.com/garoot
-        </span>
+        <span className={s.footerMeta}>Riyadh, Saudi Arabia</span>
       </footer>
     </>
   );

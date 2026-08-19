@@ -8,46 +8,48 @@ import s from '../styles/creative.module.css';
 function Card({ item, featured }) {
   return (
     <article className={featured ? s.featured : s.small}>
-      <div className={featured ? s.mediaFeatured : s.media}>
-        <Image
-          className={s.still}
-          src={item.image}
-          alt={item.imageAlt}
-          width={featured ? 960 : 460}
-          height={featured ? 540 : 259}
-          sizes={featured ? '(max-width: 1000px) 100vw, 58vw' : '(max-width: 1000px) 100vw, 30vw'}
-          loading="lazy"
-        />
-        <span className={s.scrim} aria-hidden="true" />
-        <span className={s.play} aria-hidden="true">
-          <Play size={featured ? 26 : 18} fill="currentColor" strokeWidth={0} />
-        </span>
-      </div>
-
-      <div className={featured ? s.metaFeatured : s.meta}>
-        <div className={s.metaText}>
-          <div className={s.metaHead}>
-            <h3 className={featured ? s.titleFeatured : s.title}>
-              {item.title}
-            </h3>
-            <span className={s.tag}>
-              {item.year} · {item.format}
-            </span>
-          </div>
-          <p className={s.desc}>{item.description}</p>
+      <a
+        className={s.cardLink}
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Watch on Vimeo — ${item.title}`}
+      >
+        <div className={featured ? s.mediaFeatured : s.media}>
+          <Image
+            className={s.still}
+            src={item.image}
+            alt={item.imageAlt}
+            width={featured ? 960 : 460}
+            height={featured ? 540 : 259}
+            sizes={featured ? '(max-width: 1000px) 100vw, 58vw' : '(max-width: 1000px) 100vw, 30vw'}
+            loading="lazy"
+          />
+          <span className={s.scrim} aria-hidden="true" />
+          <span className={s.play} aria-hidden="true">
+            <Play size={featured ? 26 : 18} fill="currentColor" strokeWidth={0} />
+          </span>
         </div>
 
-        <a
-          className={s.watch}
-          href={item.href}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Watch on Vimeo
-          <ArrowUpRight size={14} aria-hidden="true" />
-          <span className="srOnly">{` — ${item.title}`}</span>
-        </a>
-      </div>
+        <div className={featured ? s.metaFeatured : s.meta}>
+          <div className={s.metaText}>
+            <div className={s.metaHead}>
+              <h3 className={featured ? s.titleFeatured : s.title}>
+                {item.title}
+              </h3>
+              <span className={s.tag}>
+                {item.year} · {item.format}
+              </span>
+            </div>
+            <p className={s.desc}>{item.description}</p>
+          </div>
+
+          <span className={s.watch} aria-hidden="true">
+            Watch on Vimeo
+            <ArrowUpRight size={14} />
+          </span>
+        </div>
+      </a>
     </article>
   );
 }

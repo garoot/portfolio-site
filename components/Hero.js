@@ -19,7 +19,9 @@ export default function Hero() {
           </h1>
 
           <p className={s.sub}>
-            — where control, reliability, and execution matter.
+            I translate complex requirements into reliable AI and digital
+            solutions—from architecture and implementation to production
+            delivery.
           </p>
 
           <div className={s.actions}>

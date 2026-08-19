@@ -10,7 +10,7 @@ describe('Timeline', () => {
     const items = screen.getAllByRole('listitem');
     const milestones = items.filter((li) => li.querySelector('article'));
     expect(milestones).toHaveLength(TIMELINE_ITEMS.length);
-    expect(milestones).toHaveLength(11);
+    expect(milestones).toHaveLength(13);
   });
 
   it('renders every milestone title from the data source', () => {
@@ -21,7 +21,7 @@ describe('Timeline', () => {
     });
   });
 
-  it('numbers the milestones 01 through 11 in chronological order', () => {
+  it('numbers the milestones 01 through 13 in chronological order', () => {
     const sorted = [...TIMELINE_ITEMS].sort((a, b) =>
       a.start.year !== b.start.year
         ? a.start.year - b.start.year
@@ -35,7 +35,30 @@ describe('Timeline', () => {
 
     // First and last are the expected milestones.
     expect(sorted[0].title).toBe('Bachelor of Computer Science');
-    expect(sorted[10].org).toBe('Tuwaiq Academy');
+    expect(sorted.slice(-2).some((item) => item.org === 'Tuwaiq Academy')).toBe(
+      true
+    );
+  });
+
+  it('includes the LinkedIn freelance experience with ownership evidence', () => {
+    expect(screen.getByText('05/2019 – 03/2023')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Freelance' })).toBeInTheDocument();
+    expect(
+      screen.getByText(/owned delivery from client requirements/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/3,500\+ course registrations/i)).toBeInTheDocument();
+  });
+
+  it('includes the LinkedIn Teaching Assistant role', () => {
+    expect(
+      screen.getByRole('heading', { name: 'Teaching Assistant' })
+    ).toBeInTheDocument();
+    expect(screen.getByText('CodeCamp · Melbourne, Australia')).toBeInTheDocument();
+    expect(screen.getByText('01/2022 – 12/2022')).toBeInTheDocument();
+  });
+
+  it('uses the current LinkedIn title for Human Managed', () => {
+    expect(screen.getByRole('heading', { name: 'AI Engineer' })).toBeInTheDocument();
   });
 
   it('renders date ranges, including open-ended ones', () => {

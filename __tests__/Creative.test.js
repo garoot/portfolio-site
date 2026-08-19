@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import Creative from '../components/Creative';
 import Reliability from '../components/Reliability';
 import { CREATIVE_WORKS } from '../components/data/work';
@@ -45,6 +45,15 @@ describe('Beyond Systems', () => {
     links.forEach((l) => {
       expect(l.getAttribute('href')).toMatch(/^https:\/\/vimeo\.com\/\d+$/);
       expect(l).toHaveAttribute('target', '_blank');
+    });
+  });
+
+  it('uses one full-card link per project so the visible play control is actionable', () => {
+    const links = screen.getAllByRole('link', { name: /watch on vimeo/i });
+    expect(links).toHaveLength(CREATIVE_WORKS.length);
+    links.forEach((link) => {
+      expect(link.querySelector('img')).toBeInTheDocument();
+      expect(within(link).getByText('Watch on Vimeo')).toBeInTheDocument();
     });
   });
 

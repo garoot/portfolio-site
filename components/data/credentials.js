@@ -1,8 +1,7 @@
 // data/credentials.js
 //
-// The About summary. Four categories sharing the Timeline taxonomy.
-// Training is deliberately a compact roll-up — full dates and descriptions
-// live in the Timeline.
+// Supporting education, earned credentials, current development, and
+// certifications in preparation. Professional roles live separately.
 
 export const CREDENTIAL_GROUPS = [
   {
@@ -40,20 +39,29 @@ export const CREDENTIAL_GROUPS = [
   },
   {
     id: 'training',
-    label: 'PROFESSIONAL TRAINING',
+    label: 'PROFESSIONAL DEVELOPMENT',
     category: 'TRAINING',
     rows: [
       {
-        title: '3 programs',
-        sub: 'Tuwaiq Academy · MISK Launchpad 8.0 · Coding Dojo',
-        sub2: 'Dates and details in the Timeline ↓',
-        status: 'TRAINING',
+        title: 'Modern Software Engineering & AI Systems Bootcamp',
+        sub: 'Tuwaiq Academy · Jul–Sep 2026',
+        status: 'IN PROGRESS',
+      },
+      {
+        title: 'MISK Launchpad 8.0',
+        sub: 'MISK & 2080 Ventures · Jul–Sep 2025',
+        status: 'COMPLETED',
+      },
+      {
+        title: 'Full-Stack Web Development Bootcamp',
+        sub: 'Coding Dojo · May–Jul 2021',
+        status: 'COMPLETED',
       },
     ],
   },
   {
     id: 'pursuing',
-    label: 'CURRENTLY PURSUING',
+    label: 'CERTIFICATIONS IN PREPARATION',
     category: 'PREP',
     rows: [
       {

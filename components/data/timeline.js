@@ -1,10 +1,13 @@
 // data/timeline.js
 //
-// Eleven milestones in chronological order. `category` drives the shared
-// taxonomy used by both the About summary and the Timeline:
+// Secondary full-journey data. Professional experience is sourced from
+// experience.js so role content is not duplicated across data files.
+// Taxonomy retained by the optional Timeline component:
 // EXPERIENCE · EDUCATION · CERTIFICATION · TRAINING · PREP
 
-export const TIMELINE_ITEMS = [
+import { EXPERIENCE_ITEMS } from './experience';
+
+const JOURNEY_ITEMS = [
   {
     id: 'bsc',
     type: 'education',
@@ -15,18 +18,6 @@ export const TIMELINE_ITEMS = [
     end: { month: 5, year: 2019 },
     description:
       'Computer science foundation covering algorithms, databases, software design, and systems analysis.',
-  },
-
-  {
-    id: 'amer-hotel',
-    type: 'experience',
-    category: 'EXPERIENCE',
-    title: 'Purchasing Representative / Digital Sales Support',
-    org: 'Amer Alshahrani Hotel',
-    start: { month: 12, year: 2018 },
-    end: { month: 2, year: 2020 },
-    description:
-      'Built the company’s first digital presence across website, social media, and online sales channels while managing B2C/B2B inquiries, bookings, pricing, quotations, and digital operations.',
   },
 
   {
@@ -68,32 +59,6 @@ export const TIMELINE_ITEMS = [
   },
 
   {
-    id: 'ai-engineer',
-    type: 'experience',
-    category: 'EXPERIENCE',
-    title: 'AI Systems Engineer',
-    org: 'Human Managed',
-    location: 'Remote — Singapore',
-    start: { month: 10, year: 2024 },
-    end: { month: 2, year: 2025 },
-    description:
-      'Translated business and IT requirements into production-ready AI solutions with stakeholders. Designed backend services for scalable AI workflows, context management, and structured prompting. Designed RAG pipelines covering data preparation, embeddings, retrieval, and response orchestration. Designed REST APIs integrating AI services, retrieval workflows, and external systems. Improved production resiliency through validation, observability, structured logging, and traceability.',
-  },
-
-  {
-    id: 'learnshift',
-    type: 'experience',
-    category: 'EXPERIENCE',
-    status: 'CURRENT',
-    title: 'AI / Software Engineer',
-    org: 'LearnShift – AI-Enabled Learning Platform',
-    start: { month: 7, year: 2025 },
-    end: null,
-    description:
-      'Built backend APIs, RAG workflows, contextual tutor responses, and automated deployments for an AI-enabled learning platform.',
-  },
-
-  {
     id: 'misk-launchpad',
     type: 'education',
     category: 'TRAINING',
@@ -119,21 +84,6 @@ export const TIMELINE_ITEMS = [
   },
 
   {
-    id: 'mouja',
-    type: 'experience',
-    category: 'EXPERIENCE',
-    status: 'CURRENT',
-    title: 'AI Systems Engineer',
-    org: 'Mouja.ai — AI Growth Intelligence for Saudi E-commerce',
-    link: 'https://mouja.ai/',
-    linkLabel: 'mouja.ai',
-    start: { month: 7, year: 2026 },
-    end: null,
-    description:
-      'Building an AI-native growth intelligence platform for Saudi e-commerce, including a two-agent workflow for Salla merchant profiling and Saudi UGC opportunity analysis.',
-  },
-
-  {
     id: 'tuwaiq',
     type: 'education',
     category: 'PREP',
@@ -145,4 +95,13 @@ export const TIMELINE_ITEMS = [
     description:
       'Intensive program covering modern software engineering practice and applied AI systems. Expected completion: 09/2026.',
   },
+];
+
+export const TIMELINE_ITEMS = [
+  ...JOURNEY_ITEMS,
+  ...EXPERIENCE_ITEMS.map((item) => ({
+    ...item,
+    type: 'experience',
+    category: 'EXPERIENCE',
+  })),
 ];

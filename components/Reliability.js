@@ -23,6 +23,7 @@ const ICONS = {
 export default function Reliability() {
   return (
     <section
+      id="reliability"
       className={s.section}
       aria-labelledby="reliability-title"
     >

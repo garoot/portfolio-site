@@ -77,7 +77,7 @@ export default function Timeline() {
             The full career story
           </h2>
           <p className={s.lead}>
-            Eleven milestones in order, 01 → 11 — three currently running.
+            Thirteen milestones in order, 01 → 13 — three currently running.
           </p>
         </div>
 
@@ -124,7 +124,9 @@ export default function Timeline() {
 
                 <h3 className={s.cardTitle}>{item.title}</h3>
                 <p className={s.org}>{org}</p>
-                <p className={s.desc}>{item.description}</p>
+                <p className={s.desc}>
+                  {item.description || [item.scope, ...(item.highlights || [])].join(' ')}
+                </p>
 
                 {(item.status || item.link) && (
                   <p className={s.meta}>

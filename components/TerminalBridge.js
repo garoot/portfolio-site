@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import s from '../styles/terminal.module.css';
 
 const PROMPT = 'majeed@portfolio:~$';
-const COMMAND = ' describe --focus';
-const LINE_1 = 'AI systems · cloud architecture · production reliability';
-const LINE_2 = 'status: building, validating, improving';
+const COMMAND = ' operate --end-to-end';
+const LINE_1 = '> define the problem · align requirements · architect the system';
+const LINE_2 = '> validate risks · ship reliably · measure outcomes';
 
 export default function TerminalBridge() {
   // Renders complete by default. The typing pass runs once per mount, and
@@ -40,7 +40,7 @@ export default function TerminalBridge() {
           <span className={s.dot} aria-hidden="true" />
           <span className={s.dot} aria-hidden="true" />
           <span className={s.dot} aria-hidden="true" />
-          <span className={s.barTitle}>majeed@garoot.ai — describe</span>
+          <span className={s.barTitle}>majeed@garoot.ai — operating principles</span>
           <span className={s.state} aria-hidden="true" />
         </div>
 

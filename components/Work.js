@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { ArrowUpRight, Lock, Github } from 'lucide-react';
+import { ArrowUpRight, Lock, Github, ChevronDown } from 'lucide-react';
 import { SectionLabel, Chip, Button } from './ui/Primitives';
-import { WORK_PROJECTS, MOUJA_EVIDENCE } from './data/work';
+import { WORK_PROJECTS } from './data/work';
 import s from '../styles/work.module.css';
 
 function Actions({ actions }) {
@@ -30,7 +30,11 @@ function Actions({ actions }) {
   );
 }
 
-function Rail({ project, priority }) {
+function Rail({ project, isMobile, expanded, onToggle }) {
+  const primary = project.lenses.filter((lens) => lens.primary);
+  const secondary = project.lenses.filter((lens) => !lens.primary);
+  const detailsId = `project-details-${project.id}`;
+
   return (
     <div className={s.rail}>
       <div className={s.railHead}>
@@ -44,13 +48,45 @@ function Rail({ project, priority }) {
       <hr className={s.rule} />
 
       <dl className={s.lenses}>
-        {project.lenses.map((l) => (
+        {primary.map((l) => (
           <div key={l.k}>
             <dt className={s.lensKey}>{l.k}</dt>
             <dd className={s.lensText}>{l.t}</dd>
           </div>
         ))}
       </dl>
+
+      {secondary.length ? (
+        <>
+          <button
+            type="button"
+            className={s.detailsToggle}
+            aria-expanded={isMobile ? expanded : true}
+            aria-controls={detailsId}
+            onClick={onToggle}
+          >
+            {expanded ? 'Hide technical details' : 'View technical details'}
+            <ChevronDown
+              size={15}
+              className={expanded ? s.chevronOpen : undefined}
+              aria-hidden="true"
+            />
+          </button>
+
+          <dl
+            id={detailsId}
+            className={`${s.lenses} ${s.secondaryLenses} ${expanded ? s.secondaryOpen : ''}`}
+            hidden={isMobile && !expanded}
+          >
+            {secondary.map((l) => (
+              <div key={l.k}>
+                <dt className={s.lensKey}>{l.k}</dt>
+                <dd className={s.lensText}>{l.t}</dd>
+              </div>
+            ))}
+          </dl>
+        </>
+      ) : null}
 
       {project.highlight ? (
         <p className={s.highlight}>
@@ -87,6 +123,30 @@ function Stage({ project, priority, tall }) {
 
 export default function Work() {
   const [learnshift, mouja] = WORK_PROJECTS;
+  const [isMobile, setIsMobile] = useState(false);
+  const [expanded, setExpanded] = useState({});
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 640px)');
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener?.('change', update);
+    return () => media.removeEventListener?.('change', update);
+  }, []);
+
+  const rail = (project) => (
+    <Rail
+      project={project}
+      isMobile={isMobile}
+      expanded={Boolean(expanded[project.id])}
+      onToggle={() =>
+        setExpanded((current) => ({
+          ...current,
+          [project.id]: !current[project.id],
+        }))
+      }
+    />
+  );
 
   return (
     <section id="work" className={s.section} aria-labelledby="work-title">
@@ -98,25 +158,14 @@ export default function Work() {
       {/* LearnShift — image left, rail overlapping right */}
       <article className={s.case}>
         <Stage project={learnshift} />
-        <Rail project={learnshift} />
+        {rail(learnshift)}
       </article>
 
       {/* Mouja.ai — rail left, image right (mirrored) */}
       <article className={`${s.case} ${s.caseMirror}`}>
-        <Rail project={mouja} />
+        {rail(mouja)}
         <Stage project={mouja} tall />
       </article>
-
-      <div className={s.evidence}>
-        <span className={s.evidenceLabel}>MOUJA.AI EVIDENCE</span>
-        <ul className={s.evidenceList}>
-          {MOUJA_EVIDENCE.map((e) => (
-            <li key={e.t} className={e.emphasis ? s.evidenceStrong : undefined}>
-              {e.t}
-            </li>
-          ))}
-        </ul>
-      </div>
     </section>
   );
 }
