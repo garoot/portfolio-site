@@ -10,31 +10,32 @@ export const WORK_PROJECTS = [
     tagline: 'AI-enabled learning platform with contextual tutor responses',
     period: '07/2025 – Present',
     status: 'LIVE',
+    video: '/learnshift-preview.mp4',
     image: '/learnshift_homepage2.png',
     imageAlt: 'LearnShift homepage — AI-enabled learning platform',
     lenses: [
       {
         k: 'PRODUCT',
         primary: true,
-        t: 'Built LearnShift.io after operating Hackergee, whose online course attracted 3,500+ registrations. The platform supports course content, user progress, course playback, and AI tutor interactions.',
+        t: 'Built LearnShift.io after running Hackergee, whose online course drew 3,500+ registrations. The platform combines course delivery, learner progress, playback, and contextual AI tutoring.',
       },
       {
         k: 'OWNERSHIP',
         primary: true,
-        t: 'Owned the backend AI services and REST APIs spanning courses, users, playback, embeddings, retrieval, and LLM workflows.',
+        t: 'Owned backend AI services and REST APIs for courses, users, playback, embeddings, retrieval, and LLM workflows.',
       },
       {
         k: 'ARCHITECTURE',
         primary: true,
-        t: 'Designed context-aware retrieval architecture using learner progress and content state, so AI responses stay closer to the selected course material.',
+        t: 'Designed retrieval around learner progress and course state to keep AI responses grounded in selected material.',
       },
       {
         k: 'RELIABILITY',
-        t: 'Used prompt structure, response checks, retries, and fallback handling to improve consistency across AI interactions.',
+        t: 'Used structured prompts, response checks, retries, and fallbacks to improve consistency.',
       },
       {
         k: 'DEPLOYMENT',
-        t: 'Set up automated deployments from GitHub branches using Vercel and Render.',
+        t: 'Automated GitHub-based deployments through Vercel and Render.',
       },
     ],
     highlight: {
@@ -55,10 +56,12 @@ export const WORK_PROJECTS = [
   {
     id: 'mouja',
     title: 'Mouja.ai',
-    tagline: 'AI Growth Intelligence for Saudi E-commerce — formerly Rokn.ai',
+    tagline: 'AI Growth Intelligence for Saudi E-commerce',
     period: '07/2026 – Present',
     status: 'LIVE',
-    // Truthfully labelled: this is the pre-rebrand capture.
+    logo: '/mouja-pixel-media-logo.svg',
+    video: '/mouja-preview.mp4',
+    // Static fallback for loading failures and reduced-motion preferences.
     image: '/rokn_homepage.png',
     imageAlt: 'Legacy Rokn.ai homepage capture',
     imageNotice: 'LEGACY ROKN.AI INTERFACE',
@@ -96,6 +99,50 @@ export const WORK_PROJECTS = [
       { label: 'mouja.ai', href: 'https://mouja.ai/', variant: 'dark' },
       { label: 'Repository — Private', variant: 'disabled' },
     ],
+  },
+
+  {
+    id: 'rokn',
+    title: 'Rokn.ai',
+    tagline:
+      'AI product builder turning ideas into scoped, buildable software',
+    period: 'PRODUCT R&D · PAUSED',
+    status: 'PAUSED',
+    statusTone: 'paused',
+    video: '/rokn-preview.mp4',
+    image: '/rokn_homepage.png',
+    imageAlt: 'Rokn.ai product-building interface',
+    lenses: [
+      {
+        k: 'PRODUCT',
+        primary: true,
+        t: 'Built an AI product-creation system that turns rough ideas into scoped plans, architecture, and implementation-ready outputs.',
+      },
+      {
+        k: 'OWNERSHIP',
+        primary: true,
+        t: 'Owned idea intake, scope clarification, structured generation, editing, and build orchestration.',
+      },
+      {
+        k: 'ARCHITECTURE',
+        primary: true,
+        t: 'Designed a pipeline from user intent through product definition, complexity assessment, and implementation output.',
+      },
+      {
+        k: 'RELIABILITY',
+        t: 'Added structured prompts, validation, retries, and workflow controls to stabilize generation.',
+      },
+      {
+        k: 'DELIVERY',
+        t: 'Iterated as a web product to test and refine the generation workflow.',
+      },
+    ],
+    highlight: {
+      prefix: 'Core flow:',
+      figure: 'idea → scope → architecture → build',
+      suffix: '',
+    },
+    actions: [],
   },
 ];
 

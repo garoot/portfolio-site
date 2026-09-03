@@ -12,10 +12,32 @@ describe('Selected systems', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders both case studies with LIVE status', () => {
+  it('renders the active and paused case-study statuses truthfully', () => {
     expect(screen.getByRole('heading', { name: 'LearnShift' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Mouja.ai' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Rokn.ai' })).toBeInTheDocument();
     expect(screen.getAllByText('LIVE')).toHaveLength(2);
+    expect(screen.getByText('PAUSED')).toBeInTheDocument();
+    expect(screen.getByText('PRODUCT R&D · PAUSED')).toBeInTheDocument();
+  });
+
+  it('presents Mouja.ai before LearnShift', () => {
+    const projectHeadings = screen.getAllByRole('heading', { level: 3 });
+
+    expect(projectHeadings.map((heading) => heading.textContent)).toEqual([
+      'Mouja.ai',
+      'LearnShift',
+      'Rokn.ai',
+    ]);
+  });
+
+  it('uses the Mouja wordmark without duplicating the accessible project name', () => {
+    const heading = screen.getByRole('heading', { name: 'Mouja.ai' });
+    const logo = heading.querySelector('img');
+
+    expect(logo).toHaveAttribute('src', '/mouja-pixel-media-logo.svg');
+    expect(logo).toHaveAttribute('alt', '');
+    expect(logo).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('renders every lens for both projects from the data source', () => {
@@ -61,11 +83,34 @@ describe('Selected systems', () => {
     expect(priv.tagName).not.toBe('A');
   });
 
-  it('labels the legacy capture truthfully rather than as a Mouja screenshot', () => {
-    expect(screen.getByText('LEGACY ROKN.AI INTERFACE')).toBeInTheDocument();
-    expect(
-      screen.getByAltText('Legacy Rokn.ai homepage capture')
-    ).toHaveAttribute('src', '/rokn_homepage.png');
+  it('renders both project previews as muted, looping inline videos', () => {
+    expect(document.querySelectorAll('video')).toHaveLength(WORK_PROJECTS.length);
+
+    WORK_PROJECTS.forEach((project) => {
+      const source = document.querySelector(`source[src="${project.video}"]`);
+      const video = source.parentElement;
+
+      expect(video).toHaveAttribute('autoplay');
+      expect(video).toHaveAttribute('loop');
+      expect(video).toHaveAttribute('playsinline');
+      expect(video).toHaveAttribute('preload', 'metadata');
+      expect(video).toHaveAttribute('poster', project.image);
+      expect(video.muted).toBe(true);
+      expect(source).toHaveAttribute('type', 'video/mp4');
+    });
+
+    expect(screen.queryByText('LEGACY ROKN.AI INTERFACE')).toBeNull();
+
+    const moujaVideo = document.querySelector(
+      'source[src="/mouja-preview.mp4"]'
+    ).parentElement;
+    const mediaControl = moujaVideo.closest('[role="button"]');
+
+    expect(mediaControl).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(mediaControl);
+    expect(mediaControl).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.keyDown(mediaControl, { key: 'Escape' });
+    expect(mediaControl).toHaveAttribute('aria-pressed', 'false');
   });
 
   it('gives each project one prominent evidence point', () => {
@@ -74,12 +119,12 @@ describe('Selected systems', () => {
   });
 
   it('collapses secondary project details on mobile and expands them accessibly', async () => {
-    window.matchMedia = jest.fn().mockReturnValue({
-      matches: true,
-      media: '(max-width: 640px)',
+    window.matchMedia = jest.fn((query) => ({
+      matches: query === '(max-width: 640px)',
+      media: query,
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
-    });
+    }));
 
     const view = render(<Work />);
     const project = within(view.container);
@@ -87,7 +132,7 @@ describe('Selected systems', () => {
       name: /view technical details/i,
     });
     const firstPanel = view.container.querySelector(
-      '#project-details-learnshift'
+      `#${toggles[0].getAttribute('aria-controls')}`
     );
 
     await waitFor(() => expect(firstPanel).toHaveAttribute('hidden'));
@@ -98,9 +143,25 @@ describe('Selected systems', () => {
     expect(firstPanel).not.toHaveAttribute('hidden');
   });
 
-  it('lazy-loads the below-the-fold project imagery', () => {
-    expect(
-      screen.getByAltText('Legacy Rokn.ai homepage capture')
-    ).toHaveAttribute('loading', 'lazy');
+  it('uses static project imagery when reduced motion is requested', async () => {
+    window.matchMedia = jest.fn((query) => ({
+      matches: query === '(prefers-reduced-motion: reduce)',
+      media: query,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    }));
+
+    const view = render(<Work />);
+
+    await waitFor(() => {
+      expect(view.container.querySelectorAll('video')).toHaveLength(0);
+    });
+
+    WORK_PROJECTS.forEach((project) => {
+      expect(within(view.container).getByAltText(project.imageAlt)).toHaveAttribute(
+        'src',
+        project.image
+      );
+    });
   });
 });

@@ -41,12 +41,74 @@
   transition: transform 0.48s var(--ease);
 }
 
+.stage.stageVideo {
+  z-index: 1;
+  background: var(--stone-50);
+  cursor: pointer;
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center;
+  will-change: transform;
+  transition:
+    transform 420ms var(--ease),
+    box-shadow var(--t-ctl) var(--ease),
+    outline-color var(--t-ctl) var(--ease);
+}
+
+.stage.stageVideo .videoShot {
+  object-fit: cover;
+  object-position: center;
+}
+
 .stageTall .shot {
   height: 560px;
 }
 
 .stage:hover .shot {
   transform: scale(1.012);
+}
+
+.stage.stageVideo:hover .videoShot {
+  transform: none;
+}
+
+@media (min-width: 1001px) {
+  .stage.stageVideo {
+    display: flex;
+    align-items: center;
+    height: 520px;
+  }
+
+  .stage.stageVideo.stageTall {
+    height: 560px;
+  }
+
+  .stage.stageVideo .videoShot {
+    flex: 0 0 auto;
+    height: 440px;
+  }
+
+  .stage.stageVideo.stageTall .videoShot {
+    height: 480px;
+  }
+}
+
+.stage.stageVideo:hover,
+.stage.stageVideo:focus-visible,
+.stage.stageVideo.stageRaised {
+  z-index: 3;
+  box-shadow: var(--sh-3);
+  transform: translate3d(14px, -8px, 0) scale(1.012);
+}
+
+.caseMirror .stage.stageVideo:hover,
+.caseMirror .stage.stageVideo:focus-visible,
+.caseMirror .stage.stageVideo.stageRaised {
+  transform: translate3d(-14px, -8px, 0) scale(1.012);
+}
+
+.stage.stageVideo:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
 }
 
 /* Truthful label for the pre-rebrand capture. */
@@ -80,11 +142,28 @@
   border-radius: var(--r-card);
   box-shadow: var(--sh-3);
   padding: 30px 32px;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    transform 420ms var(--ease),
+    box-shadow 420ms var(--ease);
 }
 
 .caseMirror .rail {
   margin-left: 0;
   margin-right: -52px;
+}
+
+.case:has(.stageVideo:hover) .rail,
+.case:has(.stageVideo:focus-visible) .rail,
+.case:has(.stageRaised) .rail {
+  box-shadow: var(--sh-2);
+  transform: translate3d(10px, 0, 0) scale(0.992);
+}
+
+.caseMirror:has(.stageVideo:hover) .rail,
+.caseMirror:has(.stageVideo:focus-visible) .rail,
+.caseMirror:has(.stageRaised) .rail {
+  transform: translate3d(-10px, 0, 0) scale(0.992);
 }
 
 .railHead {
@@ -99,6 +178,18 @@
   font-weight: 600;
   letter-spacing: -0.025em;
   color: var(--ink);
+}
+
+.projTitleLogo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.projectLogo {
+  display: block;
+  width: clamp(142px, 15vw, 172px);
+  height: auto;
 }
 
 .tagline {
@@ -230,6 +321,21 @@
   .caseMirror .rail {
     margin: -36px 0 0;
   }
+
+  .stage.stageVideo:hover,
+  .stage.stageVideo:focus-visible,
+  .stage.stageVideo.stageRaised,
+  .caseMirror .stage.stageVideo:hover,
+  .caseMirror .stage.stageVideo:focus-visible,
+  .caseMirror .stage.stageVideo.stageRaised,
+  .case:has(.stageVideo:hover) .rail,
+  .case:has(.stageVideo:focus-visible) .rail,
+  .case:has(.stageRaised) .rail,
+  .caseMirror:has(.stageVideo:hover) .rail,
+  .caseMirror:has(.stageVideo:focus-visible) .rail,
+  .caseMirror:has(.stageRaised) .rail {
+    transform: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -241,6 +347,10 @@
   .caseMirror .rail {
     padding: 24px 20px;
     border-radius: var(--r-card);
+  }
+
+  .projectLogo {
+    width: 148px;
   }
 
   .shot,
@@ -308,6 +418,29 @@
   }
 
   .detailsToggle svg {
+    transition: none;
+  }
+
+  .stage.stageVideo {
+    transition: none;
+  }
+
+  .stage.stageVideo:hover,
+  .stage.stageVideo:focus-visible,
+  .stage.stageVideo.stageRaised,
+  .caseMirror .stage.stageVideo:hover,
+  .caseMirror .stage.stageVideo:focus-visible,
+  .caseMirror .stage.stageVideo.stageRaised,
+  .case:has(.stageVideo:hover) .rail,
+  .case:has(.stageVideo:focus-visible) .rail,
+  .case:has(.stageRaised) .rail,
+  .caseMirror:has(.stageVideo:hover) .rail,
+  .caseMirror:has(.stageVideo:focus-visible) .rail,
+  .caseMirror:has(.stageRaised) .rail {
+    transform: none;
+  }
+
+  .rail {
     transition: none;
   }
 }

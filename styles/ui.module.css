@@ -186,6 +186,17 @@
   background: var(--cyan);
 }
 
+.chip_paused {
+  background: var(--stage-2);
+  border: 1px solid rgba(23, 24, 27, 0.08);
+  padding: 4px 10px;
+  color: var(--muted);
+}
+
+.chip_paused .chipDot {
+  background: var(--orange);
+}
+
 .chip_prep {
   background: var(--prep-bg);
   border: 1px dashed var(--prep-edge);

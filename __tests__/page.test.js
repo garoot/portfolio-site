@@ -78,7 +78,7 @@ describe('Home page structure', () => {
   it('renders exactly one terminal transition', () => {
     // The window title bar appears once per terminal.
     expect(
-      screen.getAllByText('majeed@garoot.ai — operating principles')
+      screen.getAllByText('majeed@garoot.ai — ~/principles')
     ).toHaveLength(1);
   });
 
@@ -103,12 +103,7 @@ describe('reduced motion', () => {
     setReducedMotion(true);
     render(<Home />);
     expect(
-      screen.getAllByText(/operate --end-to-end/).length
-    ).toBeGreaterThan(0);
-    expect(
-      screen.getAllByText(
-        /define the problem · align requirements · architect the system/
-      ).length
+      screen.getAllByText(/I like ideas better when they’re real/).length
     ).toBeGreaterThan(0);
   });
 
