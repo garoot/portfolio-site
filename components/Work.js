@@ -171,7 +171,9 @@ function Stage({ project, priority, tall, reducedMotion }) {
     >
       {showVideo ? (
         <video
-          className={`${s.shot} ${s.videoShot}`}
+          className={`${s.shot} ${s.videoShot} ${
+            project.id === 'mouja' ? s.moujaVideoShot : ''
+          }`}
           autoPlay
           muted
           loop

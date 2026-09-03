@@ -45,11 +45,8 @@
   z-index: 1;
   background: var(--stone-50);
   cursor: pointer;
-  transform: translate3d(0, 0, 0) scale(1);
   transform-origin: center;
-  will-change: transform;
   transition:
-    transform 420ms var(--ease),
     box-shadow var(--t-ctl) var(--ease),
     outline-color var(--t-ctl) var(--ease);
 }
@@ -57,6 +54,10 @@
 .stage.stageVideo .videoShot {
   object-fit: cover;
   object-position: center;
+}
+
+.stage.stageVideo .moujaVideoShot {
+  object-fit: contain;
 }
 
 .stageTall .shot {
@@ -96,14 +97,7 @@
 .stage.stageVideo:focus-visible,
 .stage.stageVideo.stageRaised {
   z-index: 3;
-  box-shadow: var(--sh-3);
-  transform: translate3d(14px, -8px, 0) scale(1.012);
-}
-
-.caseMirror .stage.stageVideo:hover,
-.caseMirror .stage.stageVideo:focus-visible,
-.caseMirror .stage.stageVideo.stageRaised {
-  transform: translate3d(-14px, -8px, 0) scale(1.012);
+  box-shadow: none;
 }
 
 .stage.stageVideo:focus-visible {
@@ -142,9 +136,9 @@
   border-radius: var(--r-card);
   box-shadow: var(--sh-3);
   padding: 30px 32px;
-  transform: translate3d(0, 0, 0) scale(1);
+  left: 0;
   transition:
-    transform 420ms var(--ease),
+    left 420ms var(--ease),
     box-shadow 420ms var(--ease);
 }
 
@@ -156,14 +150,13 @@
 .case:has(.stageVideo:hover) .rail,
 .case:has(.stageVideo:focus-visible) .rail,
 .case:has(.stageRaised) .rail {
-  box-shadow: var(--sh-2);
-  transform: translate3d(10px, 0, 0) scale(0.992);
+  left: 10px;
 }
 
 .caseMirror:has(.stageVideo:hover) .rail,
 .caseMirror:has(.stageVideo:focus-visible) .rail,
 .caseMirror:has(.stageRaised) .rail {
-  transform: translate3d(-10px, 0, 0) scale(0.992);
+  left: -10px;
 }
 
 .railHead {
@@ -334,7 +327,7 @@
   .caseMirror:has(.stageVideo:hover) .rail,
   .caseMirror:has(.stageVideo:focus-visible) .rail,
   .caseMirror:has(.stageRaised) .rail {
-    transform: none;
+    left: 0;
   }
 }
 
@@ -437,7 +430,7 @@
   .caseMirror:has(.stageVideo:hover) .rail,
   .caseMirror:has(.stageVideo:focus-visible) .rail,
   .caseMirror:has(.stageRaised) .rail {
-    transform: none;
+    left: 0;
   }
 
   .rail {
